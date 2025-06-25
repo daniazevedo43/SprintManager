@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SprintManager.Domain\SprintManager.Domain.csproj" />
   </ItemGroup>
 
