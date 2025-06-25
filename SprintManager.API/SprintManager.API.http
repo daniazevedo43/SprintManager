@@ -1,0 +1,6 @@
+@SprintManager.API_HostAddress = http://localhost:5015
+
+GET {{SprintManager.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
