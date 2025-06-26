@@ -7,6 +7,11 @@
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
 
+        public User() 
+        { 
+        
+        }
+
         public User(string name, string email, string password) 
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name can't be null.", nameof(name));

@@ -11,6 +11,11 @@ namespace SprintManager.Domain.Entities
         public DateTime EndDate { get; private set; }
         public string? Description { get; private set; }
         public SprintStatus Status { get; private set; }
+
+        public Sprint()
+        {
+
+        }
         
         public Sprint(Guid projectId, string name, DateTime startDate, DateTime endDate)
         {

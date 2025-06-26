@@ -10,10 +10,15 @@ namespace SprintManager.Domain.Entities
         public DateTime CreationDate { get; private set; }
         public ProjectStatus Status { get; private set; }
 
+        public Project()
+        {
+
+        }
+
         public Project(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
-            if (name.Length > 255) throw new ArgumentException("Project's name can't exceed 255 characters.", nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if(name.Length > 255) throw new ArgumentException("Project's name can't exceed 255 characters.", nameof(name));
 
             Id = Guid.NewGuid();
             Name = name;
@@ -23,10 +28,10 @@ namespace SprintManager.Domain.Entities
 
         public Project(string name, string? description)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
 
-            if (name.Length > 255) throw new ArgumentException("Project's name can't exceed 255 characters.", nameof(name));
-            if (description?.Length > 500) throw new ArgumentException("Project's description can't exceed 500 characters.", nameof(description));
+            if(name.Length > 255) throw new ArgumentException("Project's name can't exceed 255 characters.", nameof(name));
+            if(description?.Length > 500) throw new ArgumentException("Description can't exceed 500 characters.", nameof(description));
 
             Id = Guid.NewGuid();
             Name = name;
@@ -45,9 +50,9 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update project's description
-        public void SetDescription(string description)
+        public void SetDescription(string? description)
         {
-            if (description.Length > 500) throw new ArgumentException("Project's description can't exceed 500 characters.", nameof(description));
+            if (description?.Length > 500) throw new ArgumentException("Description can't exceed 500 characters.", nameof(description));
 
             Description = description;
         }
