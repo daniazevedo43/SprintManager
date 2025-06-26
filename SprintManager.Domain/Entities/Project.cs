@@ -11,7 +11,7 @@ namespace SprintManager.Domain.Entities
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
         public DateTime CreationDate { get; private set; }
         public ProjectStatus Status { get; private set; }
 
@@ -21,19 +21,19 @@ namespace SprintManager.Domain.Entities
 
             Id = Guid.NewGuid();
             Name = name;
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
             Status = ProjectStatus.Active;
         }
 
-        public Project(string name, string description)
+        public Project(string name, string? description)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
-            if (description.Length > 500) throw new ArgumentException("Project's description can't exceed 500 characters.", nameof(description));
+            if (description?.Length > 500) throw new ArgumentException("Project's description can't exceed 500 characters.", nameof(description));
 
             Id = Guid.NewGuid();
             Name = name;
             Description = description;
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
             Status = ProjectStatus.Active;
         }
 
