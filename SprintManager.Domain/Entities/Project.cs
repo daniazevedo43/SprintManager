@@ -1,9 +1,4 @@
 ﻿using SprintManager.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SprintManager.Domain.Entities
 {
@@ -18,6 +13,7 @@ namespace SprintManager.Domain.Entities
         public Project(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if (name.Length > 255) throw new ArgumentException("Project's name can't exceed 255 characters.", nameof(name));
 
             Id = Guid.NewGuid();
             Name = name;
@@ -28,6 +24,8 @@ namespace SprintManager.Domain.Entities
         public Project(string name, string? description)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+
+            if (name.Length > 255) throw new ArgumentException("Project's name can't exceed 255 characters.", nameof(name));
             if (description?.Length > 500) throw new ArgumentException("Project's description can't exceed 500 characters.", nameof(description));
 
             Id = Guid.NewGuid();

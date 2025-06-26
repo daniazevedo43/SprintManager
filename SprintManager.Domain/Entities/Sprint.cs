@@ -18,6 +18,8 @@ namespace SprintManager.Domain.Entities
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
             if(startDate > endDate) throw new ArgumentException("Start date can't be higher than end date", nameof(startDate));
 
+            if(name.Length > 255) throw new ArgumentException("Sprint's name can't exceed 255 characters.", nameof(name));
+
             Id = Guid.NewGuid();
             ProjectId = projectId;
             Name = name;
@@ -30,7 +32,10 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("This project doesn't exist", nameof(projectId));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
-            if (startDate > endDate) throw new ArgumentException("Start date can't be higher than end date", nameof(startDate));
+            if(startDate > endDate) throw new ArgumentException("Start date can't be higher than end date", nameof(startDate));
+
+            if(name.Length > 255) throw new ArgumentException("Sprint's name can't exceed 255 characters.", nameof(name));
+            if(description?.Length > 500) throw new ArgumentException("Sprint's description can't exceed 500 characters.", nameof(description));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -45,6 +50,7 @@ namespace SprintManager.Domain.Entities
         public void SetName(string name)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if (name.Length > 255) throw new ArgumentException("Sprint's name can't exceed 255 characters.", nameof(name));
 
             Name = name;
         }
@@ -68,6 +74,8 @@ namespace SprintManager.Domain.Entities
         // Update sprint's description
         public void SetDescription(string description)
         {
+            if (description?.Length > 500) throw new ArgumentException("Sprint's description can't exceed 500 characters.", nameof(description));
+
             Description = description;
         }
 
