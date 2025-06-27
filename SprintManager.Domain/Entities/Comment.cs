@@ -17,7 +17,7 @@
         {
             if(workItemId == Guid.Empty) throw new ArgumentException("This work item doesn't exist.", nameof(workItemId));
             if(userId == Guid.Empty) throw new ArgumentException("This user doesn't exist.", nameof(userId));
-            if(string.IsNullOrWhiteSpace(text)) throw new ArgumentException("A comment can't be null or empty", nameof(text));
+            if(string.IsNullOrWhiteSpace(text)) throw new ArgumentException("A comment can't be null or empty.", nameof(text));
             if(text.Length > 500) throw new ArgumentException("A comment can't exceed 500 characters.", nameof(text));
 
             Id = Guid.NewGuid();
@@ -29,7 +29,7 @@
 
         public void SetText(string text)
         {
-            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("A comment can't be null or empty", nameof(text));
+            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("A comment can't be null or empty.", nameof(text));
             if (text.Length > 500) throw new ArgumentException("A comment can't exceed 500 characters.", nameof(text));
 
             Text = text;
