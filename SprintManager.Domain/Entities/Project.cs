@@ -18,7 +18,7 @@ namespace SprintManager.Domain.Entities
 
         public Project(string name)
         {
-            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
             if(name.Length > 255) throw new SprintManagerTooLongException("Project's name can't exceed 255 characters.", 255, name.Length, nameof(name));
 
             Id = Guid.NewGuid();
@@ -29,7 +29,7 @@ namespace SprintManager.Domain.Entities
 
         public Project(string name, string? description)
         {
-            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
 
             if(name.Length > 255) throw new SprintManagerTooLongException("Project's name can't exceed 255 characters.", 255, name.Length, nameof(name));
             if(description?.Length > 500) throw new SprintManagerTooLongException("Description can't exceed 500 characters.", 500, description.Length, nameof(description));
@@ -44,7 +44,7 @@ namespace SprintManager.Domain.Entities
         // Update project's name
         public void SetName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
             if (name.Length > 255) throw new SprintManagerTooLongException("Project's name can't exceed 255 characters.", 255, name.Length, nameof(name));
 
             Name = name;
