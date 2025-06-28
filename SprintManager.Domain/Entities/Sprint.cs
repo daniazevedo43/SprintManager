@@ -19,8 +19,8 @@ namespace SprintManager.Domain.Entities
         
         public Sprint(Guid projectId, string name, DateTime startDate, DateTime endDate)
         {
-            if(projectId == Guid.Empty) throw new ArgumentException("This project doesn't exist", nameof(projectId));
-            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null.", nameof(name));
+            if(projectId == Guid.Empty) throw new ArgumentException("Project can't be null or empty.", nameof(projectId));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
             if(startDate > endDate) throw new ArgumentException("Start date can't be higher than end date", nameof(startDate));
 
             if(name.Length > 255) throw new ArgumentException("Sprint's name can't exceed 255 characters.", nameof(name));
