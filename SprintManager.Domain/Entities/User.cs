@@ -21,9 +21,9 @@ namespace SprintManager.Domain.Entities
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException("Password can't be null.", nameof(password));
 
             if (name.Length > 255) throw new SprintManagerTooLongException("Name can't exceed 255 characters.", 255, name.Length, nameof(name));
-            if (email.Length > 255) throw new SprintManagerTooLongException("Email can't exceed 255 characters.", nameof(email));
-            if (password.Length < 12) throw new SprintManagerTooShortException("Password can't have less than 12 characters.", nameof(password));
-            if (password.Length > 64) throw new SprintManagerTooLongException("Password can't have more than 64 characters.", nameof(password));
+            if (email.Length > 255) throw new SprintManagerTooLongException("Email can't exceed 255 characters.", 255, email.Length, nameof(email));
+            if (password.Length < 12) throw new SprintManagerTooShortException("Password can't have less than 12 characters.", 12, password.Length, nameof(password));
+            if (password.Length > 64) throw new SprintManagerTooLongException("Password can't have more than 64 characters.", 64, password.Length, nameof(password));
 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
@@ -37,7 +37,7 @@ namespace SprintManager.Domain.Entities
         public void SetName(string name) 
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name can't be null.", nameof(name));
-            if (name.Length > 255) throw new SprintManagerTooLongException("Name can't exceed 255 characters.", nameof(name));
+            if (name.Length > 255) throw new SprintManagerTooLongException("Name can't exceed 255 characters.", 255, name.Length, nameof(name));
 
             Name = name; 
         }
@@ -46,7 +46,7 @@ namespace SprintManager.Domain.Entities
         public void SetEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException("Email can't be null.", nameof(email));
-            if (email.Length > 255) throw new SprintManagerTooLongException("Email can't exceed 255 characters.", nameof(email));
+            if (email.Length > 255) throw new SprintManagerTooLongException("Email can't exceed 255 characters.", 255, email.Length, nameof(email));
 
             Email = email;
         }
@@ -55,8 +55,8 @@ namespace SprintManager.Domain.Entities
         public void SetPassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException("Password can't be null.", nameof(password));
-            if (password.Length < 12) throw new SprintManagerTooShortException("A palavra-passe deve ter pelo menos 12 caracteres.", nameof(password));
-            if (password.Length > 64) throw new SprintManagerTooLongException("A palavra-passe não pode exceder 64 caracteres.", nameof(password));
+            if (password.Length < 12) throw new SprintManagerTooShortException("Password can't have less than 12 characters.", 12, password.Length, nameof(password));
+            if (password.Length > 64) throw new SprintManagerTooLongException("Password can't have more than 64 characters.", 64, password.Length, nameof(password));
 
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
         }
