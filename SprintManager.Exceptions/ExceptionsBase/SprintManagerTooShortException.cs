@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SprintManager.Exceptions.ExceptionsBase
+﻿namespace SprintManager.Exceptions.ExceptionsBase
 {
     public class SprintManagerTooShortException : Exception
     {
-        public int? MinLimit { get; }
+        public int MinLimit { get; }
         public int ActualLength { get; }
 
         public SprintManagerTooShortException()

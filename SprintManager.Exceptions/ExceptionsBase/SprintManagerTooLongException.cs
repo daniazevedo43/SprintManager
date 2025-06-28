@@ -2,7 +2,7 @@
 {
     public class SprintManagerTooLongException : Exception
     {
-        public int? MaxLimit { get; }
+        public int MaxLimit { get; }
         public int ActualLength { get; }
 
         public SprintManagerTooLongException()
