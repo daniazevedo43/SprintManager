@@ -5,6 +5,7 @@ namespace SprintManager.Domain.Tests
 {
     public class UserTests
     {
+        // Test user creation
         [Fact]
         public void User_Constructor_WithValidData_CreatesUserSuccessfully()
         {
@@ -17,6 +18,7 @@ namespace SprintManager.Domain.Tests
             Assert.True(user.VerifyPassword("abc123abc123"));
         }
 
+        // Test user's name change
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
@@ -27,6 +29,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Tiago", user.Name);
         }
 
+        // Test email change
         [Fact]
         public void SetEmail_UpdatesEmailSuccessfully()
         {
@@ -37,6 +40,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("t@gmail.com", user.Email);
         }
         
+        // Test password change
         [Fact]
         public void SetPassword_UpdatesPasswordSuccessfully()
         {
@@ -49,6 +53,7 @@ namespace SprintManager.Domain.Tests
             Assert.True(user.VerifyPassword("abc456abc456"));
         }
 
+        // Test exception throwing when user is null or empty
         [Theory] 
         [InlineData(null)]
         [InlineData("")]
@@ -62,6 +67,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Name can't be null or empty. (Parameter 'name')", exception.Message);
         }
 
+        // Test exception throwing when name is too long
         [Fact]
         public void VerifyName_ThrowsException_WhenNameIsTooLong()
         {
@@ -74,6 +80,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
         }
 
+        // Test exception throwing when email is null or empty
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -87,6 +94,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Email can't be null or empty. (Parameter 'email')", exception.Message);
         }
 
+        // Test exception throwing when email is too long
         [Fact]
         public void VerifyEmail_ThrowsException_WhenEmailIsTooLong()
         {
@@ -99,6 +107,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Email is too long. (Max length '255') (Actual length '{email.Length}') (Parameter 'email')", exception.Message);
         }
 
+        // Test exception throwing when password is null or empty
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -112,6 +121,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Password can't be null or empty. (Parameter 'password')", exception.Message);
         }
 
+        // Test exception throwing when password is too short
         [Fact]
         public void VerifyPassword_ThrowsException_WhenPasswordIsTooShort()
         {
@@ -124,6 +134,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Password is too short. (Min length '12') (Actual length '{password.Length}') (Parameter 'password')", exception.Message);
         }
 
+        // Test exception throwing when password is too long
         [Fact]
         public void VerifyPassword_ThrowsException_WhenPasswordIsTooLong()
         {
