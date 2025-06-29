@@ -49,11 +49,14 @@ namespace SprintManager.Domain.Tests
             Assert.True(user.VerifyPassword("abc456abc456"));
         }
 
-        [Fact]
-        public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty()
+        [Theory] 
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
             var exception = Assert.Throws<ArgumentException>(() => 
-                new User("", "d@gmail.com", "abc123abc123")
+                new User(name, "d@gmail.com", "abc123abc123")
             );
 
             Assert.Equal("Name can't be null or empty. (Parameter 'name')", exception.Message);
@@ -71,11 +74,14 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
         }
 
-        [Fact]
-        public void VerifyEmail_ThrowsException_WhenEmailIsNullEmpty()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void VerifyEmail_ThrowsException_WhenEmailIsNullEmpty(string email)
         {
             var exception = Assert.Throws<ArgumentException>(() =>
-                new User("Daniel", "", "abc123abc123")
+                new User("Daniel", email, "abc123abc123")
             );
 
             Assert.Equal("Email can't be null or empty. (Parameter 'email')", exception.Message);
@@ -93,11 +99,14 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Email is too long. (Max length '255') (Actual length '{email.Length}') (Parameter 'email')", exception.Message);
         }
 
-        [Fact]
-        public void VerifyPassword_ThrowsException_WhenPasswordIsNullOrEmpty()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void VerifyPassword_ThrowsException_WhenPasswordIsNullOrEmpty(string password)
         {
             var exception = Assert.Throws<ArgumentException>(() =>
-                new User("Daniel", "d@gmail.com", "")
+                new User("Daniel", "d@gmail.com", password)
             );
 
             Assert.Equal("Password can't be null or empty. (Parameter 'password')", exception.Message);
