@@ -17,8 +17,8 @@
 
         public Image(Guid workItemId, Guid attachedByUserId, string contentType, string fileName, string filePath)
         {
-            if (workItemId == Guid.Empty) throw new ArgumentException("This work item doesn't exist.", nameof(workItemId));
-            if (attachedByUserId == Guid.Empty) throw new ArgumentException("This user doesn't exist.", nameof(attachedByUserId));
+            if (workItemId == Guid.Empty) throw new ArgumentException("Work item ID can't be null or empty.", nameof(workItemId));
+            if (attachedByUserId == Guid.Empty) throw new ArgumentException("User ID can't be null or empty.", nameof(attachedByUserId));
 
             Id = Guid.NewGuid();
             WorkItemId = workItemId;
