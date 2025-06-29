@@ -2,8 +2,9 @@
 {
     public class SprintManagerTooLongException : Exception
     {
-        public int MaxLimit { get; }
+        public int MaxLength { get; }
         public int ActualLength { get; }
+        public string ParamName { get; }
 
         public SprintManagerTooLongException()
         {
@@ -19,18 +20,19 @@
         {
         }
 
-        public SprintManagerTooLongException(string message, int maxLimit, int actualLength)
+        public SprintManagerTooLongException(string message, int maxLength, int actualLength)
             : base(message)
         {
-            MaxLimit = maxLimit;
+            MaxLength = maxLength;
             ActualLength = actualLength;
         }
 
-        public SprintManagerTooLongException(string message, int maxLimit, int actualLength, string paramName)
-            : base(message)
+        public SprintManagerTooLongException(string message, int maxLength, int actualLength, string paramName)
+            : base($"{message} (Max length '{maxLength}') (Actual length '{actualLength}') (Parameter '{paramName}')")
         {
-            MaxLimit = maxLimit;
+            MaxLength = maxLength;
             ActualLength = actualLength;
+            ParamName = paramName; 
         }
     }
 }
