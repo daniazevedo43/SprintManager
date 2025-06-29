@@ -16,14 +16,14 @@ namespace SprintManager.Domain.Entities
 
         public User(string name, string email, string password) 
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name can't be null or empty.", nameof(name));
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email can't be null or empty.", nameof(email));
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password can't be null or empty.", nameof(password));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name can't be null or empty.", nameof(name));
+            if(string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email can't be null or empty.", nameof(email));
+            if(string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password can't be null or empty.", nameof(password));
 
-            if (name.Length > 255) throw new SprintManagerTooLongException("Name can't exceed 255 characters.", 255, name.Length, nameof(name));
-            if (email.Length > 255) throw new SprintManagerTooLongException("Email can't exceed 255 characters.", 255, email.Length, nameof(email));
-            if (password.Length < 12) throw new SprintManagerTooShortException("Password can't have less than 12 characters.", 12, password.Length, nameof(password));
-            if (password.Length > 64) throw new SprintManagerTooLongException("Password can't have more than 64 characters.", 64, password.Length, nameof(password));
+            if(name.Length > 255) throw new SprintManagerTooLongException("Name is too long.", 255, name.Length, nameof(name));
+            if(email.Length > 255) throw new SprintManagerTooLongException("Email is too long.", 255, email.Length, nameof(email));
+            if(password.Length < 12) throw new SprintManagerTooShortException("Password is too short.", 12, password.Length, nameof(password));
+            if(password.Length > 64) throw new SprintManagerTooLongException("Password is too long.", 64, password.Length, nameof(password));
 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
@@ -36,8 +36,8 @@ namespace SprintManager.Domain.Entities
         // Update user's name
         public void SetName(string name) 
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name can't be null or empty.", nameof(name));
-            if (name.Length > 255) throw new SprintManagerTooLongException("Name can't exceed 255 characters.", 255, name.Length, nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name can't be null or empty.", nameof(name));
+            if(name.Length > 255) throw new SprintManagerTooLongException("Name is too long.", 255, name.Length, nameof(name));
 
             Name = name; 
         }
@@ -45,8 +45,8 @@ namespace SprintManager.Domain.Entities
         // Update user's email
         public void SetEmail(string email)
         {
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email can't be null or empty.", nameof(email));
-            if (email.Length > 255) throw new SprintManagerTooLongException("Email can't exceed 255 characters.", 255, email.Length, nameof(email));
+            if(string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email can't be null or empty.", nameof(email));
+            if(email.Length > 255) throw new SprintManagerTooLongException("Email is too long.", 255, email.Length, nameof(email));
 
             Email = email;
         }
@@ -54,9 +54,9 @@ namespace SprintManager.Domain.Entities
         // Update user's password
         public void SetPassword(string password)
         {
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password can't be null or empty.", nameof(password));
-            if (password.Length < 12) throw new SprintManagerTooShortException("Password can't have less than 12 characters.", 12, password.Length, nameof(password));
-            if (password.Length > 64) throw new SprintManagerTooLongException("Password can't have more than 64 characters.", 64, password.Length, nameof(password));
+            if(string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password can't be null or empty.", nameof(password));
+            if(password.Length < 12) throw new SprintManagerTooShortException("Password is too short.", 12, password.Length, nameof(password));
+            if(password.Length > 64) throw new SprintManagerTooLongException("Password is too long.", 64, password.Length, nameof(password));
 
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
         }
@@ -64,7 +64,7 @@ namespace SprintManager.Domain.Entities
         // Check if the provided password matches the stored hash 
         public bool VerifyPassword(string password)
         {
-            if (string.IsNullOrWhiteSpace(password)) return false; 
+            if(string.IsNullOrWhiteSpace(password)) return false; 
 
             return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
         }
