@@ -12,7 +12,8 @@ namespace SprintManager.Domain.Tests
             User user = new User("Daniel", "d@gmail.com", "abc123abc123");
 
             string passwordHash = user.PasswordHash;
-        
+
+            Assert.NotEqual(Guid.Empty, user.Id);
             Assert.Equal("Daniel", user.Name);
             Assert.Equal("d@gmail.com", user.Email);
             Assert.True(user.VerifyPassword("abc123abc123"));
