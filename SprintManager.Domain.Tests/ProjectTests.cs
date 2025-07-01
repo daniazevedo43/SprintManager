@@ -5,27 +5,27 @@ namespace SprintManager.Domain.Tests
 {
     public class ProjectTests
     {
-        // Test project creation
+        // Test project creation without description
         [Fact]
-        public void Project_Constructor_WithValidData_CreatesProjectSuccessfully()
-        {
-            Project project = new Project("Project 1", "Description 1");
-
-            Assert.NotEqual(Guid.Empty, project.Id);
-            Assert.Equal("Project 1", project.Name);
-            Assert.Equal("Description 1", project.Description);
-            Assert.Equal(Enums.ProjectStatus.Active, project.Status);
-        }
-
-        // Test project creation with name only
-        [Fact]
-        public void Project_Constructor_WithNameOnly_CreatesProjectSuccessfully()
+        public void Project_Constructor_WithoutDescription_CreatesProjectSuccessfully()
         {
             Project project = new Project("Project 1");
 
             Assert.NotEqual(Guid.Empty, project.Id);
             Assert.Equal("Project 1", project.Name);
             Assert.Null(project.Description);
+            Assert.Equal(Enums.ProjectStatus.Active, project.Status);
+        }
+
+        // Test project creation with description
+        [Fact]
+        public void Project_Constructor_WithDescription_CreatesProjectSuccessfully()
+        {
+            Project project = new Project("Project 1", "Description 1");
+
+            Assert.NotEqual(Guid.Empty, project.Id);
+            Assert.Equal("Project 1", project.Name);
+            Assert.Equal("Description 1", project.Description);
             Assert.Equal(Enums.ProjectStatus.Active, project.Status);
         }
 
