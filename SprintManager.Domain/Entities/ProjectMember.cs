@@ -17,7 +17,7 @@ namespace SprintManager.Domain.Entities
         public ProjectMember(Guid projectId, Guid userId, ProjectMemberRole role)
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
-            if(userId == Guid.Empty) throw new ArgumentException("User ID cant be null or empty.", nameof(userId));
+            if(userId == Guid.Empty) throw new ArgumentException("User ID can't be null or empty.", nameof(userId));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -34,7 +34,7 @@ namespace SprintManager.Domain.Entities
 
         public void SetUserId(Guid userId)
         {
-            if(userId == Guid.Empty) throw new ArgumentException("User ID cant be null or empty.", nameof(userId));
+            if(userId == Guid.Empty) throw new ArgumentException("User ID can't be null or empty.", nameof(userId));
 
             UserId = userId; 
         }
