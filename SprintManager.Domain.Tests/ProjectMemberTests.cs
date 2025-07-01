@@ -10,7 +10,6 @@ namespace SprintManager.Domain.Tests
         {
             Project project = new Project("Project 1", "Description 1");
             User user = new User("Daniel", "d@gmail.com", "abc123abc123");
-
             ProjectMember projectMember = new ProjectMember(project.Id, user.Id, Enums.ProjectMemberRole.Developer);
 
             Assert.NotEqual(Guid.Empty, projectMember.Id);
