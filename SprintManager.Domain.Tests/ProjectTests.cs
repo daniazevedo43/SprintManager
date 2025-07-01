@@ -5,21 +5,9 @@ namespace SprintManager.Domain.Tests
 {
     public class ProjectTests
     {
-        // Test project creation
+        // Test project creation without description
         [Fact]
-        public void Project_Constructor_WithValidData_CreatesProjectSuccessfully()
-        {
-            Project project = new Project("Project 1", "Description 1");
-
-            Assert.NotEqual(Guid.Empty, project.Id);
-            Assert.Equal("Project 1", project.Name);
-            Assert.Equal("Description 1", project.Description);
-            Assert.Equal(Enums.ProjectStatus.Active, project.Status);
-        }
-
-        // Test project creation with name only
-        [Fact]
-        public void Project_Constructor_WithNameOnly_CreatesProjectSuccessfully()
+        public void Project_Constructor_WithoutDescription_CreatesProjectSuccessfully()
         {
             Project project = new Project("Project 1");
 
@@ -29,11 +17,23 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(Enums.ProjectStatus.Active, project.Status);
         }
 
+        // Test project creation with description
+        [Fact]
+        public void Project_Constructor_WithDescription_CreatesProjectSuccessfully()
+        {
+            Project project = new Project("Project 1", "Description 1");
+
+            Assert.NotEqual(Guid.Empty, project.Id);
+            Assert.Equal("Project 1", project.Name);
+            Assert.Equal("Description 1", project.Description);
+            Assert.Equal(Enums.ProjectStatus.Active, project.Status);
+        }
+
         // Test project's name change
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
-            Project project = new Project("Project 1", "Description 1");
+            Project project = new Project("Project 1");
 
             project.SetName("Project 2");
 
@@ -55,7 +55,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            Project project = new Project("Project 1", "Description 1");
+            Project project = new Project("Project 1");
 
             project.SetStatus(Enums.ProjectStatus.Completed);
 
@@ -70,7 +70,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
             var exception = Assert.Throws<ArgumentException>(() =>
-                new Project(name, "Description 1")
+                new Project(name)
             );
 
             Assert.Equal("Project's name can't be null or empty. (Parameter 'name')", exception.Message);
@@ -83,7 +83,7 @@ namespace SprintManager.Domain.Tests
             string name = new string('p', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new Project(name, "Description 1")
+                new Project(name)
             );
 
             Assert.Equal($"Project's name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
