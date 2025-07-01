@@ -22,9 +22,8 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Sprint's name can't be null or empty.", nameof(name));
-            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException("Start date can't be higher than end date", startDate, endDate, nameof(startDate));
-
-            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name can't exceed 255 characters.", 255, name.Length, nameof(name));
+            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate} is higher than end date {endDate}");
+            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -38,10 +37,9 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Sprint's name can't be null or empty.", nameof(name));
-            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException("Start date can't be higher than end date", startDate, endDate, nameof(startDate));
-
-            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name can't exceed 255 characters.", 255, name.Length, nameof(name));
-            if(description.Length > 500) throw new SprintManagerTooLongException("Sprint's description can't exceed 500 characters.", 500, description.Length, nameof(description));
+            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate} is higher than end date {endDate}");
+            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
+            if(description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -56,7 +54,7 @@ namespace SprintManager.Domain.Entities
         public void SetName(string name)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Sprint's name can't be null or empty.", nameof(name));
-            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name can't exceed 255 characters.", 255, name.Length, nameof(name));
+            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
 
             Name = name;
         }
@@ -64,7 +62,7 @@ namespace SprintManager.Domain.Entities
         // Update sprint's start date
         public void SetStartDate(DateTime startDate)
         {
-            if(startDate > EndDate) throw new SprintManagerInvalidDateRangeException("Start date can't be higher than end date", startDate, EndDate, nameof(startDate));
+            if(startDate > EndDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate} is higher than end date {EndDate}");
 
             StartDate = startDate.ToUniversalTime();
         }
@@ -72,7 +70,7 @@ namespace SprintManager.Domain.Entities
         // Update sprint's end date
         public void SetEndDate(DateTime endDate)
         {
-            if(StartDate > endDate) throw new SprintManagerInvalidDateRangeException("Start date can't be higher than end date", StartDate, endDate, nameof(endDate));
+            if(StartDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {StartDate} is higher than end date {endDate}");
 
             EndDate = endDate.ToUniversalTime();
         }
@@ -80,7 +78,7 @@ namespace SprintManager.Domain.Entities
         // Update sprint's description
         public void SetDescription(string description)
         {
-            if (description.Length > 500) throw new SprintManagerTooLongException("Sprint's description can't exceed 500 characters.", 500, description.Length, nameof(description));
+            if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 
             Description = description;
         }
