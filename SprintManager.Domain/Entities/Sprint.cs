@@ -22,7 +22,7 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Sprint's name can't be null or empty.", nameof(name));
-            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate} is higher than end date {endDate}");
+            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {endDate.ToString("dd/MM/yyyy")}");
             if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
 
             Id = Guid.NewGuid();
@@ -37,8 +37,8 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Sprint's name can't be null or empty.", nameof(name));
-            if(startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate} is higher than end date {endDate}");
-            if(name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
+            if (startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {endDate.ToString("dd/MM/yyyy")}");
+            if (name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
             if(description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 
             Id = Guid.NewGuid();
@@ -62,7 +62,7 @@ namespace SprintManager.Domain.Entities
         // Update sprint's start date
         public void SetStartDate(DateTime startDate)
         {
-            if(startDate > EndDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate} is higher than end date {EndDate}");
+            if (startDate > EndDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {EndDate.ToString("dd/MM/yyyy")}");
 
             StartDate = startDate.ToUniversalTime();
         }
@@ -70,7 +70,7 @@ namespace SprintManager.Domain.Entities
         // Update sprint's end date
         public void SetEndDate(DateTime endDate)
         {
-            if(StartDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {StartDate} is higher than end date {endDate}");
+            if (StartDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {StartDate.ToString("dd/MM/yyyy")} is higher than end date {endDate.ToString("dd/MM/yyyy")}");
 
             EndDate = endDate.ToUniversalTime();
         }

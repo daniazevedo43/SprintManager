@@ -150,7 +150,7 @@ namespace SprintManager.Domain.Tests
                 new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 22), new DateTime(2025, 7, 21))
             );
 
-            Assert.Equal($"Start date {new DateTime(2025, 7, 22)} is higher than end date {new DateTime(2025, 7, 21)}", exception.Message);
+            Assert.Equal($"Start date {new DateTime(2025, 7, 22).ToString("dd/MM/yyyy")} is higher than end date {new DateTime(2025, 7, 21).ToString("dd/MM/yyyy")}", exception.Message);
         }
 
         // Test exception throwing when description is too long
