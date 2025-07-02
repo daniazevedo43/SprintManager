@@ -19,7 +19,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(new DateTime(2025, 7, 7).ToUniversalTime(), sprint.StartDate);
             Assert.Equal(new DateTime(2025, 7, 21).ToUniversalTime(), sprint.EndDate);
             Assert.Null(sprint.Description);
-            Assert.Equal(Enums.SprintStatus.Planned, sprint.Status);
+            Assert.Equal(SprintStatus.Planned, sprint.Status);
         }
 
         // Test sprint creation with description
@@ -35,7 +35,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(new DateTime(2025, 7, 7).ToUniversalTime(), sprint.StartDate);
             Assert.Equal(new DateTime(2025, 7, 21).ToUniversalTime(), sprint.EndDate);
             Assert.Equal("Description 1", sprint.Description);
-            Assert.Equal(Enums.SprintStatus.Planned, sprint.Status);
+            Assert.Equal(SprintStatus.Planned, sprint.Status);
         }
 
         // Test sprint's name change
