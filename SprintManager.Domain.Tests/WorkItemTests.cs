@@ -108,7 +108,7 @@ namespace SprintManager.Domain.Tests
 
         // Test work item type change
         [Fact]
-        public void SetWorkItemType_UpdatesSetWorkItemTypeSuccessfully()
+        public void SetWorkItemType_UpdatesWorkItemTypeSuccessfully()
         {
             WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
@@ -119,7 +119,7 @@ namespace SprintManager.Domain.Tests
 
         // Test work item title change
         [Fact]
-        public void SetTitle_UpdatesSetTitleSuccessfully()
+        public void SetTitle_UpdatesTitleSuccessfully()
         {
             WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
@@ -131,7 +131,7 @@ namespace SprintManager.Domain.Tests
 
         // Test description change
         [Fact]
-        public void SetDescription_UpdatesSetDescriptionSuccessfully()
+        public void SetDescription_UpdatesDescriptionSuccessfully()
         {
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
@@ -147,7 +147,7 @@ namespace SprintManager.Domain.Tests
 
         // Test status change
         [Fact]
-        public void SetStatus_UpdatesSetStatusSuccessfully()
+        public void SetStatus_UpdatesStatusSuccessfully()
         {
             WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
@@ -159,7 +159,7 @@ namespace SprintManager.Domain.Tests
 
         // Test priority level change
         [Fact]
-        public void SetPriorityLevel_UpdatesSetPriorityLevelSuccessfully()
+        public void SetPriorityLevel_UpdatesPriorityLevelSuccessfully()
         {
             WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
@@ -170,7 +170,7 @@ namespace SprintManager.Domain.Tests
 
         // Test completion date change
         [Fact]
-        public void SetCompletionDate_UpdatesSetCompletionDateSuccessfully()
+        public void SetCompletionDate_UpdatesCompletionDateSuccessfully()
         {
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
@@ -186,7 +186,7 @@ namespace SprintManager.Domain.Tests
 
         // Test completion date change
         [Fact]
-        public void SetTimeEstimate_UpdatesSetTimeEstimateSuccessfully()
+        public void SetTimeEstimate_UpdatesTimeEstimateSuccessfully()
         {
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
@@ -216,7 +216,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void VerifyTitle_ThrowsException_WhenTItleIsNullOrEmpty(string title)
+        public void VerifyTitle_ThrowsException_WhenTitleIsNullOrEmpty(string title)
         {
             var exception = Assert.Throws<ArgumentException>(() =>
                 new WorkItem(Guid.NewGuid(), WorkItemType.Task, title)
