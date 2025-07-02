@@ -24,8 +24,7 @@ namespace SprintManager.Domain.Tests
         public void SetProjectId_UpdatesProjectIdSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(projectId, Guid.NewGuid(), ProjectMemberRole.Developer);
 
             Guid newProjectId = Guid.NewGuid();
 
@@ -39,8 +38,7 @@ namespace SprintManager.Domain.Tests
         public void SetUserId_UpdatesUserIdSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(projectId, Guid.NewGuid(), ProjectMemberRole.Developer);
 
             Guid newUserId = Guid.NewGuid();
 
@@ -53,9 +51,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetRole_UpdatesRoleSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
 
             projectMember.SetRole(ProjectMemberRole.Client);
 
