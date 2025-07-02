@@ -26,7 +26,7 @@ namespace SprintManager.Domain.Entities
             WorkItemId = workItemId;
             UserId = userId;
             Text = text;
-            CreationDate = DateTime.UtcNow.ToUniversalTime();
+            CreationDate = DateTime.UtcNow;
         }
 
         public void SetText(string text)
