@@ -200,6 +200,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(6, workItem.TimeEstimate);
         }
 
+        // Test exception throwing when project ID is null or empty
         [Fact]
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
@@ -210,6 +211,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Project ID can't be null or empty. (Parameter 'projectId')", exception.Message);
         }
 
+        // Test exception throwing when title is null or empty
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -223,6 +225,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Work item's title can't be null or empty. (Parameter 'title')", exception.Message);
         }
 
+        // Test exception throwing when title is too long
         [Fact]
         public void VerifyTitle_ThrowsException_WhenTitleIsTooLong()
         {
@@ -235,6 +238,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Work item's title is too long. (Max length '255') (Actual length '{title.Length}') (Parameter 'title')", exception.Message);
         }
 
+        // Test exception throwing when description is too long
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
@@ -251,6 +255,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Description is too long. (Max length '500') (Actual length '{description.Length}') (Parameter 'description')", exception.Message);
         }
 
+        // Test exception throwing when completion date is lower that current date
         [Fact]
         public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCurrentDate()
         {
