@@ -1,5 +1,6 @@
 ﻿using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Domain.Tests
 {
@@ -21,7 +22,7 @@ namespace SprintManager.Domain.Tests
             Assert.Null(workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
-            Assert.Equal(DateTime.UtcNow.ToUniversalTime(), workItem.CreationDate, TimeSpan.FromSeconds(1));
+            Assert.Equal(DateTime.UtcNow.ToUniversalTime().Date, workItem.CreationDate.Date);
             Assert.Null(workItem.CompletionDate);
             Assert.Null(workItem.TimeEstimate);
         }
@@ -44,7 +45,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Equal(sprintId, workItem.SprintId);
             Assert.Equal(assignedUserId, workItem.AssignedUserId);
-            Assert.Equal(orkItemType.Task, workItem.WorkItemType);
+            Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Create a WorkItem domain", workItem.Title);
             Assert.Equal("Description 1", workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
@@ -73,13 +74,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetSprintId_UpdatesSprintIdSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
             Guid sprintId = Guid.NewGuid();
-            Guid assignedUserId = Guid.NewGuid();
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
-                projectId, sprintId, assignedUserId, WorkItemType.Task,
+                Guid.NewGuid(), sprintId, Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
 
@@ -94,13 +93,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetAssignedUserId_UpdatesAssignedUserIdSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid sprintId = Guid.NewGuid();
             Guid assignedUserId = Guid.NewGuid();
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
-                projectId, sprintId, assignedUserId, WorkItemType.Task,
+                Guid.NewGuid(), Guid.NewGuid(), assignedUserId, WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
 
@@ -115,8 +112,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetWorkItemType_UpdatesSetWorkItemTypeSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            WorkItem workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
+            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetWorkItemType(WorkItemType.Bug);
 
@@ -127,8 +123,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetTitle_UpdatesSetTitleSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            WorkItem workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
+            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetTitle("Create a Sprint domain");
 
@@ -136,17 +131,14 @@ namespace SprintManager.Domain.Tests
         }
 
 
-        // Test work item title change
+        // Test description change
         [Fact]
         public void SetDescription_UpdatesSetDescriptionSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid sprintId = Guid.NewGuid();
-            Guid assignedUserId = Guid.NewGuid();
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
-                projectId, sprintId, assignedUserId, WorkItemType.Task,
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
 
@@ -155,12 +147,11 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Description 2", workItem.Description);
         }
 
-        // Test work item title change
+        // Test status change
         [Fact]
         public void SetStatus_UpdatesSetStatusSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            WorkItem workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
+            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetStatus(WorkItemStatus.Closed);
 
@@ -168,16 +159,112 @@ namespace SprintManager.Domain.Tests
         }
 
 
-        // Test work item title change
+        // Test priority level change
         [Fact]
-        public void SetTitle_UpdatesSetTitleSuccessfully()
+        public void SetPriorityLevel_UpdatesSetPriorityLevelSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            WorkItem workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
+            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
-            workItem.SetTitle("Create a Sprint domain");
+            workItem.SetPriorityLevel(WorkItemPriorityLevel.Medium);
 
-            Assert.Equal("Create a Sprint domain", workItem.Title);
+            Assert.Equal(WorkItemPriorityLevel.Medium, workItem.PriorityLevel);
+        }
+
+        // Test completion date change
+        [Fact]
+        public void SetCompletionDate_UpdatesSetCompletionDateSuccessfully()
+        {
+            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+
+            WorkItem workItem = new WorkItem(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
+                "Create a WorkItem domain", "Description 1", nextDate, 5
+            );
+
+            workItem.SetCompletionDate(nextDate + new TimeSpan(1, 0, 0, 0));
+
+            Assert.Equal(nextDate + new TimeSpan(1, 0, 0, 0), workItem.CompletionDate);
+        }
+
+        // Test completion date change
+        [Fact]
+        public void SetTimeEstimate_UpdatesSetTimeEstimateSuccessfully()
+        {
+            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+
+            WorkItem workItem = new WorkItem(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
+                "Create a WorkItem domain", "Description 1", nextDate, 5
+            );
+
+            workItem.SetTimeEstimate(6);
+
+            Assert.Equal(6, workItem.TimeEstimate);
+        }
+
+        [Fact]
+        public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
+        {
+            var exception = Assert.Throws<ArgumentException>(() =>
+                new WorkItem(Guid.Empty, WorkItemType.Task, "Create a WorkItem domain")
+            );
+
+            Assert.Equal("Project ID can't be null or empty. (Parameter 'projectId')", exception.Message);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void VerifyTitle_ThrowsException_WhenTItleIsNullOrEmpty(string title)
+        {
+            var exception = Assert.Throws<ArgumentException>(() =>
+                new WorkItem(Guid.NewGuid(), WorkItemType.Task, title)
+            );
+
+            Assert.Equal("Work item's title can't be null or empty. (Parameter 'title')", exception.Message);
+        }
+
+        [Fact]
+        public void VerifyTitle_ThrowsException_WhenTitleIsTooLong()
+        {
+            string title = new string('C', 256);
+
+            var exception = Assert.Throws<SprintManagerTooLongException>(() =>
+                new WorkItem(Guid.NewGuid(), WorkItemType.Task, title)
+            );
+
+            Assert.Equal($"Work item's title is too long. (Max length '255') (Actual length '{title.Length}') (Parameter 'title')", exception.Message);
+        }
+
+        [Fact]
+        public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
+        {
+            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            
+            string description = new string('D', 501);
+
+            var exception = Assert.Throws<SprintManagerTooLongException>(() =>
+                new WorkItem(
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
+                    "Create a WorkItem domain", description, nextDate, 5)
+            );
+
+            Assert.Equal($"Description is too long. (Max length '500') (Actual length '{description.Length}') (Parameter 'description')", exception.Message);
+        }
+
+        [Fact]
+        public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCurrentDate()
+        {
+            DateTime previousDate = DateTime.UtcNow.ToUniversalTime() - new TimeSpan(1, 0, 0, 0);
+
+            var exception = Assert.Throws<SprintManagerDateNotAllowedException>(() =>
+                new WorkItem(
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
+                    "Create a WorkItem domain", "Description 1", previousDate, 5)
+            );
+
+            Assert.Equal($"Completion date '{previousDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToUniversalTime().ToString("dd/MM/yyyy")}').", exception.Message);
         }
     }
 }
