@@ -44,7 +44,7 @@ namespace SprintManager.Domain.Entities
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(title));
             if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, title.Length, nameof(title));
             if(description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
-            if(completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToUniversalTime().ToString("dd/MM/yyyy")}').", nameof(completionDate));
+            if(completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", nameof(completionDate));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
