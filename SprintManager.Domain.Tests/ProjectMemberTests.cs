@@ -23,8 +23,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetProjectId_UpdatesProjectIdSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, Guid.NewGuid(), ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
 
             Guid newProjectId = Guid.NewGuid();
 
@@ -37,8 +36,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetUserId_UpdatesUserIdSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, Guid.NewGuid(), ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
 
             Guid newUserId = Guid.NewGuid();
 
