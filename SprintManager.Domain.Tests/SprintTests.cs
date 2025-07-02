@@ -116,10 +116,8 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
-            Guid projectId = Guid.NewGuid();
-
             var exception = Assert.Throws<ArgumentException>(() =>
-                new Sprint(projectId, name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
+                new Sprint(Guid.NewGuid(), name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 
             Assert.Equal("Sprint's name can't be null or empty. (Parameter 'name')", exception.Message);
@@ -129,12 +127,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyName_ThrowsException_WhenNameIsTooLong()
         {
-            Guid projectId = Guid.NewGuid();
-
             string name = new string('P', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new Sprint(projectId, name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
+                new Sprint(Guid.NewGuid(), name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 
             Assert.Equal($"Sprint's name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
@@ -144,10 +140,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyStartDate_ThrowsException_WhenStartDateIsHigherThanEndDate()
         {
-            Guid projectId = Guid.NewGuid();
-
             var exception = Assert.Throws<SprintManagerInvalidDateRangeException>(() =>
-                new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 22), new DateTime(2025, 7, 21))
+                new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 22), new DateTime(2025, 7, 21))
             );
 
             Assert.Equal($"Start date {new DateTime(2025, 7, 22).ToString("dd/MM/yyyy")} is higher than end date {new DateTime(2025, 7, 21).ToString("dd/MM/yyyy")}", exception.Message);
@@ -157,12 +151,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
-            Guid projectId = Guid.NewGuid();
-
             string description = new string('D', 501);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), description)
+                new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), description)
             );
 
             Assert.Equal($"Description is too long. (Max length '500') (Actual length '{description.Length}') (Parameter 'description')", exception.Message);

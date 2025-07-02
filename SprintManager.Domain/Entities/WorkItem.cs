@@ -27,7 +27,7 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(title));
-            if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title can't exceed 255 characters.", 255, title.Length, nameof(title));
+            if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, title.Length, nameof(title));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -42,8 +42,8 @@ namespace SprintManager.Domain.Entities
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(title));
-            if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title can't exceed 255 characters.", 255, title.Length, nameof(title));
-            if(description.Length > 500) throw new SprintManagerTooLongException("Description can't exceed 500 characters.", 500, description.Length, nameof(description));
+            if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, title.Length, nameof(title));
+            if(description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
             if(completionDate < DateTime.UtcNow.ToUniversalTime()) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate.Date.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToUniversalTime().Date.ToString("dd/MM/yyyy")}').", nameof(completionDate));
 
             Id = Guid.NewGuid();
@@ -89,14 +89,14 @@ namespace SprintManager.Domain.Entities
         public void SetTitle(string title)
         {
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(title));
-            if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title can't exceed 255 characters.", 255, title.Length, nameof(title));
+            if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, title.Length, nameof(title));
             Title = title;
         }
 
         // Update work item's description
         public void SetDescription(string description)
         {
-            if (description.Length > 500) throw new SprintManagerTooLongException("Description can't exceed 500 characters.", 500, description.Length, nameof(description));
+            if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
             Description = description;
         }
 

@@ -66,10 +66,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
-            Guid userId = Guid.NewGuid();
-
             var exception = Assert.Throws<ArgumentException>(() =>
-                new ProjectMember(Guid.Empty, userId, ProjectMemberRole.Developer)
+                new ProjectMember(Guid.Empty, Guid.NewGuid(), ProjectMemberRole.Developer)
             );
 
             Assert.Equal("Project ID can't be null or empty. (Parameter 'projectId')", exception.Message);
@@ -79,10 +77,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyUserId_ThrowsException_WhenUserIdIsNullOrEmpty()
         {
-            Guid projectId = Guid.NewGuid();
-
             var exception = Assert.Throws<ArgumentException>(() =>
-                new ProjectMember(projectId, Guid.Empty, ProjectMemberRole.Developer)
+                new ProjectMember(Guid.NewGuid(), Guid.Empty, ProjectMemberRole.Developer)
             );
 
             Assert.Equal("User ID can't be null or empty. (Parameter 'userId')", exception.Message);
