@@ -74,11 +74,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetSprintId_UpdatesSprintIdSuccessfully()
         {
-            Guid sprintId = Guid.NewGuid();
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
-                Guid.NewGuid(), sprintId, Guid.NewGuid(), WorkItemType.Task,
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
 
@@ -93,11 +92,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetAssignedUserId_UpdatesAssignedUserIdSuccessfully()
         {
-            Guid assignedUserId = Guid.NewGuid();
             DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
-                Guid.NewGuid(), Guid.NewGuid(), assignedUserId, WorkItemType.Task,
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
 
