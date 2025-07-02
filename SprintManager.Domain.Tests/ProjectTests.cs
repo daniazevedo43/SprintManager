@@ -12,7 +12,7 @@ namespace SprintManager.Domain.Tests
             Project project = new Project("Project 1");
 
             Assert.NotEqual(Guid.Empty, project.Id);
-            Assert.Equal("Project 1", project.Name);
+            Assert.Equal("Project 1", project.Name); 
             Assert.Null(project.Description);
             Assert.Equal(Enums.ProjectStatus.Active, project.Status);
         }
