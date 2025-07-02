@@ -1,4 +1,5 @@
 ﻿using SprintManager.Domain.Entities;
+using SprintManager.Domain.Enums;
 
 namespace SprintManager.Domain.Tests
 {
@@ -10,12 +11,12 @@ namespace SprintManager.Domain.Tests
         {
             Guid projectId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, Enums.ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
 
             Assert.NotEqual(Guid.Empty, projectMember.Id);
             Assert.Equal(projectId, projectMember.ProjectId);
             Assert.Equal(userId, projectMember.UserId);
-            Assert.Equal(Enums.ProjectMemberRole.Developer, projectMember.Role);
+            Assert.Equal(ProjectMemberRole.Developer, projectMember.Role);
         }
 
         // Test project ID change
@@ -24,7 +25,7 @@ namespace SprintManager.Domain.Tests
         {
             Guid projectId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, Enums.ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
 
             Guid newProjectId = Guid.NewGuid();
 
@@ -39,7 +40,7 @@ namespace SprintManager.Domain.Tests
         {
             Guid projectId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, Enums.ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
 
             Guid newUserId = Guid.NewGuid();
 
@@ -54,11 +55,11 @@ namespace SprintManager.Domain.Tests
         {
             Guid projectId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, Enums.ProjectMemberRole.Developer);
+            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
 
-            projectMember.SetRole(Enums.ProjectMemberRole.Client);
+            projectMember.SetRole(ProjectMemberRole.Client);
 
-            Assert.Equal(Enums.ProjectMemberRole.Client, projectMember.Role);
+            Assert.Equal(ProjectMemberRole.Client, projectMember.Role);
         }
 
         // Test exception throwing when project ID is null or empty
@@ -68,7 +69,7 @@ namespace SprintManager.Domain.Tests
             Guid userId = Guid.NewGuid();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                new ProjectMember(Guid.Empty, userId, Enums.ProjectMemberRole.Developer)
+                new ProjectMember(Guid.Empty, userId, ProjectMemberRole.Developer)
             );
 
             Assert.Equal("Project ID can't be null or empty. (Parameter 'projectId')", exception.Message);
@@ -81,7 +82,7 @@ namespace SprintManager.Domain.Tests
             Guid projectId = Guid.NewGuid();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                new ProjectMember(projectId, Guid.Empty, Enums.ProjectMemberRole.Developer)
+                new ProjectMember(projectId, Guid.Empty, ProjectMemberRole.Developer)
             );
 
             Assert.Equal("User ID can't be null or empty. (Parameter 'userId')", exception.Message);

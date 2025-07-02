@@ -1,4 +1,5 @@
 ﻿using SprintManager.Domain.Entities;
+using SprintManager.Domain.Enums;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Domain.Tests
@@ -14,7 +15,7 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, project.Id);
             Assert.Equal("Project 1", project.Name); 
             Assert.Null(project.Description);
-            Assert.Equal(Enums.ProjectStatus.Active, project.Status);
+            Assert.Equal(ProjectStatus.Active, project.Status);
         }
 
         // Test project creation with description
@@ -26,7 +27,7 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, project.Id);
             Assert.Equal("Project 1", project.Name);
             Assert.Equal("Description 1", project.Description);
-            Assert.Equal(Enums.ProjectStatus.Active, project.Status);
+            Assert.Equal(ProjectStatus.Active, project.Status);
         }
 
         // Test project's name change
@@ -57,9 +58,9 @@ namespace SprintManager.Domain.Tests
         {
             Project project = new Project("Project 1");
 
-            project.SetStatus(Enums.ProjectStatus.Completed);
+            project.SetStatus(ProjectStatus.Completed);
 
-            Assert.Equal(Enums.ProjectStatus.Completed, project.Status);
+            Assert.Equal(ProjectStatus.Completed, project.Status);
         }
 
         // Test exception throwing when project's name is null or empty
