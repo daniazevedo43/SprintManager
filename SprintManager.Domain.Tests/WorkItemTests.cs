@@ -22,7 +22,7 @@ namespace SprintManager.Domain.Tests
             Assert.Null(workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
-            Assert.Equal(DateTime.UtcNow.ToUniversalTime().Date, workItem.CreationDate.Date);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
             Assert.Null(workItem.CompletionDate);
             Assert.Null(workItem.TimeEstimate);
         }
@@ -34,7 +34,7 @@ namespace SprintManager.Domain.Tests
             Guid projectId = Guid.NewGuid();
             Guid sprintId = Guid.NewGuid();
             Guid assignedUserId = Guid.NewGuid();
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
                 projectId, sprintId, assignedUserId, WorkItemType.Task, 
@@ -50,7 +50,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Description 1", workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
-            Assert.Equal(DateTime.UtcNow.ToUniversalTime().Date, workItem.CreationDate.Date);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
             Assert.Equal(nextDate.ToUniversalTime(), workItem.CompletionDate);
             Assert.Equal(5, workItem.TimeEstimate);
         }
@@ -74,7 +74,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetSprintId_UpdatesSprintIdSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
@@ -92,7 +92,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetAssignedUserId_UpdatesAssignedUserIdSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
@@ -133,7 +133,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetDescription_UpdatesDescriptionSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
@@ -172,7 +172,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetCompletionDate_UpdatesCompletionDateSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
@@ -188,7 +188,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetTimeEstimate_UpdatesTimeEstimateSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             WorkItem workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
@@ -242,7 +242,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
-            DateTime nextDate = DateTime.UtcNow.ToUniversalTime() + new TimeSpan(1, 0, 0, 0);
+            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
             
             string description = new string('D', 501);
 
@@ -259,7 +259,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCurrentDate()
         {
-            DateTime previousDate = DateTime.UtcNow.ToUniversalTime() - new TimeSpan(1, 0, 0, 0);
+            DateTime previousDate = DateTime.UtcNow - new TimeSpan(1, 0, 0, 0);
 
             var exception = Assert.Throws<SprintManagerDateNotAllowedException>(() =>
                 new WorkItem(
@@ -267,7 +267,7 @@ namespace SprintManager.Domain.Tests
                     "Create a WorkItem domain", "Description 1", previousDate, 5)
             );
 
-            Assert.Equal($"Completion date '{previousDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToUniversalTime().ToString("dd/MM/yyyy")}').", exception.Message);
+            Assert.Equal($"Completion date '{previousDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", exception.Message);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(workItemId, comment.WorkItemId);
             Assert.Equal(userId, comment.UserId);
             Assert.Equal("Comment 1", comment.Text);
-            Assert.Equal(DateTime.UtcNow.ToUniversalTime().Date, comment.CreationDate.Date);
+            Assert.Equal(DateTime.UtcNow.Date, comment.CreationDate.Date);
         }
 
         // Test text change
