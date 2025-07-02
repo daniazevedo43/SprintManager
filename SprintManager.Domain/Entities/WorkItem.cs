@@ -40,11 +40,16 @@ namespace SprintManager.Domain.Entities
 
         public WorkItem(Guid projectId, Guid sprintId, Guid assignedUserId, WorkItemType workItemType, string title, string description, DateTime completionDate, int timeEstimate)
         {
-            if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
+            DateTime currentDate = DateTime.UtcNow.ToUniversalTime();
+            DateTime roundedCurrentDate = new DateTime(
+                currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0
+            );
+
+            if (projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(title));
             if(title.Length > 255) throw new SprintManagerTooLongException("Work item's title can't exceed 255 characters.", 255, title.Length, nameof(title));
             if(description.Length > 500) throw new SprintManagerTooLongException("Description can't exceed 500 characters.", 500, description.Length, nameof(description));
-            if(completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate}' can't be lower than the current date ('{DateTime.UtcNow}').", nameof(completionDate));
+            if(completionDate < roundedCurrentDate) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate}' can't be lower than the current date ('{roundedCurrentDate}').", nameof(completionDate));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -55,7 +60,7 @@ namespace SprintManager.Domain.Entities
             Description = description;
             Status = WorkItemStatus.New;
             PriorityLevel = WorkItemPriorityLevel.NotSet;
-            CreationDate = DateTime.UtcNow.ToUniversalTime();
+            CreationDate = currentDate;
             CompletionDate = completionDate.ToUniversalTime();
             TimeEstimate = timeEstimate;
         }
@@ -115,7 +120,7 @@ namespace SprintManager.Domain.Entities
         // Update work item's completion date
         public void SetCompletionDate(DateTime completionDate)
         {
-            if(completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate}' can't be lower than the current date ('{DateTime.UtcNow}').", nameof(completionDate));
+            if(completionDate < DateTime.UtcNow.ToUniversalTime()) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate}' can't be lower than the current date ('{DateTime.UtcNow}').", nameof(completionDate));
             CompletionDate = completionDate.ToUniversalTime();
         }
 
