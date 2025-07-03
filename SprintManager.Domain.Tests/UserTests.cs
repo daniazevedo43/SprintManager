@@ -9,7 +9,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void User_Constructor_WithValidData_CreatesUserSuccessfully()
         {
-            User user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
 
             string passwordHash = user.PasswordHash;
 
@@ -23,7 +23,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
-            User user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
 
             user.SetName("Tiago");
 
@@ -34,7 +34,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetEmail_UpdatesEmailSuccessfully()
         {
-            User user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
 
             user.SetEmail("t@gmail.com");
 
@@ -45,7 +45,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetPassword_UpdatesPasswordSuccessfully()
         {
-            User user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
 
             user.SetPassword("abc456abc456");
 

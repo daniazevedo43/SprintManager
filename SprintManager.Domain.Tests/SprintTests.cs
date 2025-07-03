@@ -11,7 +11,7 @@ namespace SprintManager.Domain.Tests
         public void Sprint_Constructor_WithoutDescription_CreatesSprintSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            Sprint sprint = new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
             Assert.Equal(projectId, sprint.ProjectId);
@@ -27,7 +27,7 @@ namespace SprintManager.Domain.Tests
         public void Sprint_Constructor_WithDescription_CreatesSprintSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            Sprint sprint = new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Description 1");
+            var sprint = new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Description 1");
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
             Assert.Equal(projectId, sprint.ProjectId);
@@ -42,7 +42,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
-            Sprint sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             sprint.SetName("Sprint 2");
 
@@ -53,7 +53,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetStartDate_UpdatesStartDateSuccessfully()
         {
-            Sprint sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             sprint.SetStartDate(new DateTime(2025, 7, 8));
 
@@ -64,7 +64,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetEndDate_UpdatesEndDateSuccessfully()
         {
-            Sprint sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             sprint.SetEndDate(new DateTime(2025, 7, 22));
 
@@ -75,7 +75,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetDescription_UpdatesDescriptionSuccessfully()
         {
-            Sprint sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Description 1");
+            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Description 1");
 
             sprint.SetDescription("Description 2");
 
@@ -86,7 +86,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            Sprint sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             sprint.SetStatus(SprintStatus.Active);
 

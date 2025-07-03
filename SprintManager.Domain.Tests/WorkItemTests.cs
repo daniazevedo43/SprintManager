@@ -11,7 +11,7 @@ namespace SprintManager.Domain.Tests
         public void WorkItem_Constructor_Basic_CreatesWorkItemSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            WorkItem workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
+            var workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
 
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
@@ -36,7 +36,7 @@ namespace SprintManager.Domain.Tests
             Guid assignedUserId = Guid.NewGuid();
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
-            WorkItem workItem = new WorkItem(
+            var workItem = new WorkItem(
                 projectId, sprintId, assignedUserId, WorkItemType.Task, 
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
@@ -61,7 +61,7 @@ namespace SprintManager.Domain.Tests
         public void SetProjectId_UpdatesProjectIdSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            WorkItem workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
+            var workItem = new WorkItem(projectId, WorkItemType.Task, "Create a WorkItem domain");
 
             Guid newProjectId = Guid.NewGuid();
 
@@ -76,7 +76,7 @@ namespace SprintManager.Domain.Tests
         {
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
-            WorkItem workItem = new WorkItem(
+            var workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
@@ -94,7 +94,7 @@ namespace SprintManager.Domain.Tests
         {
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
-            WorkItem workItem = new WorkItem(
+            var workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
@@ -110,7 +110,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetWorkItemType_UpdatesWorkItemTypeSuccessfully()
         {
-            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
+            var workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetWorkItemType(WorkItemType.Bug);
 
@@ -121,7 +121,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetTitle_UpdatesTitleSuccessfully()
         {
-            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
+            var workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetTitle("Create a Sprint domain");
 
@@ -135,7 +135,7 @@ namespace SprintManager.Domain.Tests
         {
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
-            WorkItem workItem = new WorkItem(
+            var workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
@@ -149,7 +149,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
+            var workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetStatus(WorkItemStatus.Closed);
 
@@ -161,7 +161,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetPriorityLevel_UpdatesPriorityLevelSuccessfully()
         {
-            WorkItem workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
+            var workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
             workItem.SetPriorityLevel(WorkItemPriorityLevel.Medium);
 
@@ -174,7 +174,7 @@ namespace SprintManager.Domain.Tests
         {
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
-            WorkItem workItem = new WorkItem(
+            var workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
@@ -190,7 +190,7 @@ namespace SprintManager.Domain.Tests
         {
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
-            WorkItem workItem = new WorkItem(
+            var workItem = new WorkItem(
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), WorkItemType.Task,
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
