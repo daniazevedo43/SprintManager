@@ -1,4 +1,5 @@
-﻿using SprintManager.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Infrastructure.Data;
 
@@ -19,14 +20,14 @@ namespace SprintManager.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task<User> GetByEmailAsync(string email)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FindAsync(id);
         }
 
-        public Task<User> GetByIdAsync(Guid id)
+        public async Task<User?> GetByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }
