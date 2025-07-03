@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using SprintManager.Application.Commands.Users;
+using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Handlers.Users
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDTO>
     {
         private readonly IUserRepository _userRepository;
 
@@ -15,7 +16,7 @@ namespace SprintManager.Application.Handlers.Users
             _userRepository = userRepository;
         }
 
-        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<UserDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             if (request == null)
             {
@@ -33,7 +34,12 @@ namespace SprintManager.Application.Handlers.Users
 
             await _userRepository.AddAsync(user);
 
-            return user.Id;
+            return new UserDTO
+            { 
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+            };
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SprintManager.Domain.Entities;
+using SprintManager.Application.DTOs;
 
 namespace SprintManager.Application.Commands.Users
 {
-    public class CreateUserCommand : IRequest<Guid>
+    public class CreateUserCommand : IRequest<UserDTO>
     {
         public string Name { get; set; }
         public string Email { get; set; }
