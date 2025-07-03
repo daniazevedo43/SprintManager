@@ -1,6 +1,17 @@
+using SprintManager.Application.Mappers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Configure MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserMappingProfile).Assembly));
+
+// Configure AutoMapper
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddMaps(typeof(UserMappingProfile).Assembly);
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
