@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using SprintManager.Application.Commands.Users;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
@@ -10,10 +11,12 @@ namespace SprintManager.Application.Handlers.Users
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDTO>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public CreateUserHandler(IUserRepository userRepository)
+        public CreateUserHandler(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -34,12 +37,7 @@ namespace SprintManager.Application.Handlers.Users
 
             await _userRepository.AddAsync(user);
 
-            return new UserDTO
-            { 
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-            };
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }

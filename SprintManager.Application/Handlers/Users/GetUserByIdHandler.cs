@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Users;
@@ -9,10 +10,12 @@ namespace SprintManager.Application.Handlers.Users
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDTO>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public GetUserByIdHandler(IUserRepository userRepository) 
+        public GetUserByIdHandler(IUserRepository userRepository, IMapper mapper) 
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
@@ -29,12 +32,7 @@ namespace SprintManager.Application.Handlers.Users
                 throw new SprintManagerNotFoundException($"User with ID {user?.Id} not found");
             }
 
-            return new UserDTO
-            { 
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email
-            };
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }
