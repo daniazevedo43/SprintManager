@@ -11,7 +11,7 @@ namespace SprintManager.Domain.Tests
         {
             Guid projectId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            ProjectMember projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
+            var projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
 
             Assert.NotEqual(Guid.Empty, projectMember.Id);
             Assert.Equal(projectId, projectMember.ProjectId);
@@ -23,7 +23,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetProjectId_UpdatesProjectIdSuccessfully()
         {
-            ProjectMember projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
+            var projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
 
             Guid newProjectId = Guid.NewGuid();
 
@@ -36,7 +36,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetUserId_UpdatesUserIdSuccessfully()
         {
-            ProjectMember projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
+            var projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
 
             Guid newUserId = Guid.NewGuid();
 
@@ -49,7 +49,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetRole_UpdatesRoleSuccessfully()
         {
-            ProjectMember projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
+            var projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
 
             projectMember.SetRole(ProjectMemberRole.Client);
 

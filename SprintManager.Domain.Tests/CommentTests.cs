@@ -12,7 +12,7 @@ namespace SprintManager.Domain.Tests
         {
             Guid workItemId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            Comment comment = new Comment(workItemId, userId, "Comment 1");
+            var comment = new Comment(workItemId, userId, "Comment 1");
 
             Assert.NotEqual(Guid.Empty, comment.Id);
             Assert.Equal(workItemId, comment.WorkItemId);
@@ -25,7 +25,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetText_UpdatesTextSuccessfully()
         {
-            Comment comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Comment 1");
+            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Comment 1");
 
             comment.SetText("Comment 2");
 

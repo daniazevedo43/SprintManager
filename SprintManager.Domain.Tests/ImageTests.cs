@@ -10,7 +10,7 @@ namespace SprintManager.Domain.Tests
         {
             Guid workItemId = Guid.NewGuid();
             Guid attachedByUserId = Guid.NewGuid();
-            Image image = new Image(workItemId, attachedByUserId, "image/jpeg", "image", "path");
+            var image = new Image(workItemId, attachedByUserId, "image/jpeg", "image", "path");
 
             Assert.NotEqual(Guid.Empty, image.Id);
             Assert.Equal(workItemId, image.WorkItemId);

@@ -10,7 +10,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Project_Constructor_WithoutDescription_CreatesProjectSuccessfully()
         {
-            Project project = new Project("Project 1");
+            var project = new Project("Project 1");
 
             Assert.NotEqual(Guid.Empty, project.Id);
             Assert.Equal("Project 1", project.Name); 
@@ -22,7 +22,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Project_Constructor_WithDescription_CreatesProjectSuccessfully()
         {
-            Project project = new Project("Project 1", "Description 1");
+            var project = new Project("Project 1", "Description 1");
 
             Assert.NotEqual(Guid.Empty, project.Id);
             Assert.Equal("Project 1", project.Name);
@@ -34,7 +34,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
-            Project project = new Project("Project 1");
+            var project = new Project("Project 1");
 
             project.SetName("Project 2");
 
@@ -45,7 +45,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetDescription_UpdatesDescriptionSuccessfully()
         {
-            Project project = new Project("Project 1", "Description 1");
+            var project = new Project("Project 1", "Description 1");
 
             project.SetDescription("Description 2");
 
@@ -56,7 +56,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            Project project = new Project("Project 1");
+            var project = new Project("Project 1");
 
             project.SetStatus(ProjectStatus.Completed);
 
