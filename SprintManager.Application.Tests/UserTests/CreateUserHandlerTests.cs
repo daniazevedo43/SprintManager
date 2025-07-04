@@ -65,7 +65,7 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal("request", exception.ParamName);
         }
 
-        // Test exception throwing when user already exists
+        // Test exception throwing when an email already exists
         [Fact]
         public async Task VerifyUserEmail_ThrowsException_WhenUserEmailAlreadyExists()
         {
