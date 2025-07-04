@@ -29,26 +29,25 @@ namespace SprintManager.Application.Tests.UserTests
         [Fact]
         public async Task Handle_GivenValidId_ReturnsUserDTO()
         {
-            var userId = Guid.NewGuid();
-
             var query = new GetUserByIdQuery
             { 
-                Id = userId,
+                Id = Guid.NewGuid(),
             };
 
             var user = new User("Daniel", "d@gmail.com", "abc123abc123");
-            var userDto = new UserDTO { Id = userId, Name = "Daniel", Email = "d@gmail.com" };
-            
-            _mockUserRepository.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
+            var userDto = new UserDTO { Id = query.Id, Name = user.Name, Email = user.Email };
+
+            // Repository's Mock configuration
+            _mockUserRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(user);
 
             // Mapper's Mock configuration
             _mockMapper.Setup(mapper => mapper.Map<UserDTO>(It.IsAny<User>())).Returns(userDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(userId, result.Id);
-            Assert.Equal("Daniel", result.Name);
-            Assert.Equal("d@gmail.com", result.Email);
+            Assert.Equal(userDto.Id, result.Id);
+            Assert.Equal(userDto.Name, result.Name);
+            Assert.Equal(userDto.Email, result.Email);
         }
 
         // Test exception throwing when request is null
@@ -75,7 +74,7 @@ namespace SprintManager.Application.Tests.UserTests
                 () => _handler.Handle(query, CancellationToken.None)
             );
 
-            Assert.Contains($"User with ID {query.Id} not found", exception.Message);
+            Assert.Equal($"User with ID {query.Id} not found", exception.Message);
         }
     }
 }
