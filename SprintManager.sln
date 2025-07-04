@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprintManager.API", "Sprint
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprintManager.Exceptions", "SprintManager.Exceptions\SprintManager.Exceptions.csproj", "{7423A554-0D09-4C2E-8FA9-2AD05FC1F89A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprintManager.Domain.Tests", "SprintManager.Domain.Tests\SprintManager.Domain.Tests.csproj", "{00580A38-9E4A-442D-8E5D-AA24C9F7E70E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprintManager.Domain.Tests", "SprintManager.Domain.Tests\SprintManager.Domain.Tests.csproj", "{00580A38-9E4A-442D-8E5D-AA24C9F7E70E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprintManager.Application.Tests", "SprintManager.Application.Tests\SprintManager.Application.Tests.csproj", "{0CA9DCAE-F9C5-45A5-BFB5-FA05CD5A5056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{00580A38-9E4A-442D-8E5D-AA24C9F7E70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00580A38-9E4A-442D-8E5D-AA24C9F7E70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00580A38-9E4A-442D-8E5D-AA24C9F7E70E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA9DCAE-F9C5-45A5-BFB5-FA05CD5A5056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA9DCAE-F9C5-45A5-BFB5-FA05CD5A5056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA9DCAE-F9C5-45A5-BFB5-FA05CD5A5056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA9DCAE-F9C5-45A5-BFB5-FA05CD5A5056}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

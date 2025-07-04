@@ -29,7 +29,7 @@ namespace SprintManager.Application.Handlers.Users
 
             if (user == null)
             {
-                throw new SprintManagerNotFoundException($"User with ID {user?.Id} not found");
+                throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
             }
 
             return _mapper.Map<UserDTO>(user);
