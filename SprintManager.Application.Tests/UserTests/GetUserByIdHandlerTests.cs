@@ -25,6 +25,7 @@ namespace SprintManager.Application.Tests.UserTests
             _handler = new GetUserByIdHandler(_mockUserRepository.Object, _mockMapper.Object);
         }
 
+        // Test handler
         [Fact]
         public async Task Handle_GivenValidId_ReturnsUserDTO()
         {
@@ -50,6 +51,7 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal("d@gmail.com", result.Email);
         }
 
+        // Test exception throwing when request is null
         [Fact]
         public async Task VerifyRequest_ThrowsException_WhenRequestIsNull()
         {
@@ -60,8 +62,9 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal("request", exception.ParamName);
         }
 
+        // Test exception throwing when user is not found
         [Fact]
-        public async Task VerifyUser_ThrowsException_WhenUserIsNull()
+        public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
         {
             var query = new GetUserByIdQuery
             {
