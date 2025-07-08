@@ -22,16 +22,9 @@ namespace SprintManager.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            try
-            {
-                var result = await _mediator.Send(new GetUserByIdQuery { Id = id });
+            var result = await _mediator.Send(new GetUserByIdQuery { Id = id });
 
-                return Ok(result);
-            }
-            catch(SprintManagerNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return Ok(result);
         }
     }
 }
