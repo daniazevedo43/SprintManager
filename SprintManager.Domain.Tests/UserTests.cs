@@ -61,7 +61,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
-            var exception = Assert.Throws<ArgumentException>(() => 
+            var exception = Assert.Throws<ArgumentNullException>(() => 
                 new User(name, "d@gmail.com", "abc123abc123")
             );
 
@@ -88,7 +88,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyEmail_ThrowsException_WhenEmailIsNullEmpty(string email)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new User("Daniel", email, "abc123abc123")
             );
 
@@ -115,7 +115,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyPassword_ThrowsException_WhenPasswordIsNullOrEmpty(string password)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new User("Daniel", "d@gmail.com", password)
             );
 
