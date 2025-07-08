@@ -36,7 +36,7 @@ namespace SprintManager.API.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return Ok(result);
+            return CreatedAtAction(nameof(GetUserById), new { id = result.Id }, result);
         }
     }
 }
