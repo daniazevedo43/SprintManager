@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SprintManager.API.Middleware;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Mappers;
 using SprintManager.Infrastructure.Data;
@@ -30,6 +31,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Use the custom middleware
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
