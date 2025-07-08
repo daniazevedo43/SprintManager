@@ -44,7 +44,7 @@ namespace SprintManager.API.Middleware
 
             var response = new
             {
-                context.Response.StatusCode,
+                context.Response.StatusCode, // Return the status code
                 exception.Message // Return the exception message
             };
 
