@@ -30,7 +30,7 @@ namespace SprintManager.Application.Handlers.Users
 
             if (existingUser != null)
             {
-                throw new SprintManagerConflictException($"User with email '{request.Email}' already exists.");
+                throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
             }
 
             var user = new User(request.Name, request.Email, request.Password);
