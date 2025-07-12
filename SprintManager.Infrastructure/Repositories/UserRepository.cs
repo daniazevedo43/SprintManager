@@ -14,10 +14,9 @@ namespace SprintManager.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(User user)
+        public async Task<List<User>> GetAllAsync()
         {
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
@@ -28,6 +27,12 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task AddAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
     }
 }
