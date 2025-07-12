@@ -18,6 +18,15 @@ namespace SprintManager.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await _mediator.Send(new GetAllUsersQuery());
+
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
