@@ -82,7 +82,7 @@ namespace SprintManager.Application.Tests.UserTests
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"User with email '{command.Email}' already exists.", exception.Message);
+            Assert.Equal($"A user with email '{command.Email}' already exists.", exception.Message);
         }
     }
 }
