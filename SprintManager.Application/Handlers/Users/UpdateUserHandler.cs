@@ -2,14 +2,9 @@
 using MediatR;
 using SprintManager.Application.Commands.Users;
 using SprintManager.Application.DTOs;
+using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
-using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SprintManager.Application.Handlers.Users
 {
@@ -32,10 +27,16 @@ namespace SprintManager.Application.Handlers.Users
             }
 
             var user = await _userRepository.GetByIdAsync(request.Id);
+            var existingEmail = await _userRepository.GetByEmailAsync(request.Email);
 
             if (user == null)
             {
                 throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
+            }
+
+            if (existingEmail != null && user.Email != request.Email)
+            {
+                throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
             }
 
             user?.SetName(request.Name);

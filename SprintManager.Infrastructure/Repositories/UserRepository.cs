@@ -16,7 +16,7 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task<List<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.OrderBy(u => u.Name).ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
