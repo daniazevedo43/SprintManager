@@ -2,6 +2,7 @@
 using Moq;
 using SprintManager.Application.Commands.Users;
 using SprintManager.Application.DTOs;
+using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Users;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
@@ -83,6 +84,30 @@ namespace SprintManager.Application.Tests.UserTests
             );
 
             Assert.Equal($"User with ID {command.Id} not found", exception.Message);
+        }
+
+        // Test exception throwing when an email already exists
+        [Fact]
+        public async Task VerifyUserEmail_ThrowsException_WhenUserEmailAlreadyExists()
+        {
+            var existingUser = new User("Daniel", "d@gmail.com", "abc123abc323");
+
+            var command = new UpdateUserCommand
+            {
+                Id = existingUser.Id,
+                Name = existingUser.Name,
+                Email = "d2@gmail.com",
+                Password = existingUser.PasswordHash,
+            };
+
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(existingUser);
+            _mockUserRepository.Setup(r => r.GetByEmailAsync(command.Email)).ReturnsAsync(existingUser);
+
+            var exception = await Assert.ThrowsAsync<SprintManagerConflictException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"A user with email '{command.Email}' already exists.", exception.Message);
         }
     }
 }
