@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Users;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Queries.Users;
-using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.API.Controllers
 {
@@ -46,6 +45,23 @@ namespace SprintManager.API.Controllers
             var result = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetUserById), new { id = result.Id }, result);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+
+        public async Task<IActionResult> UpdateUser(Guid id, UpdateUserCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("The URL's ID doesn't match the request body's ID");
+            }
+            
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
         }
     }
 }

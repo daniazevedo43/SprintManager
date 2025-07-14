@@ -52,6 +52,10 @@ namespace SprintManager.Application.Tests.UserTests
                 }
             };
 
+            // Repository's Mock configuration
+            _mockUserRepository.Setup(r => r.GetAllAsync());
+
+            // Mapper's Mock configuration
             _mockMapper.Setup(mapper => mapper.Map<List<UserDTO>>(It.IsAny<User>())).Returns(usersDTOs);
 
             var result = await _handler.Handle(query, CancellationToken.None);
