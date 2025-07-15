@@ -20,7 +20,7 @@ builder.Services.AddAutoMapper(config =>
 
 // Configure DBContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SpringManagerDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SprintManagerDb")));
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
