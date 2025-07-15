@@ -53,10 +53,10 @@ namespace SprintManager.Application.Tests.UserTests
             };
 
             // Repository's Mock configuration
-            _mockUserRepository.Setup(r => r.GetAllAsync());
+            _mockUserRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(users);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<UserDTO>>(It.IsAny<User>())).Returns(usersDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<UserDTO>>(users)).Returns(usersDTOs);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -66,6 +66,12 @@ namespace SprintManager.Application.Tests.UserTests
                 Assert.Equal(usersDTOs[i].Name, result[i].Name);
                 Assert.Equal(usersDTOs[i].Email, result[i].Email);
             }
+
+            // Ensure GetAllAsync was called exactly once.
+            _mockUserRepository.Verify(r => r.GetAllAsync(), Times.Once);
+
+            // Ensure the mapper's Map method was called exactly once.
+            _mockMapper.Verify(m => m.Map<List<UserDTO>>(users), Times.Once);
         }
     }
 }

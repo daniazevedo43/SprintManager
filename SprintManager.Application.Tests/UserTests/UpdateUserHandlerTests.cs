@@ -46,7 +46,7 @@ namespace SprintManager.Application.Tests.UserTests
             _mockUserRepository.Setup(r => r.UpdateAsync(user));
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<UserDTO>(It.IsAny<User>())).Returns(userDto);
+            _mockMapper.Setup(mapper => mapper.Map<UserDTO>(user)).Returns(userDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -54,6 +54,15 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal(userDto.Name, result.Name);
             Assert.Equal(userDto.Email, result.Email);
             Assert.True(user.VerifyPassword(command.Password), user.PasswordHash);
+
+            // Ensure GetByIdAsync was called exactly once with the correct ID.
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
+            
+            // Ensure UpdateAsync was called exactly once with the modified user.
+            _mockUserRepository.Verify(r => r.UpdateAsync(user), Times.Once);
+
+            // Ensure the mapper's Map was called exactly once with the modified user.
+            _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 
         // Test exception throwing when request is null
@@ -76,7 +85,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
                 Name = "Daniel",
                 Email = "d@gmail.com",
-                Password = "abc123abc323"
+                Password = "abc123abc123"
             };
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
@@ -108,6 +117,12 @@ namespace SprintManager.Application.Tests.UserTests
             );
 
             Assert.Equal($"A user with email '{command.Email}' already exists.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once with the correct ID.
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
+
+            // Ensure GetByEmailAsync was called exactly once.
+            _mockUserRepository.Verify(r => r.GetByEmailAsync(command.Email), Times.Once);
         }
     }
 }

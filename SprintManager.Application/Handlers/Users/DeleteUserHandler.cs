@@ -1,26 +1,23 @@
 ﻿using AutoMapper;
 using MediatR;
-using SprintManager.Application.DTOs;
+using SprintManager.Application.Commands.Users;
 using SprintManager.Application.Interfaces;
-using SprintManager.Application.Queries.Users;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Users
 {
-    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDTO>
+    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public GetUserByIdHandler(IUserRepository userRepository, IMapper mapper) 
+        public DeleteUserHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
         }
 
-        public async Task<UserDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            if (request == null)
+            if(request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
@@ -32,7 +29,7 @@ namespace SprintManager.Application.Handlers.Users
                 throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
             }
 
-            return _mapper.Map<UserDTO>(user);
+            await _userRepository.DeleteAsync(user);
         }
     }
 }
