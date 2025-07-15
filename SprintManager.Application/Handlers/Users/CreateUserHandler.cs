@@ -21,11 +21,6 @@ namespace SprintManager.Application.Handlers.Users
 
         public async Task<UserDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
             if (existingUser != null)

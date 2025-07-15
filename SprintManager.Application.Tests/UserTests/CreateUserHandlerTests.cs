@@ -58,17 +58,6 @@ namespace SprintManager.Application.Tests.UserTests
             _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 
-        // Test exception throwing when request is null
-        [Fact]
-        public async Task VerifyRequest_ThrowsException_WhenRequestIsNull()
-        {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                () => _handler.Handle(null!, CancellationToken.None)
-            );
-
-            Assert.Equal("request", exception.ParamName);
-        }
-
         // Test exception throwing when an email already exists
         [Fact]
         public async Task VerifyUserEmail_ThrowsException_WhenUserEmailAlreadyExists()

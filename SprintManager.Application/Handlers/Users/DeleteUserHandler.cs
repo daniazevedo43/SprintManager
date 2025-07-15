@@ -17,11 +17,6 @@ namespace SprintManager.Application.Handlers.Users
 
         public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            if(request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var user = await _userRepository.GetByIdAsync(request.Id);
 
             if (user == null)
