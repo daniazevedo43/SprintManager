@@ -40,7 +40,7 @@ namespace SprintManager.Application.Tests.UserTests
             var userDto = new UserDTO { Id = user.Id, Name = user.Name, Email = user.Email };
 
             // Repository's Mock configuration
-            _mockUserRepository.Setup(r => r.AddAsync(user));
+            _mockUserRepository.Setup(r => r.AddAsync(It.IsAny<User>())).Callback<User>(u => user = u);
 
             // Mapper's Mock configuration
             _mockMapper.Setup(mapper => mapper.Map<UserDTO>(It.IsAny<User>())).Returns(userDto);
@@ -50,6 +50,12 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal(userDto.Id, result.Id);
             Assert.Equal(userDto.Name, result.Name);
             Assert.Equal(userDto.Email, result.Email);
+
+            // Ensure AddAsync was called exactly once.
+            _mockUserRepository.Verify(r => r.AddAsync(user), Times.Once);
+
+            // Ensure the mapper's Map method was called exactly once with the created user.
+            _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 
         // Test exception throwing when request is null
@@ -83,6 +89,9 @@ namespace SprintManager.Application.Tests.UserTests
             );
 
             Assert.Equal($"A user with email '{command.Email}' already exists.", exception.Message);
+
+            // Ensure GetByEmailAsync was called exactly once with the modified user.
+            _mockUserRepository.Verify(r => r.GetByEmailAsync(command.Email), Times.Once);
         }
     }
 }

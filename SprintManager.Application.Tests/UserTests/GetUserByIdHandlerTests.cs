@@ -41,13 +41,19 @@ namespace SprintManager.Application.Tests.UserTests
             _mockUserRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(user);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<UserDTO>(It.IsAny<User>())).Returns(userDto);
+            _mockMapper.Setup(mapper => mapper.Map<UserDTO>(user)).Returns(userDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
             Assert.Equal(userDto.Id, result.Id);
             Assert.Equal(userDto.Name, result.Name);
             Assert.Equal(userDto.Email, result.Email);
+
+            // Ensure GetByIdAsync was called exactly once with the correct ID.
+            _mockUserRepository.Verify(r => r.GetByIdAsync(query.Id), Times.Once);
+
+            // Ensure the mapper's Map method was called exactly once with the created user.
+            _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 
         // Test exception throwing when request is null

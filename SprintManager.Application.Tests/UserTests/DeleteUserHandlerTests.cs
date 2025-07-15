@@ -11,22 +11,20 @@ namespace SprintManager.Application.Tests.UserTests
     public class DeleteUserHandlerTests
     {
         private readonly Mock<IUserRepository> _mockUserRepository;
-        private readonly Mock<IMapper> _mockMapper;
         private readonly DeleteUserHandler _handler;
 
         public DeleteUserHandlerTests()
         {
-            // Initialize mocks for each test
+            // Initialize mock for each test
             _mockUserRepository = new Mock<IUserRepository>();
-            _mockMapper = new Mock<IMapper>();
 
-            // Initialize hanlder injecting the mocks
-            _handler = new DeleteUserHandler(_mockUserRepository.Object, _mockMapper.Object);
+            // Initialize hanlder injecting the mock
+            _handler = new DeleteUserHandler(_mockUserRepository.Object);
         }
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_DeletesUserAndReturnsTrue()
+        public async Task Handle_GivenValidId_DeletesUser()
         {
             var command = new DeleteUserCommand
             {
@@ -35,12 +33,17 @@ namespace SprintManager.Application.Tests.UserTests
 
             var user = new User("Daniel", "d@gmail.com", "abc123abc123");
 
+            // Repository's Mock configuration
             _mockUserRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(user);
             _mockUserRepository.Setup(r => r.DeleteAsync(user));
 
-            var result = await _handler.Handle(command, CancellationToken.None);
+            await _handler.Handle(command, CancellationToken.None);
 
-            Assert.True(result);
+            // Ensure GetByIdAsync was called exactly once with the correct ID.
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
+
+            // Ensure DeleteAsync was called exactly once with the modified user.
+            _mockUserRepository.Verify(r => r.DeleteAsync(user), Times.Once);
         }
 
         // Test exception throwing when request is null
