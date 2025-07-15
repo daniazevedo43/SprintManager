@@ -24,6 +24,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _handler = new GetAllProjectsHandler(_mockProjectRepository.Object, _mockMapper.Object);
         }
 
+        // Test handler
         [Fact]
         public async Task Handle_ReturnsAllProjects()
         {
