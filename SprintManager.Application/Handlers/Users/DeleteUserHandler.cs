@@ -6,18 +6,16 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Users
 {
-    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
+    public class DeleteUserHandler : IRequestHandler<DeleteUserCommand>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public DeleteUserHandler(IUserRepository userRepository, IMapper mapper)
+        public DeleteUserHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
         }
 
-        public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             if(request == null)
             {
@@ -32,8 +30,6 @@ namespace SprintManager.Application.Handlers.Users
             }
 
             await _userRepository.DeleteAsync(user);
-
-            return true;
         }
     }
 }
