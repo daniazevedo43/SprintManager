@@ -76,7 +76,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
                 Name = "Daniel",
                 Email = "d@gmail.com",
-                Password = "abc123abc323"
+                Password = "abc123abc323ddddd"
             };
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
