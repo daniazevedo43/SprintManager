@@ -13,6 +13,7 @@ namespace SprintManager.Infrastructure.Data
 
         // DbSet for domain entities
         public DbSet<User> Users { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
