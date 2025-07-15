@@ -50,6 +50,7 @@ namespace SprintManager.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
 
         public async Task<IActionResult> UpdateUser(Guid id, UpdateUserCommand command)
@@ -62,6 +63,16 @@ namespace SprintManager.API.Controllers
             var result = await _mediator.Send(command);
 
             return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            await _mediator.Send(new DeleteUserCommand { Id = id });
+
+            return NoContent();
         }
     }
 }
