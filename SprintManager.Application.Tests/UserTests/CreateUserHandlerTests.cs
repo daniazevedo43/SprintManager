@@ -54,7 +54,7 @@ namespace SprintManager.Application.Tests.UserTests
             // Ensure AddAsync was called exactly once.
             _mockUserRepository.Verify(r => r.AddAsync(user), Times.Once);
 
-            // Ensure the mapper's Map method was called exactly once with the created user.
+            // Ensure the mapper's Map was called exactly once with the created user.
             _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 

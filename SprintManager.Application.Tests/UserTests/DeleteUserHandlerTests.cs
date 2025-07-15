@@ -42,7 +42,7 @@ namespace SprintManager.Application.Tests.UserTests
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
 
-            // Ensure DeleteAsync was called exactly once with the modified user.
+            // Ensure DeleteAsync was called exactly once.
             _mockUserRepository.Verify(r => r.DeleteAsync(user), Times.Once);
         }
 

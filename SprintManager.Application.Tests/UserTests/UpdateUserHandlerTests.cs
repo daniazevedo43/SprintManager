@@ -61,7 +61,7 @@ namespace SprintManager.Application.Tests.UserTests
             // Ensure UpdateAsync was called exactly once with the modified user.
             _mockUserRepository.Verify(r => r.UpdateAsync(user), Times.Once);
 
-            // Ensure the mapper's Map method was called exactly once with the modified user.
+            // Ensure the mapper's Map was called exactly once with the modified user.
             _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 
@@ -121,7 +121,7 @@ namespace SprintManager.Application.Tests.UserTests
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
 
-            // Ensure GetByEmailAsync was called exactly once with the modified user.
+            // Ensure GetByEmailAsync was called exactly once.
             _mockUserRepository.Verify(r => r.GetByEmailAsync(command.Email), Times.Once);
         }
     }

@@ -52,7 +52,7 @@ namespace SprintManager.Application.Tests.UserTests
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockUserRepository.Verify(r => r.GetByIdAsync(query.Id), Times.Once);
 
-            // Ensure the mapper's Map method was called exactly once with the created user.
+            // Ensure the mapper's Map was called exactly once with the created user.
             _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
         }
 
