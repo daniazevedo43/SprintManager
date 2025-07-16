@@ -23,5 +23,16 @@ namespace SprintManager.Infrastructure.Repositories
         {
             return await _context.Projects.FindAsync(id);
         }
+
+        public async Task<Project?> GetByNameAsync(string name)
+        {
+            return await _context.Projects.FirstOrDefaultAsync(p => p.Name == name);
+        }
+
+        public async Task AddAsync(Project project)
+        {
+            await _context.Projects.AddAsync(project);
+            await _context.SaveChangesAsync();
+        }
     }
 }
