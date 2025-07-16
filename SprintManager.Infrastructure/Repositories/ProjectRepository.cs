@@ -18,5 +18,10 @@ namespace SprintManager.Infrastructure.Repositories
         {
             return await _context.Projects.OrderBy(p => p.Name).ToListAsync();
         }
+
+        public async Task<Project?> GetByIdAsync(Guid id)
+        {
+            return await _context.Projects.FindAsync(id);
+        }
     }
 }
