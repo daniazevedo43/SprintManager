@@ -59,7 +59,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             Assert.Equal(projectDTO.Status, result.Status);
 
             // Ensure GetByNameAsync was called exactly once.
-            _mockProjectRepository.Verify(r => r.GetByNameAsync(command.Name), Times.Once);
+            _mockProjectRepository.Verify(r => r.GetByNameAsync(project.Name), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.AddAsync(project), Times.Once);
