@@ -25,6 +25,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _handler = new CreateProjectHandler(_mockProjectRepository.Object, _mockMapper.Object);
         }
 
+        // Test handler - project creation without description
         [Fact]
         public async Task Handle_CreatesProjectWithoutDescriptionAndReturnsProjectDTO()
         {
@@ -68,6 +69,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
         }
 
+        // Test handler - project creation with description
         [Fact]
         public async Task Handle_CreatesProjectWithDescriptionAndReturnsProjectDTO()
         {
@@ -78,13 +80,13 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             var project = new Project(command.Name, command.Description);
-            var projectDTO = new ProjectDTO 
-            { 
-                Id = project.Id, 
-                Name = project.Name, 
-                Description = project.Description, 
-                CreationDate = project.CreationDate, 
-                Status = project.Status 
+            var projectDTO = new ProjectDTO
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                CreationDate = project.CreationDate,
+                Status = project.Status
             };
 
             // Repositories Mock configuration
@@ -112,6 +114,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
         }
 
+        // Test exception throwing when a project already exists
         [Fact]
         public async Task VerifyProjectName_ThrowsException_WhenProjectNameAlreadyExists()
         {
