@@ -11,16 +11,26 @@ namespace SprintManager.API.Controllers
     {
         private readonly IMediator _mediator;
 
-        public ProjectsController(IMediator mediator) 
-        { 
+        public ProjectsController(IMediator mediator)
+        {
             _mediator = mediator;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ProjectDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllProjects()
         {
             var result = await _mediator.Send(new GetAllProjectsQuery());
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(List<ProjectDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllProjects(Guid id)
+        {
+            var result = await _mediator.Send(new GetProjectByIdQuery { Id = id });
 
             return Ok(result);
         }

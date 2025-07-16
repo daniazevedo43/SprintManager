@@ -5,5 +5,6 @@ namespace SprintManager.Application.Interfaces
     public interface IProjectRepository
     {
         Task<List<Project>> GetAllAsync();
+        Task<Project?> GetByIdAsync(Guid id);
     }
 }
