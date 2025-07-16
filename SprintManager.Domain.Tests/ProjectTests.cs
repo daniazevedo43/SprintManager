@@ -70,7 +70,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Project(name)
             );
 
