@@ -18,8 +18,8 @@ namespace SprintManager.Domain.Entities
 
         public Project(string name)
         {
-            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
-            if(name.Length > 255) throw new SprintManagerTooLongException("Project's name is too long.", 255, name.Length, nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Project's name can't be null or empty.");
+            if (name.Length > 255) throw new SprintManagerTooLongException("Project's name is too long.", 255, name.Length, nameof(name));
 
             Id = Guid.NewGuid();
             Name = name;
@@ -29,10 +29,10 @@ namespace SprintManager.Domain.Entities
 
         public Project(string name, string description)
         {
-            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Project's name can't be null or empty.");
 
-            if(name.Length > 255) throw new SprintManagerTooLongException("Project's name is too long.", 255, name.Length, nameof(name));
-            if(description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
+            if (name.Length > 255) throw new SprintManagerTooLongException("Project's name is too long.", 255, name.Length, nameof(name));
+            if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 
             Id = Guid.NewGuid();
             Name = name;
@@ -44,7 +44,7 @@ namespace SprintManager.Domain.Entities
         // Update project's name
         public void SetName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Project's name can't be null or empty.", nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Project's name can't be null or empty.");
             if (name.Length > 255) throw new SprintManagerTooLongException("Project's name is too long.", 255, name.Length, nameof(name));
 
             Name = name;
