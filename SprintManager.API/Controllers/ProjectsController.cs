@@ -73,6 +73,8 @@ namespace SprintManager.API.Controllers
             await _mediator.Send(new DeleteProjectCommand { Id = id });
 
             return NoContent();
+
+            // TEST
         }
     }
 }
