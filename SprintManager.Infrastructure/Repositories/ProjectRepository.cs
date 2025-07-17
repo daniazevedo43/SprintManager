@@ -34,5 +34,15 @@ namespace SprintManager.Infrastructure.Repositories
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(Project? project)
+        {
+            if (project != null)
+            {
+                _context.Projects.Update(project);
+            }
+          
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.ProjectTests
 
         // Test handler - project creation without description
         [Fact]
-        public async Task Handle_CreatesProjectWithoutDescriptionAndReturnsProjectDTO()
+        public async Task Handle_CreatesProjectWithoutDescription_ReturnsProjectDTO()
         {
             var command = new CreateProjectCommand
             {
@@ -55,7 +55,7 @@ namespace SprintManager.Application.Tests.ProjectTests
 
             Assert.Equal(projectDTO.Id, result.Id);
             Assert.Equal(projectDTO.Name, result.Name);
-            Assert.Null(project.Description);
+            Assert.Null(result.Description);
             Assert.Equal(projectDTO.CreationDate, result.CreationDate);
             Assert.Equal(projectDTO.Status, result.Status);
 
@@ -71,7 +71,7 @@ namespace SprintManager.Application.Tests.ProjectTests
 
         // Test handler - project creation with description
         [Fact]
-        public async Task Handle_CreatesProjectWithDescriptionAndReturnsProjectDTO()
+        public async Task Handle_CreatesProjectWithDescription_ReturnsProjectDTO()
         {
             var command = new CreateProjectCommand
             {

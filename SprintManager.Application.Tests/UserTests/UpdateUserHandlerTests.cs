@@ -28,7 +28,7 @@ namespace SprintManager.Application.Tests.UserTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_UpdatesUserAndReturnsUserDTO()
+        public async Task Handle_GivenValidId_UpdatesUser_ReturnsUserDTO()
         {
             var command = new UpdateUserCommand
             {
@@ -39,25 +39,29 @@ namespace SprintManager.Application.Tests.UserTests
             };
 
             var user = new User(command.Name, command.Email, command.Password);
-            var userDto = new UserDTO { Id = user.Id, Name = command.Name, Email = command.Email };
+            var userDTO = new UserDTO { Id = user.Id, Name = command.Name, Email = command.Email };
 
             // Repository's Mock configuration
             _mockUserRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(user);
+            _mockUserRepository.Setup(r => r.GetByEmailAsync(command.Email)).ReturnsAsync((User?)null);
             _mockUserRepository.Setup(r => r.UpdateAsync(user));
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<UserDTO>(user)).Returns(userDto);
+            _mockMapper.Setup(mapper => mapper.Map<UserDTO>(user)).Returns(userDTO);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(userDto.Id, result.Id);
-            Assert.Equal(userDto.Name, result.Name);
-            Assert.Equal(userDto.Email, result.Email);
+            Assert.Equal(userDTO.Id, result.Id);
+            Assert.Equal(userDTO.Name, result.Name);
+            Assert.Equal(userDTO.Email, result.Email);
             Assert.True(user.VerifyPassword(command.Password), user.PasswordHash);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
-            
+
+            // Ensure GetByEmailAsync was called exactly once.
+            _mockUserRepository.Verify(r => r.GetByEmailAsync(user.Email), Times.Once);
+
             // Ensure UpdateAsync was called exactly once with the modified user.
             _mockUserRepository.Verify(r => r.UpdateAsync(user), Times.Once);
 

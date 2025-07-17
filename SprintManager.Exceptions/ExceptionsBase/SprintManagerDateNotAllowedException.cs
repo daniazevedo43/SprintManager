@@ -18,11 +18,5 @@
             : base(message)
         {
         }
-
-        public SprintManagerDateNotAllowedException(string message, DateTime invalidDate, string paramName)
-            : base(message)
-        {
-            InvalidDate = invalidDate;
-        }
     }
 }
