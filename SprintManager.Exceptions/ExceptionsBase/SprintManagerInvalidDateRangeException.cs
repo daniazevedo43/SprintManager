@@ -19,12 +19,5 @@
             : base(message)
         {
         }
-
-        public SprintManagerInvalidDateRangeException(string message, DateTime startDate, DateTime endDate, string paramName)
-            : base(message)
-        {
-            StartDate = startDate;
-            EndDate = endDate;
-        }
     }
 }
