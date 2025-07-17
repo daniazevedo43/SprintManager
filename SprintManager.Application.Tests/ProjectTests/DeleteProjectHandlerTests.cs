@@ -46,7 +46,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Verify(r => r.DeleteAsync(project), Times.Once);
         }
 
-        // Test exception throwing when user is not found
+        // Test exception throwing when project is not found
         [Fact]
         public async Task VerifyProject_ThrowsException_WhenProjectIsNotFound()
         {
