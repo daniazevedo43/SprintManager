@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.UserTests
 
         // Test handler
         [Fact]
-        public async Task Handle_CreatesUserAndReturnsUserDTO()
+        public async Task Handle_CreatesUser_ReturnsUserDTO()
         {
             var command = new CreateUserCommand
             {
