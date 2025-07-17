@@ -9,5 +9,6 @@ namespace SprintManager.Application.Interfaces
         Task<Project?> GetByNameAsync(string name);
         Task AddAsync(Project project);
         Task UpdateAsync(Project? project);
+        Task DeleteAsync(Project project);
     }
 }

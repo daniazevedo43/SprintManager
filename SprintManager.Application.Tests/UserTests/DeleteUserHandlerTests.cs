@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Moq;
+﻿using Moq;
 using SprintManager.Application.Commands.Users;
 using SprintManager.Application.Handlers.Users;
 using SprintManager.Application.Interfaces;
@@ -59,7 +58,7 @@ namespace SprintManager.Application.Tests.UserTests
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"User with ID {command.Id} not found", exception.Message);
+            Assert.Equal($"User with ID {command.Id} not found.", exception.Message);
         }
     }
 }

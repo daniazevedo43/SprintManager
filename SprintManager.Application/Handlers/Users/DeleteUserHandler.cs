@@ -21,7 +21,7 @@ namespace SprintManager.Application.Handlers.Users
 
             if (user == null)
             {
-                throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
+                throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found.");
             }
 
             await _userRepository.DeleteAsync(user);
