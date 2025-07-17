@@ -40,10 +40,10 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             var project = new Project(command.Name, command.Description);
-            var projectDTO = new ProjectDTO 
-            { 
-                Id = project.Id, 
-                Name = project.Name, 
+            var projectDTO = new ProjectDTO
+            {
+                Id = project.Id,
+                Name = project.Name,
                 Description = project.Description,
                 Status = command.Status
             };
@@ -77,7 +77,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
         }
 
-        // Test exception throwing when user is not found
+        // Test exception throwing when project is not found
         [Fact]
         public async Task VerifyProject_ThrowsException_WhenProjectIsNotFound()
         {
@@ -96,7 +96,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             Assert.Equal($"Project with ID {command?.Id} not found", exception.Message);
         }
 
-        // Test exception throwing when an email already exists
+        // Test exception throwing when a project already exists
         [Fact]
         public async Task VerifyProjectName_ThrowsException_WhenProjectNameAlreadyExists()
         {
