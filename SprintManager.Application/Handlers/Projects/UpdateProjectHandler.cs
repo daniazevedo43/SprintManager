@@ -35,25 +35,13 @@ namespace SprintManager.Application.Handlers.Projects
                 throw new SprintManagerConflictException($"A project called '{request.Name}' already exists.");
             }
 
-            if (string.IsNullOrWhiteSpace(request.Description))
-            {
-                project.SetName(request.Name);
-                project.SetStatus(project.Status);
+            project.SetName(request.Name);
+            project.SetDescription(request.Description);
+            project.SetStatus(request.Status);
 
-                await _projectRepository.UpdateAsync(project);
+            await _projectRepository.UpdateAsync(project);
 
-                return _mapper.Map<ProjectDTO>(project);
-            }
-            else
-            {
-                project.SetName(request.Name);
-                project.SetDescription(request.Description);
-                project.SetStatus(project.Status);
-
-                await _projectRepository.UpdateAsync(project);
-
-                return _mapper.Map<ProjectDTO>(project);
-            }
+            return _mapper.Map<ProjectDTO>(project);
         }
     }
 }
