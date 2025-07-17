@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Projects;
-using SprintManager.Application.Commands.Users;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Queries.Projects;
 
