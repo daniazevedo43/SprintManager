@@ -1,8 +1,6 @@
 ﻿using Moq;
 using SprintManager.Application.Commands.Projects;
-using SprintManager.Application.Commands.Users;
 using SprintManager.Application.Handlers.Projects;
-using SprintManager.Application.Handlers.Users;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
