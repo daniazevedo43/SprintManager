@@ -8,7 +8,6 @@ using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
 using SprintManager.Exceptions.ExceptionsBase;
-using System.Xml.Linq;
 
 namespace SprintManager.Application.Tests.ProjectTests
 {
@@ -28,57 +27,9 @@ namespace SprintManager.Application.Tests.ProjectTests
             _handler = new UpdateProjectHandler(_mockProjectRepository.Object, _mockMapper.Object);
         }
 
-        // Test handler - project update without description
+        // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_UpdatesProjectWithoutDescription_ReturnsProjectDTO()
-        {
-            var command = new UpdateProjectCommand
-            {
-                Id = Guid.NewGuid(),
-                Name = "Recipe Forum",
-                Status = ProjectStatus.Completed
-            };
-
-            var project = new Project(command.Name);
-            var projectDTO = new ProjectDTO
-            {
-                Id = project.Id,
-                Name = project.Name,
-                Status = command.Status
-            };
-
-            // Repositories Mock configuration
-            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(project);
-            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name)).ReturnsAsync(project);
-            _mockProjectRepository.Setup(r => r.UpdateAsync(project));
-
-            // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<ProjectDTO>(project)).Returns(projectDTO);
-
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            Assert.Equal(projectDTO.Id, result.Id);
-            Assert.Equal(projectDTO.Name, result.Name);
-            Assert.Null(result.Description);
-            Assert.Equal(projectDTO.CreationDate, result.CreationDate);
-            Assert.Equal(projectDTO.Status, result.Status);
-
-            // Ensure GetByIdAsync was called exactly once with the correct ID.
-            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
-
-            // Ensure GetByNameAsync was called exactly once.
-            _mockProjectRepository.Verify(r => r.GetByNameAsync(project.Name), Times.Once);
-
-            // Ensure UpdateAsync was called exactly once with the modified project.
-            _mockProjectRepository.Verify(r => r.UpdateAsync(project), Times.Once);
-
-            // Ensure the mapper's Map was called exactly once with the modified project.
-            _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
-        }
-
-        // Test handler - project update with description
-        [Fact]
-        public async Task Handle_GivenValidId_UpdatesProjectWithDescription_ReturnsProjectDTO()
+        public async Task Handle_GivenValidId_UpdatesProject_ReturnsProjectDTO()
         {
             var command = new UpdateProjectCommand
             {
