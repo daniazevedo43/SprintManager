@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using SprintManager.Application.Commands.Projects;
-using SprintManager.Application.Commands.Users;
 using SprintManager.Application.Interfaces;
 using SprintManager.Exceptions.ExceptionsBase;
 
