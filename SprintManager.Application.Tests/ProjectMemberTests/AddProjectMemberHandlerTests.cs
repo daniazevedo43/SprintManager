@@ -14,7 +14,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
     {
         private readonly Mock<IProjectMemberRepository> _mockProjectMemberRepository;
         private readonly Mock<IMapper> _mockMapper;
-        private readonly CreateProjectMemberHandler _handler;
+        private readonly AddProjectMemberHandler _handler;
 
         public AddProjectMemberHandlerTests()
         {
@@ -23,14 +23,14 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockMapper = new Mock<IMapper>();
 
             // Initialize hanlder injecting the mocks
-            _handler = new CreateProjectMemberHandler(_mockProjectMemberRepository.Object, _mockMapper.Object);
+            _handler = new AddProjectMemberHandler(_mockProjectMemberRepository.Object, _mockMapper.Object);
         }
 
         // Test handler
         [Fact]
-        public async Task Handle_CreatesProjectMember_ReturnsProjectMemberDTO()
+        public async Task Handle_AddsProjectMember_ReturnsProjectMemberDTO()
         {
-            var command = new CreateProjectMemberCommand
+            var command = new AddProjectMemberCommand
             {
                 ProjectId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
@@ -73,7 +73,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
         [Fact]
         public async Task VerifyUserId_ThrowsException_WhenUserIsAlreadyInProject()
         {
-            var command = new CreateProjectMemberCommand
+            var command = new AddProjectMemberCommand
             {
                 ProjectId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),

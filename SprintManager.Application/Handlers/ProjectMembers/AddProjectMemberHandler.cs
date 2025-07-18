@@ -8,18 +8,18 @@ using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Handlers.ProjectMembers
 {
-    public class CreateProjectMemberHandler : IRequestHandler<CreateProjectMemberCommand, ProjectMemberDTO>
+    public class AddProjectMemberHandler : IRequestHandler<AddProjectMemberCommand, ProjectMemberDTO>
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IMapper _mapper;
 
-        public CreateProjectMemberHandler(IProjectMemberRepository projectMemberRepository, IMapper mapper) 
+        public AddProjectMemberHandler(IProjectMemberRepository projectMemberRepository, IMapper mapper) 
         {
             _projectMemberRepository = projectMemberRepository;
             _mapper = mapper;
         }
 
-        public async Task<ProjectMemberDTO> Handle(CreateProjectMemberCommand request, CancellationToken cancellationToken)
+        public async Task<ProjectMemberDTO> Handle(AddProjectMemberCommand request, CancellationToken cancellationToken)
         {
             var existingProjectMember = await _projectMemberRepository.GetByUserIdAsync(request.UserId, request.ProjectId);
 
