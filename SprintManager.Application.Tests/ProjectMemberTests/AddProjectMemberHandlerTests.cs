@@ -10,13 +10,13 @@ using SprintManager.Domain.Enums;
 
 namespace SprintManager.Application.Tests.ProjectMemberTests
 {
-    public class CreateProjectMemberHandlerTests
+    public class AddProjectMemberHandlerTests
     {
         private readonly Mock<IProjectMemberRepository> _mockProjectMemberRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly CreateProjectMemberHandler _handler;
 
-        public CreateProjectMemberHandlerTests()
+        public AddProjectMemberHandlerTests()
         {
             // Initialize mocks for each test
             _mockProjectMemberRepository = new Mock<IProjectMemberRepository>();
