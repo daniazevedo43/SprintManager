@@ -4,10 +4,12 @@ using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Mappers
 {
-    public class ProjectMemberMappingProfile : Profile
+    public class ApplicationMappingProfile : Profile
     {
-        public ProjectMemberMappingProfile()
+        public ApplicationMappingProfile() 
         {
+            CreateMap<User, UserDTO>();
+            CreateMap<Project, ProjectDTO>();
             CreateMap<ProjectMember, ProjectMemberDTO>();
         }
     }
