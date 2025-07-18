@@ -11,14 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Configure MediatR
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserMappingProfile).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationMappingProfile).Assembly));
 
 // Configure AutoMapper
-builder.Services.AddAutoMapper(config =>
+builder.Services.AddAutoMapper(cfg =>
 {
-    config.AddMaps(typeof(UserMappingProfile).Assembly);
-    config.AddMaps(typeof(ProjectMappingProfile).Assembly);
-    config.AddMaps(typeof(ProjectMemberMappingProfile).Assembly);
+    cfg.AddMaps(typeof(ApplicationMappingProfile).Assembly);
 });
 
 // Configure DBContext
