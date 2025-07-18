@@ -5,7 +5,6 @@ using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
-using System.Xml.Linq;
 
 namespace SprintManager.Application.Handlers.Projects
 {
