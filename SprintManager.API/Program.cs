@@ -17,6 +17,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserM
 builder.Services.AddAutoMapper(config =>
 {
     config.AddMaps(typeof(UserMappingProfile).Assembly);
+    config.AddMaps(typeof(ProjectMappingProfile).Assembly);
+    config.AddMaps(typeof(ProjectMemberMappingProfile).Assembly);
 });
 
 // Configure DBContext
@@ -26,6 +28,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectMemberRepository, ProjectMemberRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
