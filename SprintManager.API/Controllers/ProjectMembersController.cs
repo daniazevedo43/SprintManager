@@ -1,0 +1,30 @@
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SprintManager.Application.Commands.ProjectMembers;
+using SprintManager.Application.DTOs;
+
+namespace SprintManager.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProjectMembersController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+
+        public ProjectMembersController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ProjectMemberDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> AddProjectMember(AddProjectMemberCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return StatusCode(StatusCodes.Status201Created, result);
+        }
+    }
+}
