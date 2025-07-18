@@ -21,8 +21,7 @@ namespace SprintManager.Infrastructure.Configurations
                 .IsRequired();
 
             builder.Property(p => p.Status)
-                .IsRequired()
-                .HasMaxLength(50);
+                .IsRequired();
         }
     }
 }
