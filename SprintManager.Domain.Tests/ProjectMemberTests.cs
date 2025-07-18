@@ -60,7 +60,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new ProjectMember(Guid.Empty, Guid.NewGuid(), ProjectMemberRole.Developer)
             );
 
@@ -71,7 +71,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyUserId_ThrowsException_WhenUserIdIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new ProjectMember(Guid.NewGuid(), Guid.Empty, ProjectMemberRole.Developer)
             );
 
