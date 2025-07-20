@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.ProjectMembers;
-using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
 
 namespace SprintManager.API.Controllers
