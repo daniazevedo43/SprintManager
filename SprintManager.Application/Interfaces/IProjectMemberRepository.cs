@@ -5,7 +5,7 @@ namespace SprintManager.Application.Interfaces
     public interface IProjectMemberRepository
     {
         Task<ProjectMember?> GetByIdAsync(Guid id);
-        Task<ProjectMember?> GetByUserIdAsync(Guid userId, Guid projectId);
+        Task<ProjectMember?> GetByUserAndProjectIdAsync(Guid userId, Guid projectId);
         Task AddAsync(ProjectMember projectMember);
         Task DeleteAsync(ProjectMember projectMember);
     }

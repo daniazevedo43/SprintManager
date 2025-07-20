@@ -21,7 +21,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
 
         public async Task<ProjectMemberDTO> Handle(AddProjectMemberCommand request, CancellationToken cancellationToken)
         {
-            var existingProjectMember = await _projectMemberRepository.GetByUserIdAsync(request.UserId, request.ProjectId);
+            var existingProjectMember = await _projectMemberRepository.GetByUserAndProjectIdAsync(request.UserId, request.ProjectId);
 
             if(existingProjectMember != null)
             {

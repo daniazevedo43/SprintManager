@@ -22,7 +22,7 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.ProjectMembers.FindAsync(id);
         }
 
-        public async Task<ProjectMember?> GetByUserIdAsync(Guid userId, Guid projectId)
+        public async Task<ProjectMember?> GetByUserAndProjectIdAsync(Guid userId, Guid projectId)
         {
             var user = await _context.Users.FindAsync(userId);
             var project = await _context.Projects.FindAsync(projectId);
