@@ -17,6 +17,11 @@ namespace SprintManager.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<ProjectMember?> GetByIdAsync(Guid id)
+        {
+            return await _context.ProjectMembers.FindAsync(id);
+        }
+
         public async Task<ProjectMember?> GetByUserIdAsync(Guid userId, Guid projectId)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -32,6 +37,12 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task AddAsync(ProjectMember projectMember)
         {
             await _context.ProjectMembers.AddAsync(projectMember);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(ProjectMember projectMember)
+        {
+            _context.ProjectMembers.Remove(projectMember);
             await _context.SaveChangesAsync();
         }
     }
