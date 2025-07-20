@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.ProjectMembers;
+using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
 
 namespace SprintManager.API.Controllers
@@ -25,6 +26,16 @@ namespace SprintManager.API.Controllers
             var result = await _mediator.Send(command);
 
             return StatusCode(StatusCodes.Status201Created, result);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveProjectMember(Guid id)
+        {
+            await _mediator.Send(new RemoveProjectMemberCommand { Id = id });
+
+            return NoContent();
         }
     }
 }
