@@ -26,5 +26,15 @@ namespace SprintManager.API.Controllers
 
             return StatusCode(StatusCodes.Status201Created, result);
         }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveProjectMember(Guid id)
+        {
+            await _mediator.Send(new RemoveProjectMemberCommand { Id = id });
+
+            return NoContent();
+        }
     }
 }
