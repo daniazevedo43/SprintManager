@@ -6,6 +6,7 @@ namespace SprintManager.Application.Interfaces
     {
         Task<ProjectMember?> GetByIdAsync(Guid id);
         Task<ProjectMember?> GetByUserAndProjectIdAsync(Guid userId, Guid projectId);
+        Task<List<ProjectMember>> GetMembersByProjectIdAsync(Guid projectId);
         Task AddAsync(ProjectMember projectMember);
         Task DeleteAsync(ProjectMember projectMember);
     }

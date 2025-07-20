@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
@@ -30,6 +31,15 @@ namespace SprintManager.Infrastructure.Repositories
 
             return await _context.ProjectMembers
                 .FirstOrDefaultAsync(pm => pm.UserId == userId && pm.ProjectId == projectId);
+        }
+
+        public async Task<List<ProjectMember>> GetMembersByProjectIdAsync(Guid projectId)
+        {
+            var project = _context.ProjectMembers.FirstOrDefault(pm => pm.ProjectId == projectId);
+
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {projectId} was not found");
+            
+            return await _context.ProjectMembers.Where(pm => pm.ProjectId == project.ProjectId).ToListAsync();
         }
 
         public async Task AddAsync(ProjectMember projectMember)
