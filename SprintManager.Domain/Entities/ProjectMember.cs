@@ -27,20 +27,6 @@ namespace SprintManager.Domain.Entities
             Role = role;
         }
 
-        public void SetProjectId(Guid projectId)
-        {
-            if (projectId == Guid.Empty) throw new ArgumentNullException(nameof(projectId), "Project ID can't be null or empty.");
-
-            ProjectId = projectId;
-        }
-
-        public void SetUserId(Guid userId)
-        {
-            if (userId == Guid.Empty) throw new ArgumentNullException(nameof(userId), "User ID can't be null or empty.");
-
-            UserId = userId; 
-        }
-
         public void SetRole(ProjectMemberRole role)
         {
             Role = role;

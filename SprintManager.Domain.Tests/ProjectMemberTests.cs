@@ -19,32 +19,6 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(ProjectMemberRole.Developer, projectMember.Role);
         }
 
-        // Test project ID change
-        [Fact]
-        public void SetProjectId_UpdatesProjectIdSuccessfully()
-        {
-            var projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
-
-            Guid newProjectId = Guid.NewGuid();
-
-            projectMember.SetProjectId(newProjectId);
-
-            Assert.Equal(newProjectId, projectMember.ProjectId);
-        }
-
-        // Test user ID change
-        [Fact]
-        public void SetUserId_UpdatesUserIdSuccessfully()
-        {
-            var projectMember = new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Developer);
-
-            Guid newUserId = Guid.NewGuid();
-
-            projectMember.SetUserId(newUserId);
-
-            Assert.Equal(newUserId, projectMember.UserId);
-        }
-
         // Test role change
         [Fact]
         public void SetRole_UpdatesRoleSuccessfully()
