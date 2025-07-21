@@ -3,7 +3,7 @@ using SprintManager.Application.DTOs;
 
 namespace SprintManager.Application.Queries.ProjectMembers
 {
-    public class GetProjectMembersByProjectIdCommand : IRequest<List<ProjectMemberBasicDTO>>
+    public class GetProjectMembersByProjectIdQuery : IRequest<List<ProjectMemberBasicDTO>>
     {
         public Guid ProjectId { get; set; }
     }
