@@ -4,7 +4,6 @@ using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.ProjectMembers;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.ProjectMembers;
-using SprintManager.Application.Queries.Projects;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
 
