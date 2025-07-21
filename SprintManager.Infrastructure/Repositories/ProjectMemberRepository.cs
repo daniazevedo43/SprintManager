@@ -15,6 +15,15 @@ namespace SprintManager.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<List<ProjectMember>> GetAllAsync()
+        {
+            return await _context.ProjectMembers
+                .Include(pm => pm.Project)
+                .Include(pm => pm.User)
+                .OrderBy(pm => pm.Project)
+                .ToListAsync();
+        }
+
         public async Task<ProjectMember?> GetByIdAsync(Guid id)
         {
             return await _context.ProjectMembers.FindAsync(id);
