@@ -34,7 +34,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
                 ProjectId = Guid.NewGuid()
             };
 
-            var projectsMembers = new List<ProjectMember>()
+            var projectMembers = new List<ProjectMember>()
             {
                 new ProjectMember(query.ProjectId, Guid.NewGuid(), ProjectMemberRole.Developer),
                 new ProjectMember(query.ProjectId, Guid.NewGuid(), ProjectMemberRole.Client)
@@ -44,30 +44,27 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             {
                 new ProjectMemberBasicDTO
                 {
-                    UserId = projectsMembers[0].UserId,
-                    UserName = projectsMembers[0].User?.Name,
-                    Role = projectsMembers[0].Role,
+                    UserId = projectMembers[0].UserId,
+                    Role = projectMembers[0].Role,
                 },
                 new ProjectMemberBasicDTO
                 {
-                    UserId = projectsMembers[1].UserId,
-                    UserName = projectsMembers[1].User?.Name,
-                    Role = projectsMembers[1].Role,
+                    UserId = projectMembers[1].UserId,
+                    Role = projectMembers[1].Role,
                 }
             };
 
             // Repository's Mock configuration
-            _mockProjectMemberRepository.Setup(r => r.GetMembersByProjectIdAsync(query.ProjectId)).ReturnsAsync(projectsMembers);
+            _mockProjectMemberRepository.Setup(r => r.GetMembersByProjectIdAsync(query.ProjectId)).ReturnsAsync(projectMembers);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<ProjectMemberBasicDTO>>(projectsMembers)).Returns(projectMembersDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<ProjectMemberBasicDTO>>(projectMembers)).Returns(projectMembersDTOs);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
             for (int i = 0; i < projectMembersDTOs.Count; i++)
             {
                 Assert.Equal(projectMembersDTOs[i].UserId, result[i].UserId);
-                Assert.Equal(projectMembersDTOs[i].UserName, result[i].UserName);
                 Assert.Equal(projectMembersDTOs[i].Role, result[i].Role);
             }
 
@@ -75,7 +72,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockProjectMemberRepository.Verify(r => r.GetMembersByProjectIdAsync(query.ProjectId), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<ProjectMemberBasicDTO>>(projectsMembers), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<ProjectMemberBasicDTO>>(projectMembers), Times.Once);
         }
     }
 }

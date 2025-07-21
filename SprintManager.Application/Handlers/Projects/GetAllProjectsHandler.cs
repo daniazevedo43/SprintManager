@@ -16,6 +16,7 @@ namespace SprintManager.Application.Handlers.Projects
             _projectRepository = projectRepository;
             _mapper = mapper;
         }
+
         public async Task<List<ProjectDTO>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var projects = await _projectRepository.GetAllAsync();
