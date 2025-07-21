@@ -19,7 +19,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<ProjectMemberDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllProjects()
+        public async Task<IActionResult> GetAllProjectMembers()
         {
             var result = await _mediator.Send(new GetAllProjectMembersQuery());
 
