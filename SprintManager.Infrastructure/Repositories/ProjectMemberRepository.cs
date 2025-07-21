@@ -50,7 +50,9 @@ namespace SprintManager.Infrastructure.Repositories
             
             return await _context.ProjectMembers
                 .Include(pm => pm.User)
-                .Where(pm => pm.ProjectId == project.ProjectId).ToListAsync();
+                .Where(pm => pm.ProjectId == project.ProjectId)
+                .OrderBy(pm => pm.User.Name)
+                .ToListAsync();
         }
 
         public async Task AddAsync(ProjectMember projectMember)

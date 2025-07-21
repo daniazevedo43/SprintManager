@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.ProjectMembers;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Queries.ProjectMembers;
-using SprintManager.Application.Queries.Projects;
 
 namespace SprintManager.API.Controllers
 {
@@ -16,6 +15,15 @@ namespace SprintManager.API.Controllers
         public ProjectMembersController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ProjectMemberDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllProjects()
+        {
+            var result = await _mediator.Send(new GetAllProjectMembersQuery());
+
+            return Ok(result);
         }
 
         [HttpGet("{projectId}")]
