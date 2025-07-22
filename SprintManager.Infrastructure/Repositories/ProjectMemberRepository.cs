@@ -61,6 +61,16 @@ namespace SprintManager.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(ProjectMember? projectMember)
+        {
+            if (projectMember != null)
+            {
+                _context.ProjectMembers.Update(projectMember);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(ProjectMember projectMember)
         {
             _context.ProjectMembers.Remove(projectMember);
