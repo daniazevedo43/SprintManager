@@ -16,14 +16,14 @@ namespace SprintManager.Application.Handlers.ProjectMembers
 
         public async Task Handle(RemoveProjectMemberCommand request, CancellationToken cancellationToken)
         {
-            var project = await _projectMemberRepository.GetByIdAsync(request.Id);
+            var projectMember = await _projectMemberRepository.GetByIdAsync(request.Id);
 
-            if (project == null)
+            if (projectMember == null)
             {
                 throw new SprintManagerNotFoundException($"There's no relationship between a user and a project with ID {request.Id}.");
             }
 
-            await _projectMemberRepository.DeleteAsync(project);
+            await _projectMemberRepository.DeleteAsync(projectMember);
         }
     }
 }
