@@ -12,6 +12,7 @@ namespace SprintManager.Application.Mappers
             CreateMap<Project, ProjectDTO>();
             CreateMap<ProjectMember, ProjectMemberDTO>();
             CreateMap<ProjectMember, ProjectMemberBasicDTO>();
+            CreateMap<Sprint, SprintDTO>();
         }
     }
 }
