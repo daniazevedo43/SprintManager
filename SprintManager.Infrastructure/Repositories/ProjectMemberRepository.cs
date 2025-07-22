@@ -35,7 +35,7 @@ namespace SprintManager.Infrastructure.Repositories
             var project = await _context.Projects.FindAsync(projectId);
 
             if (user == null) throw new SprintManagerNotFoundException($"User with ID {userId} not found");
-            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {projectId} was not found");
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {projectId} not found");
 
             return await _context.ProjectMembers
                 .FirstOrDefaultAsync(pm => pm.UserId == userId && pm.ProjectId == projectId);
@@ -58,6 +58,16 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task AddAsync(ProjectMember projectMember)
         {
             await _context.ProjectMembers.AddAsync(projectMember);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(ProjectMember? projectMember)
+        {
+            if (projectMember != null)
+            {
+                _context.ProjectMembers.Update(projectMember);
+            }
+
             await _context.SaveChangesAsync();
         }
 
