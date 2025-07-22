@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.ProjectMembers;
+using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Queries.ProjectMembers;
 
@@ -45,6 +46,22 @@ namespace SprintManager.API.Controllers
             var result = await _mediator.Send(command);
 
             return StatusCode(StatusCodes.Status201Created, result);
+        }
+
+        [HttpPut("changeMemberRole/{projectId}")]
+        [ProducesResponseType(typeof(ProjectMemberBasicDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateProjectMemberRole(Guid projectId, UpdateProjectMemberRoleCommand command)
+        {
+            if (projectId != command.ProjectId)
+            {
+                return BadRequest("The URL's ID doesn't match the request body's ID");
+            }
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
