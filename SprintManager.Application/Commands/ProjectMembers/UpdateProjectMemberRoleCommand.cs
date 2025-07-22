@@ -4,10 +4,9 @@ using SprintManager.Domain.Enums;
 
 namespace SprintManager.Application.Commands.ProjectMembers
 {
-    public class UpdateProjectMemberRoleCommand : IRequest<ProjectMemberBasicDTO>
+    public class UpdateProjectMemberRoleCommand : IRequest<ProjectMemberDTO>
     {
-        public Guid ProjectId { get; set; }
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
         public ProjectMemberRole Role { get; set; }
     }
 }
