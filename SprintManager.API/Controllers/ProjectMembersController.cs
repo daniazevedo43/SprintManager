@@ -48,13 +48,13 @@ namespace SprintManager.API.Controllers
             return StatusCode(StatusCodes.Status201Created, result);
         }
 
-        [HttpPut("changeMemberRole/{projectId}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(ProjectMemberBasicDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateProjectMemberRole(Guid projectId, UpdateProjectMemberRoleCommand command)
+        public async Task<IActionResult> UpdateProjectMemberRole(Guid id, UpdateProjectMemberRoleCommand command)
         {
-            if (projectId != command.ProjectId)
+            if (id != command.Id)
             {
                 return BadRequest("The URL's ID doesn't match the request body's ID");
             }
