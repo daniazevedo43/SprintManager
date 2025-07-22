@@ -31,7 +31,15 @@ namespace SprintManager.Domain.Entities
             Name = name;
             StartDate = startDate.ToUniversalTime();
             EndDate = endDate.ToUniversalTime();
-            Status = SprintStatus.Planned;
+            
+            if(startDate > DateTime.UtcNow)
+            {
+                Status = SprintStatus.Planned;
+            }
+            else
+            {
+                Status = SprintStatus.Active;
+            }
         }
 
         public Sprint(Guid projectId, string name, DateTime startDate, DateTime endDate, string description)
@@ -48,7 +56,15 @@ namespace SprintManager.Domain.Entities
             StartDate = startDate.ToUniversalTime();
             EndDate = endDate.ToUniversalTime();
             Description = description;
-            Status = SprintStatus.Planned;
+
+            if (startDate > DateTime.UtcNow)
+            {
+                Status = SprintStatus.Planned;
+            }
+            else
+            {
+                Status = SprintStatus.Active;
+            }
         }
 
         // Update sprint's name
@@ -66,6 +82,15 @@ namespace SprintManager.Domain.Entities
             if (startDate > EndDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {EndDate.ToString("dd/MM/yyyy")}");
 
             StartDate = startDate.ToUniversalTime();
+
+            if (startDate > DateTime.UtcNow)
+            {
+                SetStatus(SprintStatus.Planned);
+            }
+            else
+            {
+                SetStatus(SprintStatus.Active);
+            }
         }
 
         // Update sprint's end date
