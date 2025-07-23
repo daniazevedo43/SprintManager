@@ -27,7 +27,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(List<ProjectDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProjectById(Guid id)
         {
