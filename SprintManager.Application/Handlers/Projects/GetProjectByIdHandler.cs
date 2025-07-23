@@ -24,7 +24,7 @@ namespace SprintManager.Application.Handlers.Projects
 
             if (project == null)
             {
-                throw new SprintManagerNotFoundException($"Project with ID {request.Id} not found");
+                throw new SprintManagerNotFoundException($"Project with ID {request.Id} not found.");
             }
 
             return _mapper.Map<ProjectDTO>(project);
