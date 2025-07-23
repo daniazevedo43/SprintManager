@@ -6,7 +6,6 @@ using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Sprints;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
-using SprintManager.Domain.Enums;
 
 namespace SprintManager.Application.Tests.SprintTests
 {
@@ -35,8 +34,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 ProjectId = Guid.NewGuid(),
                 Name = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
-                EndDate = new DateTime(2025, 1, 20),
-                Status = SprintStatus.Active
+                EndDate = new DateTime(2025, 1, 20)
             };
 
             var sprint = new Sprint(command.ProjectId, command.Name, command.StartDate, command.EndDate);
@@ -64,6 +62,7 @@ namespace SprintManager.Application.Tests.SprintTests
             Assert.Equal(sprintDTO.Name, result.Name);
             Assert.Equal(sprintDTO.StartDate, result.StartDate);
             Assert.Equal(sprintDTO.EndDate, result.EndDate);
+            Assert.Null(result.Description);
             Assert.Equal(sprintDTO.Status, result.Status);
 
             // Ensure GetByNameAsync was called exactly once.
@@ -86,8 +85,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Name = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
-                Description = "Project setup and authentication",
-                Status = SprintStatus.Active
+                Description = "Project setup and authentication"
             };
 
             var sprint = new Sprint(command.ProjectId, command.Name, command.StartDate, command.EndDate, command.Description);
@@ -139,8 +137,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Name = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
-                Description = "Project setup and authentication",
-                Status = SprintStatus.Active
+                Description = "Project setup and authentication"
             };
 
             var sprint = new Sprint(command.ProjectId, command.Name, command.StartDate, command.EndDate);
