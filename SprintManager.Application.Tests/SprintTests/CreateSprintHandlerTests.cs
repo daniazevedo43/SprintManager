@@ -127,7 +127,7 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockMapper.Verify(m => m.Map<SprintDTO>(sprint), Times.Once);
         }
 
-        //// Test exception throwing when a project already exists
+        // Test exception throwing when a project already exists
         [Fact]
         public async Task VerifySprintName_ThrowsException_WhenSprintNameAlreadyExists()
         {
