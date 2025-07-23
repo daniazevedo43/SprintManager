@@ -24,7 +24,7 @@ namespace SprintManager.Application.Handlers.Sprints
 
             if (sprint == null)
             {
-                throw new SprintManagerNotFoundException($"Sprint with ID {request.Id} not found");
+                throw new SprintManagerNotFoundException($"Sprint with ID {request.Id} not found.");
             }
 
             return _mapper.Map<SprintDTO>(sprint);
