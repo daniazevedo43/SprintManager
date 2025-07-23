@@ -97,7 +97,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Sprint(Guid.Empty, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 
@@ -111,7 +111,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Sprint(Guid.NewGuid(), name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 

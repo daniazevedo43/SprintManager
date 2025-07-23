@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SprintManager.Application.Commands.Sprints;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Queries.Sprints;
 
@@ -33,6 +34,17 @@ namespace SprintManager.API.Controllers
             var result = await _mediator.Send(new GetSprintByIdQuery { Id = id });
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(SprintDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> CreateSprint(CreateSprintCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return CreatedAtAction(nameof(GetSprintById), new { id = result.Id }, result);
         }
     }
 }
