@@ -65,7 +65,7 @@ namespace SprintManager.Application.Tests.SprintTests
             Assert.Null(result.Description);
             Assert.Equal(sprintDTO.Status, result.Status);
 
-            // Ensure GetByNameAsync was called exactly once.
+            // Ensure GetByProjectIdAndNameAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name), Times.Once);
 
             // Ensure AddAsync was called exactly once.
@@ -117,7 +117,7 @@ namespace SprintManager.Application.Tests.SprintTests
             Assert.Equal(sprintDTO.Description, result.Description);
             Assert.Equal(sprintDTO.Status, result.Status);
 
-            // Ensure GetByNameAsync was called exactly once.
+            // Ensure GetByProjectIdAndNameAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name), Times.Once);
 
             // Ensure AddAsync was called exactly once.
@@ -151,7 +151,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             Assert.Equal($"A sprint called '{command.Name}' already exists in this project.", exception.Message);
 
-            // Ensure GetByNameAsync was called exactly once.
+            // Ensure GetByProjectIdAndNameAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name), Times.Once);
         }
     }
