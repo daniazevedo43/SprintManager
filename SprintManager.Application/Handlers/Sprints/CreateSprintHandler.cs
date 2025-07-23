@@ -21,11 +21,11 @@ namespace SprintManager.Application.Handlers.Sprints
 
         public async Task<SprintDTO> Handle(CreateSprintCommand request, CancellationToken cancellationToken)
         {
-            var existingSprint = await _sprintRepository.GetByNameAsync(request.Name);
+            var existingSprint = await _sprintRepository.GetByProjectIdAndNameAsync(request.ProjectId, request.Name);
 
             if (existingSprint != null)
             {
-                throw new SprintManagerConflictException($"A sprint called '{request.Name}' already exists.");
+                throw new SprintManagerConflictException($"A sprint called '{request.Name}' already exists in this project.");
             }
 
             if (string.IsNullOrWhiteSpace(request.Description))

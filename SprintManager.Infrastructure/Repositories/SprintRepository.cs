@@ -24,9 +24,10 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.Sprints.FindAsync(id);
         }
 
-        public async Task<Sprint?> GetByNameAsync(string name)
+        public async Task<Sprint?> GetByProjectIdAndNameAsync(Guid projectId, string name)
         {
-            return await _context.Sprints.FirstOrDefaultAsync(s => s.Name == name);
+            return await _context.Sprints
+                .FirstOrDefaultAsync(s => s.ProjectId == projectId && s.Name == name);
         }
 
         public async Task AddAsync(Sprint sprint)
