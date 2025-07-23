@@ -24,5 +24,15 @@ namespace SprintManager.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(SprintDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetSprintById(Guid id)
+        {
+            var result = await _mediator.Send(new GetSprintByIdQuery { Id = id });
+
+            return Ok(result);
+        }
     }
 }
