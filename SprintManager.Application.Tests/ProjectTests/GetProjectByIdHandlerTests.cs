@@ -42,10 +42,10 @@ namespace SprintManager.Application.Tests.ProjectTests
                 Status = project.Status 
             };
 
-            // Repository's Mock configuration
+            // Repository's mock configuration
             _mockProjectRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(project);
 
-            // Mapper's Mock configuration
+            // Mapper's mock configuration
             _mockMapper.Setup(m => m.Map<ProjectDTO>(project)).Returns(projectDTO);
 
             var result = await _handler.Handle(query, CancellationToken.None);
