@@ -76,7 +76,7 @@ namespace SprintManager.Application.Tests.ProjectTests
                 () => _handler.Handle(query, CancellationToken.None)
             );
 
-            Assert.Equal($"Project with ID {query.Id} was not found", exception.Message);
+            Assert.Equal($"Project with ID {query.Id} not found.", exception.Message);
         }
     }
 }
