@@ -42,9 +42,9 @@ namespace SprintManager.Infrastructure.Repositories
         {
             if (sprint != null)
             {
-                var existingSprint = GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name);
+                var existingSprint = await GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name);
                 
-                if(existingSprint == null) throw new SprintManagerConflictException($"A sprint called '{sprint.Name}' already exists.");
+                if (existingSprint != null) throw new SprintManagerConflictException($"A sprint called '{sprint.Name}' already exists.");
 
                 _context.Sprints.Update(sprint);
             }
