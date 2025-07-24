@@ -9,6 +9,5 @@ namespace SprintManager.Application.Interfaces
         Task<Sprint?> GetByProjectIdAndNameAsync(Guid projectId, string name);
         Task AddAsync(Sprint sprint);
         Task UpdateAsync(Sprint? sprint);
-
     }
 } 
