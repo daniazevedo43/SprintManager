@@ -83,15 +83,6 @@ namespace SprintManager.Domain.Entities
 
             StartDate = startDate.ToUniversalTime();
             EndDate = endDate.ToUniversalTime();
-
-            if (startDate > DateTime.UtcNow)
-            {
-                SetStatus(SprintStatus.Planned);
-            }
-            else
-            {
-                SetStatus(SprintStatus.Active);
-            }
         }
 
         // Update sprint's description
