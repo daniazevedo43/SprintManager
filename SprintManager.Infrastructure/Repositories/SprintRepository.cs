@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
