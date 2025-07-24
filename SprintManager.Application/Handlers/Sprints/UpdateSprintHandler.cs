@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediatR;
 using SprintManager.Application.Commands.Sprints;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
@@ -6,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Sprints
 {
-    public class UpdateSprintHandler
+    public class UpdateSprintHandler : IRequestHandler<UpdateSprintCommand, SprintDTO>
     {
         private readonly ISprintRepository _sprintRepository;
         private readonly IMapper _mapper;
@@ -27,8 +28,7 @@ namespace SprintManager.Application.Handlers.Sprints
             }
 
             sprint.SetName(request.Name);
-            sprint.SetStartDate(request.StartDate);
-            sprint.SetEndDate(request.EndDate);
+            sprint.SetDates(request.StartDate, request.EndDate);
             sprint.SetDescription(request.Description);
             sprint.SetStatus(request.Status);
 

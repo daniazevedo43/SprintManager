@@ -76,12 +76,13 @@ namespace SprintManager.Domain.Entities
             Name = name;
         }
 
-        // Update sprint's start date
-        public void SetStartDate(DateTime startDate)
+        // Update sprint's start date and end date
+        public void SetDates(DateTime startDate, DateTime endDate)
         {
-            if (startDate > EndDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {EndDate.ToString("dd/MM/yyyy")}");
+            if (startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {endDate.ToString("dd/MM/yyyy")}");
 
             StartDate = startDate.ToUniversalTime();
+            EndDate = endDate.ToUniversalTime();
 
             if (startDate > DateTime.UtcNow)
             {
@@ -93,18 +94,10 @@ namespace SprintManager.Domain.Entities
             }
         }
 
-        // Update sprint's end date
-        public void SetEndDate(DateTime endDate)
-        {
-            if (StartDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {StartDate.ToString("dd/MM/yyyy")} is higher than end date {endDate.ToString("dd/MM/yyyy")}");
-
-            EndDate = endDate.ToUniversalTime();
-        }
-
         // Update sprint's description
         public void SetDescription(string? description)
         {
-            if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
+            if (description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 
             Description = description;
         }
