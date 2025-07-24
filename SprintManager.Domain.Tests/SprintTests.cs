@@ -49,25 +49,15 @@ namespace SprintManager.Domain.Tests
             Assert.Equal("Sprint 2", sprint.Name);
         }
 
-        // Test start date change
+        // Test start date and end date change
         [Fact]
         public void SetStartDate_UpdatesStartDateSuccessfully()
         {
             var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
-            sprint.SetStartDate(new DateTime(2025, 7, 8));
+            sprint.SetDates(new DateTime(2025, 7, 8), new DateTime(2025, 7, 22));
 
             Assert.Equal(new DateTime(2025, 7, 8).ToUniversalTime(), sprint.StartDate);
-        }
-
-        // Test end date change
-        [Fact]
-        public void SetEndDate_UpdatesEndDateSuccessfully()
-        {
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
-
-            sprint.SetEndDate(new DateTime(2025, 7, 22));
-
             Assert.Equal(new DateTime(2025, 7, 22).ToUniversalTime(), sprint.EndDate);
         }
 

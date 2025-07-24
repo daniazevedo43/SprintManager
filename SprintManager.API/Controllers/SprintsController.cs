@@ -46,5 +46,22 @@ namespace SprintManager.API.Controllers
 
             return CreatedAtAction(nameof(GetSprintById), new { id = result.Id }, result);
         }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(SprintDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> UpdateSprint(Guid id, UpdateSprintCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("The URL's ID doesn't match the request body's ID");
+            }
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
+        }
     }
 }

@@ -1,0 +1,102 @@
+﻿using AutoMapper;
+using Moq;
+using SprintManager.Application.Commands.Sprints;
+using SprintManager.Application.DTOs;
+using SprintManager.Application.Handlers.Sprints;
+using SprintManager.Application.Interfaces;
+using SprintManager.Domain.Entities;
+using SprintManager.Domain.Enums;
+using SprintManager.Exceptions.ExceptionsBase;
+
+namespace SprintManager.Application.Tests.SprintTests
+{
+    public class UpdateSprintHandlerTests
+    {
+        private readonly Mock<ISprintRepository> _mockSprintRepository;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly UpdateSprintHandler _handler;
+
+        public UpdateSprintHandlerTests()
+        {
+            // Initialize mocks for each test
+            _mockSprintRepository = new Mock<ISprintRepository>();
+            _mockMapper = new Mock<IMapper>();
+
+            // Initialize hanlder injecting the mocks
+            _handler = new UpdateSprintHandler(_mockSprintRepository.Object, _mockMapper.Object);
+        }
+
+        // Test handler
+        [Fact]
+        public async Task Handle_GivenValidId_UpdatesSprint_ReturnsSprintDTO()
+        {
+            var command = new UpdateSprintCommand
+            {
+                Id = Guid.NewGuid(),
+                Name = "Sprint 1",
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 20),
+                Description = "Forum where users can share recipes",
+                Status = SprintStatus.Active
+            };
+
+            var sprint = new Sprint(Guid.NewGuid(), command.Name, command.StartDate, command.EndDate, command.Description);
+            var sprintDTO = new SprintDTO
+            {
+                Id = sprint.Id,
+                ProjectId = sprint.ProjectId,
+                Name = sprint.Name,
+                StartDate = sprint.StartDate,
+                EndDate = sprint.EndDate,
+                Description = sprint.Description,
+                Status = sprint.Status
+            };
+
+            // Repositories mock configuration
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(sprint);
+            _mockSprintRepository.Setup(r => r.UpdateAsync(sprint));
+
+            // Mapper's mock configuration
+            _mockMapper.Setup(mapper => mapper.Map<SprintDTO>(sprint)).Returns(sprintDTO);
+
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            Assert.Equal(sprintDTO.Id, result.Id);
+            Assert.Equal(sprintDTO.Name, result.Name);
+            Assert.Equal(sprintDTO.StartDate, result.StartDate);
+            Assert.Equal(sprintDTO.EndDate, result.EndDate);
+            Assert.Equal(sprintDTO.Description, result.Description);
+            Assert.Equal(sprintDTO.Status, result.Status);
+
+            // Ensure GetByIdAsync was called exactly once with the correct ID.
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
+
+            // Ensure UpdateAsync was called exactly once with the modified project.
+            _mockSprintRepository.Verify(r => r.UpdateAsync(sprint), Times.Once);
+
+            // Ensure the mapper's Map was called exactly once with the modified project.
+            _mockMapper.Verify(m => m.Map<SprintDTO>(sprint), Times.Once);
+        }
+
+        // Test exception throwing when sprint is not found
+        [Fact]
+        public async Task VerifySprint_ThrowsException_WhenSprintIsNotFound()
+        {
+            var command = new UpdateSprintCommand
+            {
+                Id = Guid.NewGuid(),
+                Name = "Sprint 1",
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 20),
+                Description = "Forum where users can share recipes",
+                Status = SprintStatus.Active
+            };
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Sprint with ID {command?.Id} not found.", exception.Message);
+        }
+    }
+}

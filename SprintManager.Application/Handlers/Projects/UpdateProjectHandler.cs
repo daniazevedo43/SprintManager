@@ -4,7 +4,6 @@ using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
-using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Projects
@@ -25,10 +24,7 @@ namespace SprintManager.Application.Handlers.Projects
             var project = await _projectRepository.GetByIdAsync(request.Id);
             var existingProject = await _projectRepository.GetByNameAsync(request.Name);
 
-            if (project == null)
-            {
-                throw new SprintManagerNotFoundException($"Project with ID {request?.Id} not found");
-            }
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request?.Id} not found");
 
             if (existingProject != null && project.Name != request.Name)
             {
