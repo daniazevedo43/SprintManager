@@ -56,7 +56,7 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(sprint);
             _mockSprintRepository.Setup(r => r.UpdateAsync(sprint));
 
-            // Mapper's Mock configuration
+            // Mapper's mock configuration
             _mockMapper.Setup(mapper => mapper.Map<SprintDTO>(sprint)).Returns(sprintDTO);
 
             var result = await _handler.Handle(command, CancellationToken.None);
