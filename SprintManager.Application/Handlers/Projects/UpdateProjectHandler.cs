@@ -4,7 +4,6 @@ using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
-using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Projects
