@@ -102,7 +102,7 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update sprint's description
-        public void SetDescription(string description)
+        public void SetDescription(string? description)
         {
             if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 

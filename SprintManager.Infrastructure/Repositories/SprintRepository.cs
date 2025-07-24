@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
+using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Infrastructure.Data;
@@ -33,6 +35,20 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task AddAsync(Sprint sprint)
         {
             await _context.Sprints.AddAsync(sprint);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Sprint? sprint)
+        {
+            if (sprint != null)
+            {
+                var existingSprint = GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name);
+                
+                if(existingSprint == null) throw new SprintManagerConflictException($"A sprint called '{sprint.Name}' already exists.");
+
+                _context.Sprints.Update(sprint);
+            }
+            
             await _context.SaveChangesAsync();
         }
     }
