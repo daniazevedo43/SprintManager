@@ -64,5 +64,11 @@ namespace SprintManager.Infrastructure.Repositories
             
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(Sprint sprint)
+        {
+            _context.Sprints.Remove(sprint);
+            await _context.SaveChangesAsync();
+        }
     }
 }
