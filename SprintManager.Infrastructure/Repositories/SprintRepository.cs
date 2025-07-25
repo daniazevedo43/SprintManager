@@ -22,7 +22,7 @@ namespace SprintManager.Infrastructure.Repositories
                 .OrderBy(s => s.Project)
                 .ToListAsync();
         }
-        //COMMIT TEST
+        
         public async Task<Sprint?> GetByIdAsync(Guid id)
         {
             return await _context.Sprints
