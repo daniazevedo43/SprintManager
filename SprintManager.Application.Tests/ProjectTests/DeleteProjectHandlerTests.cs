@@ -12,7 +12,6 @@ namespace SprintManager.Application.Tests.ProjectTests
         private readonly Mock<IProjectRepository> _mockProjectRepository;
         private readonly DeleteProjectHandler _handler;
 
-
         public DeleteProjectHandlerTests()
         {
             // Initialize mock for each test
