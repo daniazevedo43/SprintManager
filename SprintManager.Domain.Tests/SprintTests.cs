@@ -15,7 +15,7 @@ namespace SprintManager.Domain.Tests
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
             Assert.Equal(projectId, sprint.ProjectId);
-            Assert.Equal("Sprint 1", sprint.Name);
+            Assert.Equal("Sprint 1", sprint.SprintName);
             Assert.Equal(new DateTime(2025, 7, 7).ToUniversalTime(), sprint.StartDate);
             Assert.Equal(new DateTime(2025, 7, 21).ToUniversalTime(), sprint.EndDate);
             Assert.Null(sprint.Description);
@@ -31,7 +31,7 @@ namespace SprintManager.Domain.Tests
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
             Assert.Equal(projectId, sprint.ProjectId);
-            Assert.Equal("Sprint 1", sprint.Name);
+            Assert.Equal("Sprint 1", sprint.SprintName);
             Assert.Equal(new DateTime(2025, 7, 7).ToUniversalTime(), sprint.StartDate);
             Assert.Equal(new DateTime(2025, 7, 21).ToUniversalTime(), sprint.EndDate);
             Assert.Equal("Description 1", sprint.Description);
@@ -40,13 +40,13 @@ namespace SprintManager.Domain.Tests
 
         // Test sprint's name change
         [Fact]
-        public void SetName_UpdatesNameSuccessfully()
+        public void SetSprintName_UpdatesNameSuccessfully()
         {
             var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
-            sprint.SetName("Sprint 2");
+            sprint.SetSprintName("Sprint 2");
 
-            Assert.Equal("Sprint 2", sprint.Name);
+            Assert.Equal("Sprint 2", sprint.SprintName);
         }
 
         // Test start date and end date change
@@ -105,7 +105,7 @@ namespace SprintManager.Domain.Tests
                 new Sprint(Guid.NewGuid(), name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 
-            Assert.Equal("Sprint's name can't be null or empty. (Parameter 'name')", exception.Message);
+            Assert.Equal("Sprint's name can't be null or empty. (Parameter 'sprintName')", exception.Message);
         }
 
         // Test exception throwing when sprint's name is too long
@@ -118,7 +118,7 @@ namespace SprintManager.Domain.Tests
                 new Sprint(Guid.NewGuid(), name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 
-            Assert.Equal($"Sprint's name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
+            Assert.Equal($"Sprint's name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'sprintName')", exception.Message);
         }
 
         // Test exception throwing when start date is higher than end date

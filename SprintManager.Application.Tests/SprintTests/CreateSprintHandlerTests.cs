@@ -32,24 +32,24 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                Name = "Sprint 1",
+                SprintName = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20)
             };
 
-            var sprint = new Sprint(command.ProjectId, command.Name, command.StartDate, command.EndDate);
+            var sprint = new Sprint(command.ProjectId, command.SprintName, command.StartDate, command.EndDate);
             var sprintDTO = new SprintDTO
             {
                 Id = sprint.Id,
                 ProjectId = sprint.ProjectId,
-                Name = sprint.Name,
+                SprintName = sprint.SprintName,
                 StartDate = sprint.StartDate,
                 EndDate = sprint.EndDate,
                 Status = sprint.Status
             };
 
             // Repositories mock configuration
-            _mockSprintRepository.Setup(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name)).ReturnsAsync((Sprint?)null);
+            _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName)).ReturnsAsync((Sprint?)null);
             _mockSprintRepository.Setup(r => r.AddAsync(It.IsAny<Sprint>())).Callback<Sprint>(s => sprint = s);
 
             // Mapper's mock configuration
@@ -59,14 +59,14 @@ namespace SprintManager.Application.Tests.SprintTests
 
             Assert.Equal(sprintDTO.Id, result.Id);
             Assert.Equal(sprintDTO.ProjectId, result.ProjectId);
-            Assert.Equal(sprintDTO.Name, result.Name);
+            Assert.Equal(sprintDTO.SprintName, result.SprintName);
             Assert.Equal(sprintDTO.StartDate, result.StartDate);
             Assert.Equal(sprintDTO.EndDate, result.EndDate);
             Assert.Null(result.Description);
             Assert.Equal(sprintDTO.Status, result.Status);
 
             // Ensure GetByProjectIdAndNameAsync was called exactly once.
-            _mockSprintRepository.Verify(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.AddAsync(sprint), Times.Once);
@@ -82,18 +82,18 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                Name = "Sprint 1",
+                SprintName = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
                 Description = "Project setup and authentication"
             };
 
-            var sprint = new Sprint(command.ProjectId, command.Name, command.StartDate, command.EndDate, command.Description);
+            var sprint = new Sprint(command.ProjectId, command.SprintName, command.StartDate, command.EndDate, command.Description);
             var sprintDTO = new SprintDTO
             {
                 Id = sprint.Id,
                 ProjectId = sprint.ProjectId,
-                Name = sprint.Name,
+                SprintName = sprint.SprintName,
                 StartDate = sprint.StartDate,
                 EndDate = sprint.EndDate,
                 Description = sprint.Description,
@@ -101,7 +101,7 @@ namespace SprintManager.Application.Tests.SprintTests
             };
 
             // Repositories mock configuration
-            _mockSprintRepository.Setup(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name)).ReturnsAsync((Sprint?)null);
+            _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName)).ReturnsAsync((Sprint?)null);
             _mockSprintRepository.Setup(r => r.AddAsync(It.IsAny<Sprint>())).Callback<Sprint>(s => sprint = s);
 
             // Mapper's mock configuration
@@ -111,14 +111,14 @@ namespace SprintManager.Application.Tests.SprintTests
 
             Assert.Equal(sprintDTO.Id, result.Id);
             Assert.Equal(sprintDTO.ProjectId, result.ProjectId);
-            Assert.Equal(sprintDTO.Name, result.Name);
+            Assert.Equal(sprintDTO.SprintName, result.SprintName);
             Assert.Equal(sprintDTO.StartDate, result.StartDate);
             Assert.Equal(sprintDTO.EndDate, result.EndDate);
             Assert.Equal(sprintDTO.Description, result.Description);
             Assert.Equal(sprintDTO.Status, result.Status);
 
             // Ensure GetByProjectIdAndNameAsync was called exactly once.
-            _mockSprintRepository.Verify(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.AddAsync(sprint), Times.Once);
@@ -134,25 +134,25 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                Name = "Sprint 1",
+                SprintName = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
                 Description = "Project setup and authentication"
             };
 
-            var sprint = new Sprint(command.ProjectId, command.Name, command.StartDate, command.EndDate);
+            var sprint = new Sprint(command.ProjectId, command.SprintName, command.StartDate, command.EndDate);
 
             // Repository's mock configuration
-            _mockSprintRepository.Setup(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name)).ReturnsAsync(sprint);
+            _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName)).ReturnsAsync(sprint);
 
             var exception = await Assert.ThrowsAsync<SprintManagerConflictException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"A sprint called '{command.Name}' already exists in this project.", exception.Message);
+            Assert.Equal($"A sprint called '{command.SprintName}' already exists in this project.", exception.Message);
 
             // Ensure GetByProjectIdAndNameAsync was called exactly once.
-            _mockSprintRepository.Verify(r => r.GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName), Times.Once);
         }
     }
 }

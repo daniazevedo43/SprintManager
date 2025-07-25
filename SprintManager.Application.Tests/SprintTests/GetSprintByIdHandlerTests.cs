@@ -40,7 +40,7 @@ namespace SprintManager.Application.Tests.SprintTests
             {
                 Id = sprint.Id,
                 ProjectId = sprint.ProjectId,
-                Name = sprint.Name,
+                SprintName = sprint.SprintName,
                 StartDate = sprint.StartDate,
                 EndDate = sprint.EndDate,
                 Status = sprint.Status,
@@ -56,7 +56,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             Assert.Equal(sprintDTO.Id, result.Id);
             Assert.Equal(sprintDTO.ProjectId, result.ProjectId);
-            Assert.Equal(sprintDTO.Name, result.Name);
+            Assert.Equal(sprintDTO.SprintName, result.SprintName);
             Assert.Equal(sprintDTO.StartDate, result.StartDate);
             Assert.Equal(sprintDTO.EndDate, result.EndDate);
             Assert.Equal(sprintDTO.Status, result.Status);

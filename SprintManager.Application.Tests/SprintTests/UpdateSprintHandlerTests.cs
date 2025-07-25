@@ -33,19 +33,19 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new UpdateSprintCommand
             {
                 Id = Guid.NewGuid(),
-                Name = "Sprint 1",
+                SprintName = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
                 Description = "Forum where users can share recipes",
                 Status = SprintStatus.Active
             };
 
-            var sprint = new Sprint(Guid.NewGuid(), command.Name, command.StartDate, command.EndDate, command.Description);
+            var sprint = new Sprint(Guid.NewGuid(), command.SprintName, command.StartDate, command.EndDate, command.Description);
             var sprintDTO = new SprintDTO
             {
                 Id = sprint.Id,
                 ProjectId = sprint.ProjectId,
-                Name = sprint.Name,
+                SprintName = sprint.SprintName,
                 StartDate = sprint.StartDate,
                 EndDate = sprint.EndDate,
                 Description = sprint.Description,
@@ -62,7 +62,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.Equal(sprintDTO.Id, result.Id);
-            Assert.Equal(sprintDTO.Name, result.Name);
+            Assert.Equal(sprintDTO.SprintName, result.SprintName);
             Assert.Equal(sprintDTO.StartDate, result.StartDate);
             Assert.Equal(sprintDTO.EndDate, result.EndDate);
             Assert.Equal(sprintDTO.Description, result.Description);
@@ -85,7 +85,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new UpdateSprintCommand
             {
                 Id = Guid.NewGuid(),
-                Name = "Sprint 1",
+                SprintName = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
                 Description = "Forum where users can share recipes",
