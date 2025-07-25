@@ -13,7 +13,7 @@ namespace SprintManager.Infrastructure.Configurations
             builder.Property(s => s.ProjectId)
                 .IsRequired();
 
-            builder.Property(s => s.Name)
+            builder.Property(s => s.SprintName)
                 .HasMaxLength(255)
                 .IsRequired();
 

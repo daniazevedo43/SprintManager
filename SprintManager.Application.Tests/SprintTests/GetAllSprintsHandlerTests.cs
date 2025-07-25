@@ -42,7 +42,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 {
                     Id = sprints[0].Id,
                     ProjectId = sprints[0].ProjectId,
-                    Name = sprints[0].Name,
+                    SprintName = sprints[0].SprintName,
                     StartDate = sprints[0].StartDate,
                     EndDate = sprints[0].EndDate,
                     Status = sprints[0].Status,
@@ -51,7 +51,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 {
                     Id = sprints[1].Id,
                     ProjectId = sprints[1].ProjectId,
-                    Name = sprints[1].Name,
+                    SprintName = sprints[1].SprintName,
                     StartDate = sprints[1].StartDate,
                     EndDate = sprints[1].EndDate,
                     Status = sprints[1].Status,
@@ -70,7 +70,7 @@ namespace SprintManager.Application.Tests.SprintTests
             {
                 Assert.Equal(sprintsDTOs[i].Id, result[i].Id);
                 Assert.Equal(sprintsDTOs[i].ProjectId, result[i].ProjectId);
-                Assert.Equal(sprintsDTOs[i].Name, result[i].Name);
+                Assert.Equal(sprintsDTOs[i].SprintName, result[i].SprintName);
                 Assert.Equal(sprintsDTOs[i].StartDate, result[i].StartDate);
                 Assert.Equal(sprintsDTOs[i].EndDate, result[i].EndDate);
                 Assert.Equal(sprintsDTOs[i].Description, result[i].Description);

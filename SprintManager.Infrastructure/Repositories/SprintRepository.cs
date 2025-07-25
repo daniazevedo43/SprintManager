@@ -17,18 +17,24 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task<List<Sprint>> GetAllAsync()
         {
-            return await _context.Sprints.OrderBy(s => s.Name).ToListAsync();
+            return await _context.Sprints
+                .Include(s => s.Project)
+                .OrderBy(s => s.Project)
+                .ToListAsync();
         }
 
         public async Task<Sprint?> GetByIdAsync(Guid id)
         {
-            return await _context.Sprints.FindAsync(id);
+            return await _context.Sprints
+                .Include(s => s.Project)
+                .Select(s => s)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<Sprint?> GetByProjectIdAndNameAsync(Guid projectId, string name)
+        public async Task<Sprint?> GetByProjectIdAndSprintNameAsync(Guid projectId, string sprintName)
         {
             return await _context.Sprints
-                .FirstOrDefaultAsync(s => s.ProjectId == projectId && s.Name == name);
+                .FirstOrDefaultAsync(s => s.ProjectId == projectId && s.SprintName == sprintName);
         }
 
         public async Task AddAsync(Sprint sprint)
@@ -41,17 +47,17 @@ namespace SprintManager.Infrastructure.Repositories
         {
             if (sprint != null)
             {
-                var existingSprint = await GetByProjectIdAndNameAsync(sprint.ProjectId, sprint.Name);
+                var existingSprint = await GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName);
 
                 var remainingSprints = await _context.Sprints
                     .Where(s => s.Id != sprint.Id &&
                                 s.ProjectId == sprint.ProjectId &&
-                                s.Name == sprint.Name)
+                                s.SprintName == sprint.SprintName)
                     .Select(s => s)
                     .ToListAsync();
 
 
-                if (remainingSprints.Count > 0) throw new SprintManagerConflictException($"A sprint called '{sprint.Name}' already exists.");
+                if (remainingSprints.Count > 0) throw new SprintManagerConflictException($"A sprint called '{sprint.SprintName}' already exists.");
 
                 _context.Sprints.Update(sprint);
             }

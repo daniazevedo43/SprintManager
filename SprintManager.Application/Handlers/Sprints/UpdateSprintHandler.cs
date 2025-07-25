@@ -27,7 +27,7 @@ namespace SprintManager.Application.Handlers.Sprints
                 throw new SprintManagerNotFoundException($"Sprint with ID {request?.Id} not found.");
             }
 
-            sprint.SetName(request.Name);
+            sprint.SetSprintName(request.SprintName);
             sprint.SetDates(request.StartDate, request.EndDate);
             sprint.SetDescription(request.Description);
             sprint.SetStatus(request.Status);

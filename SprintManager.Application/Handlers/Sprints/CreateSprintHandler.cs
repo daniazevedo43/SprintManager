@@ -21,22 +21,22 @@ namespace SprintManager.Application.Handlers.Sprints
 
         public async Task<SprintDTO> Handle(CreateSprintCommand request, CancellationToken cancellationToken)
         {
-            var existingSprint = await _sprintRepository.GetByProjectIdAndNameAsync(request.ProjectId, request.Name);
+            var existingSprint = await _sprintRepository.GetByProjectIdAndSprintNameAsync(request.ProjectId, request.SprintName);
 
             if (existingSprint != null)
             {
-                throw new SprintManagerConflictException($"A sprint called '{request.Name}' already exists in this project.");
+                throw new SprintManagerConflictException($"A sprint called '{request.SprintName}' already exists in this project.");
             }
 
             if (string.IsNullOrWhiteSpace(request.Description))
             {
-                var sprint = new Sprint(request.ProjectId, request.Name, request.StartDate, request.EndDate);
+                var sprint = new Sprint(request.ProjectId, request.SprintName, request.StartDate, request.EndDate);
                 await _sprintRepository.AddAsync(sprint);
                 return _mapper.Map<SprintDTO>(sprint);
             }
             else
             {
-                var sprint = new Sprint(request.ProjectId, request.Name, request.StartDate, request.EndDate, request.Description);
+                var sprint = new Sprint(request.ProjectId, request.SprintName, request.StartDate, request.EndDate, request.Description);
                 await _sprintRepository.AddAsync(sprint);
                 return _mapper.Map<SprintDTO>(sprint);
             }

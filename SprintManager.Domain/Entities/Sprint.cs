@@ -7,7 +7,7 @@ namespace SprintManager.Domain.Entities
     {
         public Guid Id { get; private set; }
         public Guid ProjectId { get; private set; }
-        public string Name { get; private set; }
+        public string SprintName { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public string? Description { get; private set; }
@@ -19,16 +19,16 @@ namespace SprintManager.Domain.Entities
 
         }
         
-        public Sprint(Guid projectId, string name, DateTime startDate, DateTime endDate)
+        public Sprint(Guid projectId, string sprintName, DateTime startDate, DateTime endDate)
         {
             if (projectId == Guid.Empty) throw new ArgumentNullException(nameof(projectId), "Project ID can't be null or empty.");
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Sprint's name can't be null or empty.");
+            if (string.IsNullOrWhiteSpace(sprintName)) throw new ArgumentNullException(nameof(sprintName), "Sprint's name can't be null or empty.");
             if (startDate > endDate) throw new SprintManagerInvalidDateRangeException($"Start date {startDate.ToString("dd/MM/yyyy")} is higher than end date {endDate.ToString("dd/MM/yyyy")}");
-            if (name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
+            if (sprintName.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, sprintName.Length, nameof(sprintName));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
-            Name = name;
+            SprintName = sprintName;
             StartDate = startDate.ToUniversalTime();
             EndDate = endDate.ToUniversalTime();
             
@@ -52,7 +52,7 @@ namespace SprintManager.Domain.Entities
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
-            Name = name;
+            SprintName = name;
             StartDate = startDate.ToUniversalTime();
             EndDate = endDate.ToUniversalTime();
             Description = description;
@@ -68,12 +68,12 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update sprint's name
-        public void SetName(string name)
+        public void SetSprintName(string sprintName)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Sprint's name can't be null or empty.");
-            if (name.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, name.Length, nameof(name));
+            if (string.IsNullOrWhiteSpace(sprintName)) throw new ArgumentNullException(nameof(sprintName), "Sprint's name can't be null or empty.");
+            if (sprintName.Length > 255) throw new SprintManagerTooLongException("Sprint's name is too long.", 255, sprintName.Length, nameof(sprintName));
 
-            Name = name;
+            SprintName = sprintName;
         }
 
         // Update sprint's start date and end date
