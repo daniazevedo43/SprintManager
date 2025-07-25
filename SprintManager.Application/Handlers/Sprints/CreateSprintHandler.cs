@@ -23,10 +23,7 @@ namespace SprintManager.Application.Handlers.Sprints
         {
             var existingSprint = await _sprintRepository.GetByProjectIdAndSprintNameAsync(request.ProjectId, request.SprintName);
 
-            if (existingSprint != null)
-            {
-                throw new SprintManagerConflictException($"A sprint called '{request.SprintName}' already exists in this project.");
-            }
+            if (existingSprint != null) throw new SprintManagerConflictException($"A sprint called '{request.SprintName}' already exists in this project.");
 
             if (string.IsNullOrWhiteSpace(request.Description))
             {

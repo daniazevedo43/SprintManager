@@ -26,10 +26,7 @@ namespace SprintManager.Application.Handlers.Projects
 
             if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request?.Id} not found");
 
-            if (existingProject != null && project.Name != request.Name)
-            {
-                throw new SprintManagerConflictException($"A project called '{request.Name}' already exists.");
-            }
+            if (existingProject != null && project.Name != request.Name) throw new SprintManagerConflictException($"A project called '{request.Name}' already exists.");
 
             project.SetName(request.Name);
             project.SetDescription(request.Description);

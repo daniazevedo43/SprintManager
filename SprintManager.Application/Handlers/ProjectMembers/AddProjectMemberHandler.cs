@@ -23,10 +23,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
         {
             var existingProjectMember = await _projectMemberRepository.GetByUserAndProjectIdAsync(request.UserId, request.ProjectId);
 
-            if(existingProjectMember != null)
-            {
-                throw new SprintManagerConflictException($"A user with ID {request.UserId} is already assigned to a project with ID {request.ProjectId}.");
-            }
+            if (existingProjectMember != null) throw new SprintManagerConflictException($"A user with ID {request.UserId} is already assigned to a project with ID {request.ProjectId}.");
 
             var projectMember = new ProjectMember(request.ProjectId, request.UserId, request.Role);
             

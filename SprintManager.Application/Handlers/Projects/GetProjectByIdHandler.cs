@@ -22,10 +22,7 @@ namespace SprintManager.Application.Handlers.Projects
         {
             var project = await _projectRepository.GetByIdAsync(request.Id);
 
-            if (project == null)
-            {
-                throw new SprintManagerNotFoundException($"Project with ID {request.Id} not found.");
-            }
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.Id} not found.");
 
             return _mapper.Map<ProjectDTO>(project);
         }

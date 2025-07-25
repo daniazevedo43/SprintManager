@@ -22,10 +22,7 @@ namespace SprintManager.Application.Handlers.Users
         {
             var user = await _userRepository.GetByIdAsync(request.Id);
 
-            if (user == null)
-            {
-                throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
-            }
+            if (user == null) throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
 
             return _mapper.Map<UserDTO>(user);
         }
