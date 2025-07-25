@@ -23,10 +23,7 @@ namespace SprintManager.Application.Handlers.Users
         {
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
-            if (existingUser != null)
-            {
-                throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
-            }
+            if (existingUser != null) throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
 
             var user = new User(request.Name, request.Email, request.Password);
 

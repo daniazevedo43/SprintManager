@@ -18,10 +18,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
         {
             var projectMember = await _projectMemberRepository.GetByIdAsync(request.Id);
 
-            if (projectMember == null)
-            {
-                throw new SprintManagerNotFoundException($"There's no relationship between a user and a project with ID {request.Id}.");
-            }
+            if (projectMember == null) throw new SprintManagerNotFoundException($"There's no relationship between a user and a project with ID {request.Id}.");
 
             await _projectMemberRepository.DeleteAsync(projectMember);
         }

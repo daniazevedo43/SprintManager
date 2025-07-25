@@ -22,10 +22,7 @@ namespace SprintManager.Application.Handlers.Sprints
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.Id);
 
-            if (sprint == null)
-            {
-                throw new SprintManagerNotFoundException($"Sprint with ID {request.Id} not found.");
-            }
+            if (sprint == null) throw new SprintManagerNotFoundException($"Sprint with ID {request.Id} not found.");
 
             return _mapper.Map<SprintDTO>(sprint);
         }
