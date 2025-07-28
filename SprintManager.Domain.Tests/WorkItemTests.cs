@@ -16,7 +16,7 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Null(workItem.SprintId);
-            Assert.Null(workItem.AssignedUserId);
+            Assert.Null(workItem.UserId);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Create a WorkItem domain", workItem.Title);
             Assert.Null(workItem.Description);
@@ -44,7 +44,7 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Equal(sprintId, workItem.SprintId);
-            Assert.Equal(assignedUserId, workItem.AssignedUserId);
+            Assert.Equal(assignedUserId, workItem.UserId);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Create a WorkItem domain", workItem.Title);
             Assert.Equal("Description 1", workItem.Description);
@@ -103,7 +103,7 @@ namespace SprintManager.Domain.Tests
 
             workItem.SetAssignedUserId(newAssignedUserId);
 
-            Assert.Equal(newAssignedUserId, workItem.AssignedUserId);
+            Assert.Equal(newAssignedUserId, workItem.UserId);
         }
 
         // Test work item type change
