@@ -21,7 +21,7 @@ namespace SprintManager.Application.Tests.UserTests
             _mockUserRepository = new Mock<IUserRepository>();
             _mockMapper = new Mock<IMapper>();
 
-            // Initialize hanlder injecting the mocks
+            // Initialize handler injecting the mocks
             _handler = new CreateUserHandler(_mockUserRepository.Object, _mockMapper.Object);
         }
 

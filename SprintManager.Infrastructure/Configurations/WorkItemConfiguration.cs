@@ -17,12 +17,12 @@ namespace SprintManager.Infrastructure.Configurations
 
             builder.Property(w => w.UserId);
 
-            builder.Property(w => w.WorkItemType)
-                .HasMaxLength(50)
+            builder.Property(w => w.WorkItemTitle)
+                .HasMaxLength(255)
                 .IsRequired();
 
-            builder.Property(w => w.Title)
-                .HasMaxLength(255)
+            builder.Property(w => w.WorkItemType)
+                .HasMaxLength(50)
                 .IsRequired();
 
             builder.Property(w => w.Description)

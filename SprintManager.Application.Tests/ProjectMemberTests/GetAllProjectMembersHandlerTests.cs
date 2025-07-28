@@ -21,7 +21,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockProjectMemberRepository = new Mock<IProjectMemberRepository>();
             _mockMapper = new Mock<IMapper>();
 
-            // Initialize hanlder injecting the mocks
+            // Initialize handler injecting the mocks
             _handler = new GetAllProjectMembersHandler(_mockProjectMemberRepository.Object, _mockMapper.Object);
         }
 

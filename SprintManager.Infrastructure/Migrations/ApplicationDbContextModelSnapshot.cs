@@ -167,13 +167,13 @@ namespace SprintManager.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WorkItemTitle")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("WorkItemType")
                         .HasMaxLength(50)
