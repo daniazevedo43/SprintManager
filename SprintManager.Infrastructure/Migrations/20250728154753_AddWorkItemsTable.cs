@@ -20,7 +20,7 @@ namespace SprintManager.Infrastructure.Migrations
                     SprintId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     WorkItemType = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    WorkItemTitle = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Status = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     PriorityLevel = table.Column<int>(type: "int", nullable: true),

@@ -21,7 +21,7 @@ namespace SprintManager.Infrastructure.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.Property(w => w.Title)
+            builder.Property(w => w.WorkItemTitle)
                 .HasMaxLength(255)
                 .IsRequired();
 
