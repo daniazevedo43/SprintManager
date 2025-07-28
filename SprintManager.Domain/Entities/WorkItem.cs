@@ -16,7 +16,7 @@ namespace SprintManager.Domain.Entities
         public WorkItemPriorityLevel? PriorityLevel { get; private set; }
         public DateTime CreationDate { get; private set; }
         public DateTime? CompletionDate { get; private set; }
-        public int? TimeEstimate { get; private set; }
+        public int? HoursEstimate { get; private set; }
         public Project? Project { get; private set; }
         public Sprint? Sprint { get; private set; }
         public User? User { get; private set; }
@@ -41,7 +41,7 @@ namespace SprintManager.Domain.Entities
             CreationDate = DateTime.UtcNow;
         }
 
-        public WorkItem(Guid projectId, Guid sprintId, Guid userId, WorkItemType workItemType, string title, string description, DateTime completionDate, int timeEstimate)
+        public WorkItem(Guid projectId, Guid sprintId, Guid userId, WorkItemType workItemType, string title, string description, DateTime completionDate, int hoursEstimate)
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(title));
@@ -60,7 +60,7 @@ namespace SprintManager.Domain.Entities
             PriorityLevel = WorkItemPriorityLevel.NotSet;
             CreationDate = DateTime.UtcNow;
             CompletionDate = completionDate.ToUniversalTime();
-            TimeEstimate = timeEstimate;
+            HoursEstimate = hoursEstimate;
         }
 
         // Update work item's projectId
@@ -123,9 +123,9 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update work item's time estimate
-        public void SetTimeEstimate(int timeEstimate)
+        public void SetHoursEstimate(int hoursEstimate)
         {
-            TimeEstimate = timeEstimate;
+            HoursEstimate = hoursEstimate;
         }
     }
 }
