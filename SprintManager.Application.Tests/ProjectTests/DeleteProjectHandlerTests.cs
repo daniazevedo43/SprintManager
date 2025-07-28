@@ -17,7 +17,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             // Initialize mock for each test
             _mockProjectRepository = new Mock<IProjectRepository>();
 
-            // Initialize hanlder injecting the mock
+            // Initialize handler injecting the mock
             _handler = new DeleteProjectHandler(_mockProjectRepository.Object);
         }
 

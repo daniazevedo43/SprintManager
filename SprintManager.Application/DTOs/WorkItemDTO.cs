@@ -11,8 +11,8 @@ namespace SprintManager.Application.DTOs
         public string? SprintName { get; set; }
         public Guid? UserId { get; set; }
         public string? UserName { get; set; }
-        public WorkItemType WorkItemType { get; set; }
         public string WorkItemTitle { get; set; }
+        public WorkItemType WorkItemType { get; set; }
         public string? Description { get; set; }
         public WorkItemStatus Status { get; set; }
         public WorkItemPriorityLevel? PriorityLevel { get; set; }

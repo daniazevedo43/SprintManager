@@ -17,8 +17,11 @@ namespace SprintManager.Application.Tests.ProjectTests
 
         public GetProjectByIdHandlerTests()
         {
+            // Initialize mocks for each test
             _mockProjectRepository = new Mock<IProjectRepository>();
             _mockMapper = new Mock<IMapper>();
+
+            // Initialize handler injecting the mocks
             _handler = new GetProjectByIdHandler(_mockProjectRepository.Object, _mockMapper.Object);
         }
 
