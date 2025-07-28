@@ -18,7 +18,7 @@ namespace SprintManager.Domain.Tests
             Assert.Null(workItem.SprintId);
             Assert.Null(workItem.UserId);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
-            Assert.Equal("Create a WorkItem domain", workItem.Title);
+            Assert.Equal("Create a WorkItem domain", workItem.WorkItemTitle);
             Assert.Null(workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
@@ -46,7 +46,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(sprintId, workItem.SprintId);
             Assert.Equal(assignedUserId, workItem.UserId);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
-            Assert.Equal("Create a WorkItem domain", workItem.Title);
+            Assert.Equal("Create a WorkItem domain", workItem.WorkItemTitle);
             Assert.Equal("Description 1", workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
@@ -119,15 +119,14 @@ namespace SprintManager.Domain.Tests
 
         // Test work item title change
         [Fact]
-        public void SetTitle_UpdatesTitleSuccessfully()
+        public void SetWorkItemTitle_UpdatesWorkItemTitleSuccessfully()
         {
             var workItem = new WorkItem(Guid.NewGuid(), WorkItemType.Task, "Create a WorkItem domain");
 
-            workItem.SetTitle("Create a Sprint domain");
+            workItem.SetWorkItemTitle("Create a Sprint domain");
 
-            Assert.Equal("Create a Sprint domain", workItem.Title);
+            Assert.Equal("Create a Sprint domain", workItem.WorkItemTitle);
         }
-
 
         // Test description change
         [Fact]
@@ -216,18 +215,18 @@ namespace SprintManager.Domain.Tests
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void VerifyTitle_ThrowsException_WhenTitleIsNullOrEmpty(string title)
+        public void VerifyWorkItemTitle_ThrowsException_WhenWorkItemTitleIsNullOrEmpty(string title)
         {
             var exception = Assert.Throws<ArgumentException>(() =>
                 new WorkItem(Guid.NewGuid(), WorkItemType.Task, title)
             );
 
-            Assert.Equal("Work item's title can't be null or empty. (Parameter 'title')", exception.Message);
+            Assert.Equal("Work item's title can't be null or empty. (Parameter 'workItemTitle')", exception.Message);
         }
 
         // Test exception throwing when title is too long
         [Fact]
-        public void VerifyTitle_ThrowsException_WhenTitleIsTooLong()
+        public void VerifyWorkItemTitle_ThrowsException_WhenWorkItemTitleIsTooLong()
         {
             string title = new string('C', 256);
 
@@ -235,7 +234,7 @@ namespace SprintManager.Domain.Tests
                 new WorkItem(Guid.NewGuid(), WorkItemType.Task, title)
             );
 
-            Assert.Equal($"Work item's title is too long. (Max length '255') (Actual length '{title.Length}') (Parameter 'title')", exception.Message);
+            Assert.Equal($"Work item's title is too long. (Max length '255') (Actual length '{title.Length}') (Parameter 'workItemTitle')", exception.Message);
         }
 
         // Test exception throwing when description is too long
