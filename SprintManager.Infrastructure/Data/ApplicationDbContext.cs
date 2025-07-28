@@ -16,6 +16,7 @@ namespace SprintManager.Infrastructure.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectMember> ProjectMembers { get; set; }
         public DbSet<Sprint> Sprints { get; set; }
+        public DbSet<WorkItem> WorkItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
