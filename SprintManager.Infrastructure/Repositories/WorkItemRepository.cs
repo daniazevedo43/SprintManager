@@ -18,6 +18,8 @@ namespace SprintManager.Infrastructure.Repositories
         {
             return await _context.WorkItems
                 .Include(w => w.Project)
+                .Include(w => w.Sprint)
+                .Include(w => w.User)
                 .OrderBy(w => w.Project)
                 .ToListAsync();
         }
