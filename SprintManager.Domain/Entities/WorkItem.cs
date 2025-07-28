@@ -9,8 +9,8 @@ namespace SprintManager.Domain.Entities
         public Guid ProjectId { get; private set; }
         public Guid? SprintId { get; private set; }
         public Guid? UserId { get; private set; }
-        public WorkItemType WorkItemType { get; private set; }
         public string WorkItemTitle { get; private set; }
+        public WorkItemType WorkItemType { get; private set; }
         public string? Description { get; private set; }
         public WorkItemStatus Status { get; private set; }
         public WorkItemPriorityLevel? PriorityLevel { get; private set; }
@@ -26,7 +26,7 @@ namespace SprintManager.Domain.Entities
 
         }
 
-        public WorkItem(Guid projectId, WorkItemType workItemType, string workItemTitle)
+        public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType)
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(workItemTitle));
@@ -34,14 +34,14 @@ namespace SprintManager.Domain.Entities
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
-            WorkItemType = workItemType;
             WorkItemTitle = workItemTitle;
+            WorkItemType = workItemType;
             Status = WorkItemStatus.New;
             PriorityLevel = WorkItemPriorityLevel.NotSet;
             CreationDate = DateTime.UtcNow;
         }
 
-        public WorkItem(Guid projectId, Guid sprintId, Guid userId, WorkItemType workItemType, string workItemTitle, string description, DateTime completionDate, int hoursEstimate)
+        public WorkItem(Guid projectId, Guid sprintId, Guid userId, string workItemTitle, WorkItemType workItemType, string description, DateTime completionDate, int hoursEstimate)
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(workItemTitle));
@@ -53,8 +53,8 @@ namespace SprintManager.Domain.Entities
             ProjectId = projectId;
             SprintId = sprintId;
             UserId = userId;
-            WorkItemType = workItemType;
             WorkItemTitle = workItemTitle;
+            WorkItemType = workItemType;
             Description = description;
             Status = WorkItemStatus.New;
             PriorityLevel = WorkItemPriorityLevel.NotSet;
@@ -82,18 +82,18 @@ namespace SprintManager.Domain.Entities
             UserId = userId;
         }
 
+        // Update work item's title
+        public void SetWorkItemTitle(string workItemTitle)
+        {
+            if (string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(workItemTitle));
+            if (workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
+            WorkItemTitle = workItemTitle;
+        }
+
         // Update work item's type
         public void SetWorkItemType(WorkItemType workItemType)
         {
             WorkItemType = workItemType;
-        }
-
-        // Update work item's title
-        public void SetWorkItemTitle(string workItemTitle)
-        {
-            if(string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(workItemTitle));
-            if(workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
-            WorkItemTitle = workItemTitle;
         }
 
         // Update work item's description
