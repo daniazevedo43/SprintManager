@@ -16,7 +16,7 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Null(workItem.SprintId);
-            Assert.Null(workItem.AssignedUserId);
+            Assert.Null(workItem.UserId);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Create a WorkItem domain", workItem.Title);
             Assert.Null(workItem.Description);
@@ -24,7 +24,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
             Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
             Assert.Null(workItem.CompletionDate);
-            Assert.Null(workItem.TimeEstimate);
+            Assert.Null(workItem.HoursEstimate);
         }
 
         // Test work item creation with all parameters
@@ -44,7 +44,7 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Equal(sprintId, workItem.SprintId);
-            Assert.Equal(assignedUserId, workItem.AssignedUserId);
+            Assert.Equal(assignedUserId, workItem.UserId);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Create a WorkItem domain", workItem.Title);
             Assert.Equal("Description 1", workItem.Description);
@@ -52,7 +52,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
             Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
             Assert.Equal(nextDate.ToUniversalTime(), workItem.CompletionDate);
-            Assert.Equal(5, workItem.TimeEstimate);
+            Assert.Equal(5, workItem.HoursEstimate);
         }
 
 
@@ -103,7 +103,7 @@ namespace SprintManager.Domain.Tests
 
             workItem.SetAssignedUserId(newAssignedUserId);
 
-            Assert.Equal(newAssignedUserId, workItem.AssignedUserId);
+            Assert.Equal(newAssignedUserId, workItem.UserId);
         }
 
         // Test work item type change
@@ -186,7 +186,7 @@ namespace SprintManager.Domain.Tests
 
         // Test completion date change
         [Fact]
-        public void SetTimeEstimate_UpdatesTimeEstimateSuccessfully()
+        public void SetHoursEstimate_UpdatesHoursEstimateSuccessfully()
         {
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
@@ -195,9 +195,9 @@ namespace SprintManager.Domain.Tests
                 "Create a WorkItem domain", "Description 1", nextDate, 5
             );
 
-            workItem.SetTimeEstimate(6);
+            workItem.SetHoursEstimate(6);
 
-            Assert.Equal(6, workItem.TimeEstimate);
+            Assert.Equal(6, workItem.HoursEstimate);
         }
 
         // Test exception throwing when project ID is null or empty
