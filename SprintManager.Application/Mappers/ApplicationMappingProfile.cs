@@ -13,7 +13,9 @@ namespace SprintManager.Application.Mappers
             CreateMap<ProjectMember, ProjectMemberDTO>();
             CreateMap<ProjectMember, ProjectMemberBasicDTO>();
             CreateMap<Sprint, SprintDTO>();
-            CreateMap<WorkItem, WorkItemDTO>();
+            CreateMap<WorkItem, WorkItemDTO>()
+                // Maps Sprint.SprintName to SprintName in DTO, with null verification
+                .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null));
         }
     }
 }
