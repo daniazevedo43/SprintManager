@@ -12,7 +12,7 @@ using SprintManager.Infrastructure.Data;
 namespace SprintManager.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250728154753_AddWorkItemsTable")]
+    [Migration("20250728164045_AddWorkItemsTable")]
     partial class AddWorkItemsTable
     {
         /// <inheritdoc />
