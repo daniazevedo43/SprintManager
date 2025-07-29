@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.DTOs;
+using SprintManager.Application.Queries.Sprints;
 using SprintManager.Application.Queries.WorkItems;
 
 namespace SprintManager.API.Controllers
@@ -21,6 +22,16 @@ namespace SprintManager.API.Controllers
         public async Task<IActionResult> GetAllWorkItems()
         {
             var result = await _mediator.Send(new GetAllWorkItemsQuery());
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(WorkItemDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetWorkItemById(Guid id)
+        {
+            var result = await _mediator.Send(new GetWorkItemByIdQuery { Id = id });
 
             return Ok(result);
         }
