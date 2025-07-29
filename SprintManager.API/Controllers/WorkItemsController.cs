@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.DTOs;
-using SprintManager.Application.Queries.Sprints;
 using SprintManager.Application.Queries.WorkItems;
 
 namespace SprintManager.API.Controllers
