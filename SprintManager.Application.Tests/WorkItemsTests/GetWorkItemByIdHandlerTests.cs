@@ -3,7 +3,6 @@ using Moq;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.WorkItems;
 using SprintManager.Application.Interfaces;
-using SprintManager.Application.Queries.Sprints;
 using SprintManager.Application.Queries.WorkItems;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
