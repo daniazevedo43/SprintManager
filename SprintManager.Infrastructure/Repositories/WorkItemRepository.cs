@@ -23,5 +23,10 @@ namespace SprintManager.Infrastructure.Repositories
                 .OrderBy(w => w.Project)
                 .ToListAsync();
         }
+
+        public async Task<WorkItem?> GetByIdAsync(Guid id)
+        {
+            return await _context.WorkItems.FindAsync(id);
+        }
     }
 }
