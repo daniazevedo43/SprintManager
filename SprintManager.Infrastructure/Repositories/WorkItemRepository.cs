@@ -32,5 +32,11 @@ namespace SprintManager.Infrastructure.Repositories
                 .Include(w => w.User)
                 .FirstOrDefaultAsync(w => w.Id == id);
         }
+
+        public async Task AddAsync(WorkItem workItem)
+        {
+            await _context.WorkItems.AddAsync(workItem);
+            await _context.SaveChangesAsync();
+        }
     }
 }
