@@ -27,11 +27,9 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
         // Test handler
         [Fact]
-        public async Task Handle_ReturnsAllSprints()
+        public async Task Handle_ReturnsAllWorkItems()
         {
             var query = new GetAllWorkItemsQuery();
-
-            var currentDate = DateTime.UtcNow.ToUniversalTime();
 
             var workItems = new List<WorkItem>()
             {
@@ -39,13 +37,13 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                     "Adjust feed page for mobile devices", WorkItemType.Task,
                     "The feed page needs to be responsive for mobile devices.",
-                    new DateTime(2025, 07, 29), 8
+                    DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 ),
                 new WorkItem(
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                     "Fix start date and end date bug", WorkItemType.Bug,
                     "Start date and end date not showing correct year.",
-                    new DateTime(2025, 07, 29), 8
+                    DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 )
             };
 
