@@ -26,7 +26,11 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task<WorkItem?> GetByIdAsync(Guid id)
         {
-            return await _context.WorkItems.FindAsync(id);
+            return await _context.WorkItems
+                .Include(w => w.Project)
+                .Include(w => w.Sprint)
+                .Include(w => w.User)
+                .FirstOrDefaultAsync(w => w.Id == id);
         }
     }
 }
