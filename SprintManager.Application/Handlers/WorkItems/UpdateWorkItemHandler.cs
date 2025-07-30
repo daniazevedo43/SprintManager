@@ -22,7 +22,7 @@ namespace SprintManager.Application.Handlers.WorkItems
         {
             var workItem = await _workItemRepository.GetByIdAsync(request.Id);
 
-            if (workItem == null) throw new SprintManagerNotFoundException($"Sprint with ID {request?.Id} not found.");
+            if (workItem == null) throw new SprintManagerNotFoundException($"Work item with ID {request?.Id} not found.");
 
             workItem.SetSprintId(request.SprintId);
             workItem.SetAssignedUserId(request.UserId);
