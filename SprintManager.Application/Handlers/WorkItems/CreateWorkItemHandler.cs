@@ -40,10 +40,10 @@ namespace SprintManager.Application.Handlers.WorkItems
             {
                 var workItem = new WorkItem(
                     request.ProjectId, 
-                    request.SprintId, 
-                    request.UserId,
                     request.WorkItemTitle, 
                     request.WorkItemType,
+                    request.SprintId,
+                    request.UserId,
                     request.Description,
                     request.PriorityLevel,
                     request.CompletionDate,
