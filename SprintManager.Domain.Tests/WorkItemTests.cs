@@ -21,7 +21,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Null(workItem.Description);
             Assert.Equal(WorkItemStatus.New, workItem.Status);
-            Assert.Equal(WorkItemPriorityLevel.NotSet, workItem.PriorityLevel);
+            Assert.Null(workItem.PriorityLevel);
             Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
             Assert.Null(workItem.CompletionDate);
             Assert.Null(workItem.HoursEstimate);
@@ -208,7 +208,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new WorkItem(Guid.Empty, "Create a WorkItem domain", WorkItemType.Task)
             );
 
@@ -222,7 +222,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyWorkItemTitle_ThrowsException_WhenWorkItemTitleIsNullOrEmpty(string title)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new WorkItem(Guid.NewGuid(), title, WorkItemType.Task)
             );
 
