@@ -42,13 +42,13 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task UpdateAsync(WorkItem? workItem)
         {
-            var sprint = _context.Sprints?.FindAsync(workItem?.SprintId);
-            var user = _context.Users?.FindAsync(workItem?.UserId);
+            var sprint = await _context.Sprints.FindAsync(workItem?.SprintId);
+            var user = await _context.Users.FindAsync(workItem?.UserId);
 
             if (workItem != null)
             {
-                if (sprint == null) throw new SprintManagerNotFoundException($"Sprint with ID {workItem?.SprintId} not found.");
-                if (user == null) throw new SprintManagerNotFoundException($"User with ID {workItem?.User} not found.");
+                if (!string.IsNullOrWhiteSpace(workItem.SprintId.ToString()) && sprint == null) throw new SprintManagerNotFoundException($"Sprint with ID {workItem?.SprintId} not found.");
+                if (!string.IsNullOrWhiteSpace(workItem.UserId.ToString()) && user == null) throw new SprintManagerNotFoundException($"User with ID {workItem?.UserId} not found.");
 
                 _context.WorkItems.Update(workItem);
             }
