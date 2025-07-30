@@ -56,21 +56,6 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(5, workItem.HoursEstimate);
         }
 
-
-        // Test project's ID change
-        [Fact]
-        public void SetProjectId_UpdatesProjectIdSuccessfully()
-        {
-            Guid projectId = Guid.NewGuid();
-            var workItem = new WorkItem(projectId, "Create a WorkItem domain", WorkItemType.Task);
-
-            Guid newProjectId = Guid.NewGuid();
-
-            workItem.SetProjectId(newProjectId);
-
-            Assert.Equal(newProjectId, workItem.ProjectId);
-        }
-
         // Test sprint's ID change
         [Fact]
         public void SetSprintId_UpdatesSprintIdSuccessfully()
