@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Queries.WorkItems;
 
@@ -33,6 +34,17 @@ namespace SprintManager.API.Controllers
             var result = await _mediator.Send(new GetWorkItemByIdQuery { Id = id });
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(WorkItemDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> CreateWorkItem(CreateWorkItemCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return CreatedAtAction(nameof(GetWorkItemById), new { id = result.Id }, result);
         }
     }
 }
