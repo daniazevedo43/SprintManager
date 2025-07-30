@@ -248,7 +248,7 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when completion date is lower that current date
         [Fact]
-        public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCurrentDate()
+        public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCreationDate()
         {
             DateTime previousDate = DateTime.UtcNow - new TimeSpan(1, 0, 0, 0);
 
@@ -261,7 +261,7 @@ namespace SprintManager.Domain.Tests
                 )
             );
 
-            Assert.Equal($"Completion date '{previousDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", exception.Message);
+            Assert.Equal($"Completion date '{previousDate.ToString("dd/MM/yyyy")}' can't be lower than the work item's creation date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", exception.Message);
         }
     }
 }
