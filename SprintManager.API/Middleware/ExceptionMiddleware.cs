@@ -40,6 +40,7 @@ namespace SprintManager.API.Middleware
                 SprintManagerTooShortException => (int)HttpStatusCode.BadRequest, // 400
                 SprintManagerTooLongException => (int)HttpStatusCode.BadRequest, // 400
                 SprintManagerInvalidDateRangeException => (int)HttpStatusCode.BadRequest, // 400
+                SprintManagerDateNotAllowedException => (int)HttpStatusCode.BadRequest, // 400 
                 SprintManagerNotFoundException => (int)HttpStatusCode.NotFound, // 404
                 SprintManagerConflictException => (int)HttpStatusCode.Conflict, // 409
                 _ => (int)HttpStatusCode.InternalServerError // 500
