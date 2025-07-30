@@ -46,7 +46,6 @@ namespace SprintManager.Domain.Entities
             if (string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentNullException(nameof(workItemTitle), "Work item's title can't be null or empty.");
             if (workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
             if (description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
-            if (completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", nameof(completionDate));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -58,6 +57,9 @@ namespace SprintManager.Domain.Entities
             Status = WorkItemStatus.New;
             PriorityLevel = priorityLevel;
             CreationDate = DateTime.UtcNow;
+
+            if (completionDate < CreationDate) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the work item's creation date ('{CreationDate.ToString("dd/MM/yyyy")}').", nameof(completionDate));
+
             CompletionDate = completionDate?.ToUniversalTime();
             HoursEstimate = hoursEstimate;
         }
@@ -110,7 +112,7 @@ namespace SprintManager.Domain.Entities
         // Update work item's completion date
         public void SetCompletionDate(DateTime? completionDate)
         {
-            if(completionDate < DateTime.UtcNow.ToUniversalTime()) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToUniversalTime().ToString("dd/MM/yyyy")}').", nameof(completionDate));
+            if (completionDate < CreationDate) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the work item's creation date ('{CreationDate.ToString("dd/MM/yyyy")}').", nameof(completionDate));
             CompletionDate = completionDate?.ToUniversalTime();
         }
 
