@@ -20,39 +20,21 @@ namespace SprintManager.Application.Handlers.WorkItems
 
         public async Task<WorkItemDTO> Handle(CreateWorkItemCommand request, CancellationToken cancellationToken)
         {
-            if ((request.SprintId == Guid.Empty) && 
-                (request.UserId == Guid.Empty) &&
-                (string.IsNullOrWhiteSpace(request.Description)) &&
-                (string.IsNullOrWhiteSpace(request.PriorityLevel.ToString())) &&
-                (string.IsNullOrWhiteSpace(request.CompletionDate.ToString()) &&
-                (string.IsNullOrWhiteSpace(request.HoursEstimate.ToString()))))
-            {
-                var workItem = new WorkItem(
-                    request.ProjectId, 
-                    request.WorkItemTitle,
-                    request.WorkItemType
-                );
-
-                await _workItemRepository.AddAsync(workItem);
-                return _mapper.Map<WorkItemDTO>(workItem);
-            }
-            else
-            {
-                var workItem = new WorkItem(
-                    request.ProjectId, 
-                    request.WorkItemTitle, 
-                    request.WorkItemType,
-                    request.SprintId,
-                    request.UserId,
-                    request.Description,
-                    request.PriorityLevel,
-                    request.CompletionDate,
-                    request.HoursEstimate
-                );
+            var workItem = new WorkItem(
+                request.ProjectId, 
+                request.WorkItemTitle, 
+                request.WorkItemType,
+                request.SprintId,
+                request.UserId,
+                request.Description,
+                request.PriorityLevel,
+                request.CompletionDate,
+                request.HoursEstimate
+            );
                 
-                await _workItemRepository.AddAsync(workItem);
-                return _mapper.Map<WorkItemDTO>(workItem);
-            }
+            await _workItemRepository.AddAsync(workItem);
+            return _mapper.Map<WorkItemDTO>(workItem);
+            
         }
     }
 } 
