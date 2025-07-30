@@ -93,7 +93,7 @@ namespace SprintManager.Application.Tests.ProjectTests
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"Project with ID {command?.Id} not found", exception.Message);
+            Assert.Equal($"Project with ID {command?.Id} not found.", exception.Message);
         }
 
         // Test exception throwing when a project already exists
