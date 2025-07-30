@@ -48,7 +48,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Status = sprint.Status
             };
 
-            // Repositories mock configuration
+            // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName)).ReturnsAsync((Sprint?)null);
             _mockSprintRepository.Setup(r => r.AddAsync(It.IsAny<Sprint>())).Callback<Sprint>(s => sprint = s);
 
@@ -100,7 +100,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Status = sprint.Status
             };
 
-            // Repositories mock configuration
+            // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(sprint.ProjectId, sprint.SprintName)).ReturnsAsync((Sprint?)null);
             _mockSprintRepository.Setup(r => r.AddAsync(It.IsAny<Sprint>())).Callback<Sprint>(s => sprint = s);
 

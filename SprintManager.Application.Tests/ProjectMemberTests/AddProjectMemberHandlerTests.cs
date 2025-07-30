@@ -46,7 +46,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
                 Role = projectMember.Role,
             };
 
-            // Repositories Mock configuration
+            // Repository's Mock configuration
             _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(projectMember.UserId, projectMember.ProjectId)).ReturnsAsync((ProjectMember?)null);
             _mockProjectMemberRepository.Setup(r => r.AddAsync(It.IsAny<ProjectMember>())).Callback<ProjectMember>(pm => projectMember = pm);
 

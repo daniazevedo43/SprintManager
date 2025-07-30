@@ -44,7 +44,7 @@ namespace SprintManager.Application.Tests.ProjectTests
                 Status = project.Status
             };
 
-            // Repositories Mock configuration
+            // Repository's Mock configuration
             _mockProjectRepository.Setup(r => r.GetByNameAsync(project.Name)).ReturnsAsync((Project?)null);
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
@@ -89,7 +89,7 @@ namespace SprintManager.Application.Tests.ProjectTests
                 Status = project.Status
             };
 
-            // Repositories Mock configuration
+            // Repository's Mock configuration
             _mockProjectRepository.Setup(r => r.GetByNameAsync(project.Name)).ReturnsAsync((Project?)null);
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
