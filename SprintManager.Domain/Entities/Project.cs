@@ -27,12 +27,12 @@ namespace SprintManager.Domain.Entities
             Status = ProjectStatus.Active;
         }
 
-        public Project(string name, string description)
+        public Project(string name, string? description)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Project's name can't be null or empty.");
 
             if (name.Length > 255) throw new SprintManagerTooLongException("Project's name is too long.", 255, name.Length, nameof(name));
-            if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
+            if (description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
 
             Id = Guid.NewGuid();
             Name = name;

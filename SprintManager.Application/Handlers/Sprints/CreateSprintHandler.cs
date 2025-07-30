@@ -25,18 +25,11 @@ namespace SprintManager.Application.Handlers.Sprints
 
             if (existingSprint != null) throw new SprintManagerConflictException($"A sprint called '{request.SprintName}' already exists in this project.");
 
-            if (string.IsNullOrWhiteSpace(request.Description))
-            {
-                var sprint = new Sprint(request.ProjectId, request.SprintName, request.StartDate, request.EndDate);
-                await _sprintRepository.AddAsync(sprint);
-                return _mapper.Map<SprintDTO>(sprint);
-            }
-            else
-            {
-                var sprint = new Sprint(request.ProjectId, request.SprintName, request.StartDate, request.EndDate, request.Description);
-                await _sprintRepository.AddAsync(sprint);
-                return _mapper.Map<SprintDTO>(sprint);
-            }
+            var sprint = new Sprint(request.ProjectId, request.SprintName, request.StartDate, request.EndDate, request.Description);
+            
+            await _sprintRepository.AddAsync(sprint);
+            
+            return _mapper.Map<SprintDTO>(sprint);
         }
     }
 }

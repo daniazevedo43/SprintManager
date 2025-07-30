@@ -25,18 +25,11 @@ namespace SprintManager.Application.Handlers.Projects
 
             if (existingProject != null) throw new SprintManagerConflictException($"A project called '{request.Name}' already exists.");
 
-            if (string.IsNullOrWhiteSpace(request.Description))
-            {
-                var project = new Project(request.Name);
-                await _projectRepository.AddAsync(project);
-                return _mapper.Map<ProjectDTO>(project);
-            } 
-            else
-            {
-                var project = new Project(request.Name, request.Description);
-                await _projectRepository.AddAsync(project);
-                return _mapper.Map<ProjectDTO>(project);
-            }
+            var project = new Project(request.Name, request.Description);
+            
+            await _projectRepository.AddAsync(project);
+            
+            return _mapper.Map<ProjectDTO>(project);
         }
     }
 }
