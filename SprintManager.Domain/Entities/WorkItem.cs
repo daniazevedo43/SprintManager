@@ -46,7 +46,6 @@ namespace SprintManager.Domain.Entities
             if (string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentNullException(nameof(workItemTitle), "Work item's title can't be null or empty.");
             if (workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
             if (description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
-            if (completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", nameof(completionDate));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -58,25 +57,21 @@ namespace SprintManager.Domain.Entities
             Status = WorkItemStatus.New;
             PriorityLevel = priorityLevel;
             CreationDate = DateTime.UtcNow;
+
+            if (completionDate < CreationDate) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the work item's creation date ('{CreationDate.ToString("dd/MM/yyyy")}').", nameof(completionDate));
+
             CompletionDate = completionDate?.ToUniversalTime();
             HoursEstimate = hoursEstimate;
         }
 
-        // Update work item's projectId
-        public void SetProjectId(Guid projectId)
-        {
-            if (projectId == Guid.Empty) throw new ArgumentNullException(nameof(projectId), "Project ID can't be null or empty.");
-            ProjectId = projectId;
-        }
-
         // Update work item's sprint
-        public void SetSprintId(Guid sprintId)
+        public void SetSprintId(Guid? sprintId)
         {
             SprintId = sprintId;
         }
 
         // Update work item's assigned user
-        public void SetAssignedUserId(Guid userId)
+        public void SetAssignedUserId(Guid? userId)
         {
             UserId = userId;
         }
@@ -96,9 +91,9 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update work item's description
-        public void SetDescription(string description)
+        public void SetDescription(string? description)
         {
-            if (description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
+            if (description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
             Description = description;
         }
 
@@ -109,20 +104,20 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update work item's priority level
-        public void SetPriorityLevel(WorkItemPriorityLevel priorityLevel)
+        public void SetPriorityLevel(WorkItemPriorityLevel? priorityLevel)
         {
             PriorityLevel = priorityLevel;
         }
 
         // Update work item's completion date
-        public void SetCompletionDate(DateTime completionDate)
+        public void SetCompletionDate(DateTime? completionDate)
         {
-            if(completionDate < DateTime.UtcNow.ToUniversalTime()) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToUniversalTime().ToString("dd/MM/yyyy")}').", nameof(completionDate));
-            CompletionDate = completionDate.ToUniversalTime();
+            if (completionDate < CreationDate) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the work item's creation date ('{CreationDate.ToString("dd/MM/yyyy")}').", nameof(completionDate));
+            CompletionDate = completionDate?.ToUniversalTime();
         }
 
         // Update work item's time estimate
-        public void SetHoursEstimate(int hoursEstimate)
+        public void SetHoursEstimate(int? hoursEstimate)
         {
             HoursEstimate = hoursEstimate;
         }

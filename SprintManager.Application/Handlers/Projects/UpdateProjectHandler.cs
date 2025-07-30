@@ -24,7 +24,7 @@ namespace SprintManager.Application.Handlers.Projects
             var project = await _projectRepository.GetByIdAsync(request.Id);
             var existingProject = await _projectRepository.GetByNameAsync(request.Name);
 
-            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request?.Id} not found");
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request?.Id} not found.");
 
             if (existingProject != null && project.Name != request.Name) throw new SprintManagerConflictException($"A project called '{request.Name}' already exists.");
 
