@@ -6,5 +6,6 @@ namespace SprintManager.Application.Interfaces
     {
         Task<List<WorkItem>> GetAllAsync();
         Task<WorkItem?> GetByIdAsync(Guid id);
+        Task AddAsync(WorkItem workItem);
     }
 }

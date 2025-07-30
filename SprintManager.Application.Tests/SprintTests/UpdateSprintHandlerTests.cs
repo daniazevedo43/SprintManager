@@ -52,7 +52,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Status = sprint.Status
             };
 
-            // Repositories mock configuration
+            // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(sprint);
             _mockSprintRepository.Setup(r => r.UpdateAsync(sprint));
 

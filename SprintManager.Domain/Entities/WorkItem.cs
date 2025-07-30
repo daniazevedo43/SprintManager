@@ -41,13 +41,13 @@ namespace SprintManager.Domain.Entities
             CreationDate = DateTime.UtcNow;
         }
 
-        public WorkItem(Guid projectId, Guid sprintId, Guid userId, string workItemTitle, WorkItemType workItemType, string description, DateTime completionDate, int hoursEstimate)
+        public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType, Guid? sprintId, Guid? userId, string? description, WorkItemPriorityLevel? priorityLevel, DateTime? completionDate, int? hoursEstimate)
         {
             if(projectId == Guid.Empty) throw new ArgumentException("Project ID can't be null or empty.", nameof(projectId));
             if(string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentException("Work item's title can't be null or empty.", nameof(workItemTitle));
             if(workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
-            if(description.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
-            if(completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", nameof(completionDate));
+            if(description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
+            if(completionDate < DateTime.UtcNow) throw new SprintManagerDateNotAllowedException($"Completion date '{completionDate?.ToString("dd/MM/yyyy")}' can't be lower than the current date ('{DateTime.UtcNow.ToString("dd/MM/yyyy")}').", nameof(completionDate));
 
             Id = Guid.NewGuid();
             ProjectId = projectId;
@@ -57,9 +57,9 @@ namespace SprintManager.Domain.Entities
             WorkItemType = workItemType;
             Description = description;
             Status = WorkItemStatus.New;
-            PriorityLevel = WorkItemPriorityLevel.NotSet;
+            PriorityLevel = priorityLevel;
             CreationDate = DateTime.UtcNow;
-            CompletionDate = completionDate.ToUniversalTime();
+            CompletionDate = completionDate?.ToUniversalTime();
             HoursEstimate = hoursEstimate;
         }
 

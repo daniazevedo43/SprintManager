@@ -9,8 +9,8 @@ namespace SprintManager.Application.Handlers.WorkItems
 {
     public class GetWorkItemByIdHandler : IRequestHandler<GetWorkItemByIdQuery, WorkItemDTO>
     {
-        public IWorkItemRepository _workItemRepository;
-        public IMapper _mapper;
+        public readonly IWorkItemRepository _workItemRepository;
+        public readonly IMapper _mapper;
 
         public GetWorkItemByIdHandler(IWorkItemRepository workItemRepository, IMapper mapper)
         {
