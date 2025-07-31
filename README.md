@@ -59,7 +59,7 @@ The following API functionalities are already live:
 * `PUT /api/Sprints/{id}`: Updates a sprint
 * `DELETE /api/Sprints/{id}`: Removes a sprint from a project
 
-#### Work Items (`/api/Workitems`)
+#### WorkItems (`/api/Workitems`)
 
 * `GET /api/Workitems`: Returns a list of all work items in all projects
 * `GET /api/Workitems/{id}`: Returns a project's work item.
