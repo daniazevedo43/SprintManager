@@ -17,8 +17,10 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task<List<Comment>> GetAllAsync()
         {
             return await _context.Comments
+                .Include(c => c.WorkItem)
+                .Include(c => c.User)
                 .OrderBy(c => c.WorkItem)
-                .OrderByDescending(c => c.CreationDate)
+                .ThenByDescending(c => c.CreationDate)
                 .ToListAsync();
         }
     }

@@ -66,3 +66,7 @@ The following API functionalities are already live:
 * `POST /api/Workitems`: Creates a new work item for a project.
 * `PUT /api/Workitems/{id}`: Updates a work item.
 * `DELETE /api/Workitems/{id}`: Removes a work item from a project.
+
+#### Comments (`/api/Comments`)
+
+* `GET /api/Comments`: Returns a list of all comments in all work items
