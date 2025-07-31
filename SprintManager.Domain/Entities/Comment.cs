@@ -9,6 +9,8 @@ namespace SprintManager.Domain.Entities
         public Guid UserId { get; private set; }
         public string Text { get; private set; }
         public DateTime CreationDate { get; private set; }
+        public WorkItem? WorkItem { get; private set; }
+        public User? User { get; private set; }
 
         public Comment()
         {
