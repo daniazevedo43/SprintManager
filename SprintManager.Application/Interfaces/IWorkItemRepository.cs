@@ -8,5 +8,6 @@ namespace SprintManager.Application.Interfaces
         Task<WorkItem?> GetByIdAsync(Guid id);
         Task AddAsync(WorkItem workItem);
         Task UpdateAsync(WorkItem? workItem);
+        Task DeleteAsync(WorkItem workItem);
     }
 }
