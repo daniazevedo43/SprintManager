@@ -51,7 +51,7 @@ The following API functionalities are already live:
 * `PUT /api/ProjectMembers/{id}`: Changes the role of a user in a project.
 * `DELETE /api/ProjectMembers/{id}`: Removes a user from a project.
 
-#### Sprint (`/api/Sprints`)
+#### Sprints (`/api/Sprints`)
 
 * `GET /api/Sprints`: Returns a list of all sprints from all projects.
 * `GET /api/Sprints/{id}`: Returns a sprint of a project.
