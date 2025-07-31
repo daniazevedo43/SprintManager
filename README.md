@@ -2,7 +2,7 @@
 
 An api focused on organizing and tracking tasks. It provides a solid foundation for managing projects, sprints, work items and team members. Ideal for software development teams looking for a solution for their agile workflow.
 
-## Architecture & Technologies
+## Architecture
 
 * **Domain-Driven Design (DDD):** The project adopts a DDD approach, focusing on a domain model that encapsulates business logic and rules.
 * **Command Query Responsibility Segregation (CQRS):** Separates operations that change state (commands) from operations that read state (queries).
@@ -69,4 +69,4 @@ The following API functionalities are already live:
 
 #### Comments (`/api/Comments`)
 
-* `GET /api/Comments`: Returns a list of all comments in all work items
+* `GET /api/Comments`: Returns a list of all comments in all work items.
