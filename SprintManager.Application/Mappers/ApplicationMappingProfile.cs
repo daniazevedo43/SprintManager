@@ -16,6 +16,7 @@ namespace SprintManager.Application.Mappers
             CreateMap<WorkItem, WorkItemDTO>()
                 // Maps Sprint.SprintName to SprintName in DTO, with null verification
                 .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null));
+            CreateMap<Comment, CommentDTO>();
         }
     }
 }
