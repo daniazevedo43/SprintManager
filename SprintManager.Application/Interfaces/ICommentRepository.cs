@@ -6,5 +6,6 @@ namespace SprintManager.Application.Interfaces
     {
         Task<List<Comment>> GetAllAsync();
         Task<Comment?> GetByIdAsync(Guid id);
+        Task AddAsync(Comment comment);
     }
 }
