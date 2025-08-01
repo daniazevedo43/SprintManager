@@ -41,7 +41,7 @@ The following API functionalities are already live:
 * `GET /api/Projects/{id}`: Returns a project.
 * `POST /api/Projects`: Creates a new project.
 * `PUT /api/Projects/{id}`: Updates an existing project.
-* `DELETE /api/Projects/{id}`: Removes an existing project
+* `DELETE /api/Projects/{id}`: Removes an existing project.
 
 #### ProjectMembers (`/api/ProjectMembers`)
 
@@ -55,13 +55,13 @@ The following API functionalities are already live:
 
 * `GET /api/Sprints`: Returns a list of all sprints from all projects.
 * `GET /api/Sprints/{id}`: Returns a sprint of a project.
-* `POST /api/Sprints`: Create a new sprint for a project
-* `PUT /api/Sprints/{id}`: Updates a sprint
-* `DELETE /api/Sprints/{id}`: Removes a sprint from a project
+* `POST /api/Sprints`: Create a new sprint for a project.
+* `PUT /api/Sprints/{id}`: Updates a sprint.
+* `DELETE /api/Sprints/{id}`: Removes a sprint from a project.
 
 #### WorkItems (`/api/Workitems`)
 
-* `GET /api/Workitems`: Returns a list of all work items in all projects
+* `GET /api/Workitems`: Returns a list of all work items in all projects.
 * `GET /api/Workitems/{id}`: Returns a project's work item.
 * `POST /api/Workitems`: Creates a new work item for a project.
 * `PUT /api/Workitems/{id}`: Updates a work item.
@@ -70,3 +70,4 @@ The following API functionalities are already live:
 #### Comments (`/api/Comments`)
 
 * `GET /api/Comments`: Returns a list of all comments in all work items.
+* `GET /api/Comments/{id}`: Returns a list of all comments in all work items.
