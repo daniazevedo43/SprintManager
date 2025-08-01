@@ -24,5 +24,15 @@ namespace SprintManager.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCommentById(Guid id)
+        {
+            var result = await _mediator.Send(new GetCommentByIdQuery { Id = id });
+
+            return Ok(result);
+        }
     }
 }
