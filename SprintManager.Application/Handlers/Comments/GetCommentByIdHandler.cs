@@ -22,7 +22,7 @@ namespace SprintManager.Application.Handlers.Comments
         {
             var comment = await _commentRepository.GetByIdAsync(request.Id);
 
-            if (comment == null) throw new SprintManagerNotFoundException($"Comment with ID {request?.Id} not found");
+            if (comment == null) throw new SprintManagerNotFoundException($"Comment with ID {request?.Id} not found.");
 
             return _mapper.Map<CommentDTO>(comment);
         }
