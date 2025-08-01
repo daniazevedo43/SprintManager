@@ -70,4 +70,4 @@ The following API functionalities are already live:
 #### Comments (`/api/Comments`)
 
 * `GET /api/Comments`: Returns a list of all comments in all work items.
-* `GET /api/Comments/{id}`: Returns a list of all comments in all work items.
+* `GET /api/Comments/{id}`: Returns a comment from a work item.
