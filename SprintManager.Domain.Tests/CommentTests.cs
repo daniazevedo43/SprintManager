@@ -1,5 +1,4 @@
 ﻿using SprintManager.Domain.Entities;
-using SprintManager.Domain.Enums;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Domain.Tests
