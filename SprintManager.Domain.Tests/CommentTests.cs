@@ -36,7 +36,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyWorkItemId_ThrowsException_WhenWorkItemIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Comment(Guid.Empty, Guid.NewGuid(), "Comment 1")
             );
 
@@ -47,7 +47,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyUserId_ThrowsException_WhenUserIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Comment(Guid.NewGuid(), Guid.Empty, "Comment 1")
             );
 
@@ -61,7 +61,7 @@ namespace SprintManager.Domain.Tests
         [InlineData(" ")]
         public void VerifyText_ThrowsException_WhenTextIsNullOrEmpty(string text)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Comment(Guid.NewGuid(), Guid.NewGuid(), text)
             );
 

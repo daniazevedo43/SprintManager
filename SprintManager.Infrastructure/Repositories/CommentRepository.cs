@@ -41,14 +41,8 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task UpdateAsync(Comment? comment)
         {
-            var workItem = await _context.WorkItems.FindAsync(comment?.WorkItemId);
-            var user = await _context.Users.FindAsync(comment?.UserId);
-
             if (comment != null)
             {
-                if (!string.IsNullOrWhiteSpace(comment.WorkItemId.ToString()) && workItem == null) throw new SprintManagerNotFoundException($"Work item with ID {comment?.WorkItemId} not found.");
-                if (!string.IsNullOrWhiteSpace(comment.UserId.ToString()) && user == null) throw new SprintManagerNotFoundException($"User with ID {comment?.UserId} not found.");
-
                 _context.Comments.Update(comment);
             }
 

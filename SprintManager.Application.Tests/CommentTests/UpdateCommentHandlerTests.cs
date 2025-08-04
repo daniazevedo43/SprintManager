@@ -32,12 +32,10 @@ namespace SprintManager.Application.Tests.CommentTests
             var command = new UpdateCommentCommand
             {
                 Id = Guid.NewGuid(),
-                WorkItemId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
                 Text = "Task completed!"
             };
 
-            var comment = new Comment(command.WorkItemId, command.UserId, command.Text);
+            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), command.Text);
             var commentDTO = new CommentDTO
             {
                 Id = comment.Id,
@@ -79,8 +77,6 @@ namespace SprintManager.Application.Tests.CommentTests
             var command = new UpdateCommentCommand
             {
                 Id = Guid.NewGuid(),
-                WorkItemId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
                 Text = "Task completed!"
             };
 
