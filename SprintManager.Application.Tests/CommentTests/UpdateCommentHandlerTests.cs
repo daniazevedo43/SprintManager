@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Moq;
 using SprintManager.Application.Commands.Comments;
-using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.Comments;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
-using SprintManager.Domain.Enums;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.CommentTests
