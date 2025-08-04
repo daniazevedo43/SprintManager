@@ -37,5 +37,15 @@ namespace SprintManager.Infrastructure.Repositories
             await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(Comment? comment)
+        {
+            if (comment != null)
+            {
+                _context.Comments.Update(comment);
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

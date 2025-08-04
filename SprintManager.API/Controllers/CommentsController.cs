@@ -46,5 +46,21 @@ namespace SprintManager.API.Controllers
 
             return CreatedAtAction(nameof(GetCommentById), new { id = result.Id }, result);
         }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateComment(Guid id, UpdateCommentCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("The URL's ID doesn't match the request body's ID");
+            }
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
+        }
     }
 }
