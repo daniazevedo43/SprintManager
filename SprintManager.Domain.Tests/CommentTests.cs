@@ -18,6 +18,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(userId, comment.UserId);
             Assert.Equal("Comment 1", comment.Text);
             Assert.Equal(DateTime.UtcNow.Date, comment.CreationDate.Date);
+            Assert.Null(comment.UpdateDate?.Date);
         }
 
         // Test text change
@@ -29,6 +30,7 @@ namespace SprintManager.Domain.Tests
             comment.SetText("Comment 2");
 
             Assert.Equal("Comment 2", comment.Text);
+            Assert.Equal(DateTime.UtcNow.Date, comment.UpdateDate?.Date);
         }
 
         // Test exception throwing when work item ID is null or empty
