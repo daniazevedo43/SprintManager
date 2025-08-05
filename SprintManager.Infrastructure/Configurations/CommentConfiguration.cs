@@ -22,6 +22,8 @@ namespace SprintManager.Infrastructure.Configurations
 
             builder.Property(c => c.CreationDate)
                 .IsRequired();
+
+            builder.Property(c => c.UpdateDate);
         }
     }
 }
