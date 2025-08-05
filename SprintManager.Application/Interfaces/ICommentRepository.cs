@@ -8,5 +8,6 @@ namespace SprintManager.Application.Interfaces
         Task<Comment?> GetByIdAsync(Guid id);
         Task AddAsync(Comment comment);
         Task UpdateAsync(Comment? comment);
+        Task DeleteAsync(Comment comment);
     }
 }

@@ -73,3 +73,4 @@ The following API functionalities are already live:
 * `GET /api/Comments/{id}`: Returns a comment from a work item.
 * `POST /api/Comments`: Creates a new comment in a work item.
 * `PUT /api/Comments/{id}`: Updates a comment.
+* `DELETE /api/Comments/{id}`: Removes a comment.
