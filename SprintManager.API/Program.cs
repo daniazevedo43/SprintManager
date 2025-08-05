@@ -33,10 +33,10 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
-    // serialize enums as strings in api responses
+    // Serialize enums as strings in api responses
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
-    // ignore omitted parameters on models to enable optional params
+    // Ignore omitted parameters to enable optional params
     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 
