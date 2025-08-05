@@ -23,6 +23,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Null(workItem.PriorityLevel);
             Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
+            Assert.Null(workItem.UpdateDate?.Date);
             Assert.Null(workItem.CompletionDate);
             Assert.Null(workItem.HoursEstimate);
         }
@@ -52,6 +53,7 @@ namespace SprintManager.Domain.Tests
             Assert.Equal(WorkItemStatus.New, workItem.Status);
             Assert.Equal(WorkItemPriorityLevel.Low, workItem.PriorityLevel);
             Assert.Equal(DateTime.UtcNow.Date, workItem.CreationDate.Date);
+            Assert.Null(workItem.UpdateDate?.Date);
             Assert.Equal(nextDate.ToUniversalTime(), workItem.CompletionDate);
             Assert.Equal(5, workItem.HoursEstimate);
         }
@@ -73,6 +75,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetSprintId(newSprintId);
 
             Assert.Equal(newSprintId, workItem.SprintId);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test assigned user's ID change
@@ -92,6 +95,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetAssignedUserId(userId);
 
             Assert.Equal(userId, workItem.UserId);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test work item's title change
@@ -103,6 +107,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetWorkItemTitle("Create a Sprint domain");
 
             Assert.Equal("Create a Sprint domain", workItem.WorkItemTitle);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test work item's type change
@@ -114,6 +119,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetWorkItemType(WorkItemType.Bug);
 
             Assert.Equal(WorkItemType.Bug, workItem.WorkItemType);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test description change
@@ -131,6 +137,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetDescription("Description 2");
 
             Assert.Equal("Description 2", workItem.Description);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test status change
@@ -142,6 +149,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetStatus(WorkItemStatus.Closed);
 
             Assert.Equal(WorkItemStatus.Closed, workItem.Status);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test priority level change
@@ -153,6 +161,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetPriorityLevel(WorkItemPriorityLevel.Medium);
 
             Assert.Equal(WorkItemPriorityLevel.Medium, workItem.PriorityLevel);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test completion date change
@@ -170,6 +179,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetCompletionDate(nextDate + new TimeSpan(1, 0, 0, 0));
 
             Assert.Equal(nextDate + new TimeSpan(1, 0, 0, 0), workItem.CompletionDate);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test completion date change
@@ -187,6 +197,7 @@ namespace SprintManager.Domain.Tests
             workItem.SetHoursEstimate(6);
 
             Assert.Equal(6, workItem.HoursEstimate);
+            Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
         // Test exception throwing when project ID is null or empty

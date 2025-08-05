@@ -37,6 +37,8 @@ namespace SprintManager.Infrastructure.Configurations
             builder.Property(w => w.CreationDate)
                 .IsRequired();
 
+            builder.Property(w => w.UpdateDate);
+
             builder.Property(w => w.CompletionDate);
 
             builder.Property(w => w.HoursEstimate);

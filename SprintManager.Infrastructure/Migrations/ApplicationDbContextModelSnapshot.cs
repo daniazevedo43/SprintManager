@@ -199,6 +199,9 @@ namespace SprintManager.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
