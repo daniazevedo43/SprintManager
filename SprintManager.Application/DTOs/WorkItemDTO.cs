@@ -17,6 +17,7 @@ namespace SprintManager.Application.DTOs
         public WorkItemStatus Status { get; set; }
         public WorkItemPriorityLevel? PriorityLevel { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
         public DateTime? CompletionDate { get; set; }
         public int? HoursEstimate { get; set; }
     }
