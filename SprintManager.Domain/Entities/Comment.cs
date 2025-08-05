@@ -9,6 +9,7 @@ namespace SprintManager.Domain.Entities
         public Guid UserId { get; private set; }
         public string Text { get; private set; }
         public DateTime CreationDate { get; private set; }
+        public DateTime? UpdateDate { get; private set; }
         public WorkItem? WorkItem { get; private set; }
         public User? User { get; private set; }
 
@@ -37,6 +38,7 @@ namespace SprintManager.Domain.Entities
             if (text.Length > 500) throw new SprintManagerTooLongException("Comment is too long.", 500, text.Length, nameof(text));
 
             Text = text;
+            UpdateDate = DateTime.UtcNow;
         }
     }
 }
