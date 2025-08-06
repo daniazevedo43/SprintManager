@@ -10,27 +10,19 @@ namespace SprintManager.Application.Handlers.Images
     public class AddImageHandler : IRequestHandler<AddImageCommand, ImageDTO>
     {
         private readonly IImageRepository _imageRepository;
+        private readonly IFileStorageService _fileStorageService;
         private readonly IMapper _mapper;
 
-        public AddImageHandler(IImageRepository imageRepository, IMapper mapper) 
+        public AddImageHandler(IImageRepository imageRepository, IFileStorageService fileStorageService, IMapper mapper) 
         { 
             _imageRepository = imageRepository;
+            _fileStorageService = fileStorageService;
             _mapper = mapper;
         }
 
         public async Task<ImageDTO> Handle(AddImageCommand request, CancellationToken cancellationToken)
         {
-            string? imagePath = null;
-            
-            var fileName = $"{Guid.NewGuid()}-{Path.GetFileName(request.Image.FileName)}";
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "images", fileName);
-
-            using (var stream = File.Create(filePath))
-            {
-                await request.Image.CopyToAsync(stream);
-            }
-
-            imagePath = Path.Combine("images", fileName);
+            var imagePath = await _fileStorageService.SaveFileAsync(request.Image, "images");
 
             var image = new Image(
                 request.WorkItemId, 
