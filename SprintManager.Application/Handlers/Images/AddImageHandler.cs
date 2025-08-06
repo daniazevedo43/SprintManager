@@ -5,7 +5,7 @@ using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 
-namespace SprintManager.Application.Handlers
+namespace SprintManager.Application.Handlers.Images
 {
     public class AddImageHandler : IRequestHandler<AddImageCommand, ImageDTO>
     {
