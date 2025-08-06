@@ -18,6 +18,7 @@ namespace SprintManager.Infrastructure.Data
         public DbSet<Sprint> Sprints { get; set; }
         public DbSet<WorkItem> WorkItems { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
