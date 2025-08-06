@@ -4,25 +4,27 @@
     {
         public Guid Id { get; private set; }
         public Guid WorkItemId { get; private set; }
-        public Guid AttachedByUserId { get; private set; }
+        public Guid UserId { get; private set; }
         public string ContentType { get; private set; }
         public string FileName { get; private set; }
         public string FilePath { get; private set; }
         public DateTime AttachmentDate { get; private set; }
-
+        public WorkItem? WorkItem { get; private set; }
+        public User? User { get; private set; }
+             
         public Image()
         {
 
         }
 
-        public Image(Guid workItemId, Guid attachedByUserId, string contentType, string fileName, string filePath)
+        public Image(Guid workItemId, Guid userId, string contentType, string fileName, string filePath)
         {
-            if (workItemId == Guid.Empty) throw new ArgumentException("Work item ID can't be null or empty.", nameof(workItemId));
-            if (attachedByUserId == Guid.Empty) throw new ArgumentException("User ID can't be null or empty.", nameof(attachedByUserId));
+            if (workItemId == Guid.Empty) throw new ArgumentNullException(nameof(workItemId), "Work item ID can't be null or empty.");
+            if (userId == Guid.Empty) throw new ArgumentNullException(nameof(userId), "User ID can't be null or empty.");
 
             Id = Guid.NewGuid();
             WorkItemId = workItemId;
-            AttachedByUserId = attachedByUserId;
+            UserId = userId;
             ContentType = contentType;
             FileName = fileName;
             FilePath = filePath;

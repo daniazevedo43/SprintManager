@@ -14,7 +14,7 @@ namespace SprintManager.Domain.Tests
 
             Assert.NotEqual(Guid.Empty, image.Id);
             Assert.Equal(workItemId, image.WorkItemId);
-            Assert.Equal(attachedByUserId, image.AttachedByUserId);
+            Assert.Equal(attachedByUserId, image.UserId);
             Assert.Equal("image/jpeg", image.ContentType);
             Assert.Equal("image", image.FileName);
             Assert.Equal("path", image.FilePath);
@@ -25,7 +25,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyWorkItemId_ThrowsException_WhenWorkItemIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Image(Guid.Empty, Guid.NewGuid(), "image/jpeg", "image", "path")
             );
 
@@ -36,11 +36,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyAttachedByUserId_ThrowsException_WhenAttachedByUserIdIsNullOrEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Image(Guid.NewGuid(), Guid.Empty, "image/jpeg", "image", "path")
             );
 
-            Assert.Equal("User ID can't be null or empty. (Parameter 'attachedByUserId')", exception.Message);
+            Assert.Equal("User ID can't be null or empty. (Parameter 'userId')", exception.Message);
         }
     }
 }
