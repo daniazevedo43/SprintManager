@@ -19,6 +19,7 @@ namespace SprintManager.Application.Mappers
             CreateMap<Comment, CommentDTO>()
                 // Maps WorkItem.WorkItemTitle to WorkItemTitle in DTO, with null verification
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null));
+            CreateMap<Image, ImageDTO>();
         }
     }
 }
