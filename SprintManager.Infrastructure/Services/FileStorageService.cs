@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using SprintManager.Application.Interfaces;
-using System.IO;
 
 namespace SprintManager.Infrastructure.Services
 {
@@ -24,7 +23,7 @@ namespace SprintManager.Infrastructure.Services
             }
 
             var filePath = Path.Combine(directoryPath, $"{file.FileName}");
-
+            
             using (var stream = File.Create(filePath))
             {
                 await file.CopyToAsync(stream);
