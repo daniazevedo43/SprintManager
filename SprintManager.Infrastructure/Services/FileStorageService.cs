@@ -1,21 +1,37 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using SprintManager.Application.Interfaces;
+using System.IO;
 
 namespace SprintManager.Infrastructure.Services
 {
     public class FileStorageService : IFileStorageService
     {
+        private readonly string _storagePath;
+
+        public FileStorageService(IConfiguration configuration)
+        {
+            _storagePath = configuration.GetValue<string>("ImageSettings:StoragePath")!;
+        }
+
         public async Task<string> SaveFileAsync(IFormFile file, string subfolder)
         {
+            var directoryPath = Path.Combine(_storagePath, subfolder);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             var fileName = $"{Guid.NewGuid()}-{Path.GetFileName(file.FileName)}";
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "images", fileName);
+            var filePath = Path.Combine(directoryPath, fileName);
 
             using (var stream = File.Create(filePath))
             {
                 await file.CopyToAsync(stream);
             }
 
-            return Path.Combine("images", fileName);
+            return Path.Combine(subfolder, fileName);
         }
     }
 }

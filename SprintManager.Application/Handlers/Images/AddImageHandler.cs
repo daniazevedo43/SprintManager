@@ -22,7 +22,7 @@ namespace SprintManager.Application.Handlers.Images
 
         public async Task<ImageDTO> Handle(AddImageCommand request, CancellationToken cancellationToken)
         {
-            var imagePath = await _fileStorageService.SaveFileAsync(request.Image, "images");
+            var imagePath = await _fileStorageService.SaveFileAsync(request.Image, "Images");
 
             var image = new Image(
                 request.WorkItemId, 

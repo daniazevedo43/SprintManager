@@ -17,7 +17,7 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task AddAsync(Image image)
         {
             var workItem = await _context.WorkItems.FindAsync(image.WorkItemId);
-            var user = await _context.WorkItems.FindAsync(image.UserId);
+            var user = await _context.Users.FindAsync(image.UserId);
             
             if (!string.IsNullOrWhiteSpace(image.WorkItemId.ToString()) && workItem == null) 
                 throw new SprintManagerNotFoundException($"Work item with ID {image.WorkItemId} not found.");
