@@ -23,15 +23,14 @@ namespace SprintManager.Infrastructure.Services
                 Directory.CreateDirectory(directoryPath);
             }
 
-            var fileName = $"{Guid.NewGuid()}-{Path.GetFileName(file.FileName)}";
-            var filePath = Path.Combine(directoryPath, fileName);
+            var filePath = Path.Combine(directoryPath, $"{file.FileName}");
 
             using (var stream = File.Create(filePath))
             {
                 await file.CopyToAsync(stream);
             }
 
-            return Path.Combine(subfolder, fileName);
+            return Path.Combine(subfolder, $"{file.FileName}");
         }
     }
 }
