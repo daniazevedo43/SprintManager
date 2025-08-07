@@ -63,7 +63,7 @@ namespace SprintManager.Application.Tests.ImageTests
             };
 
             // File storage service's Mock configuration
-            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "images")).ReturnsAsync(image.FilePath);
+            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "Images")).ReturnsAsync(image.FilePath);
 
             // Repository's Mock configuration
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
@@ -82,7 +82,7 @@ namespace SprintManager.Application.Tests.ImageTests
             Assert.Equal(imageDTO.AttachmentDate, result.AttachmentDate);
 
             // Ensure SaveFileAsync was called exactly once.
-            _mockFileStorageService.Verify(s => s.SaveFileAsync(_mockFile.Object, "images"), Times.Once);
+            _mockFileStorageService.Verify(s => s.SaveFileAsync(_mockFile.Object, "Images"), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
