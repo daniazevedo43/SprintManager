@@ -78,3 +78,19 @@ The following API functionalities are already live:
 #### Images (`/api/Images`)
 
 * `POST /api/Images`: Adds a new image in a work item.
+
+## Database setup
+
+Install SQL Server (if you haven't installed it yet).
+
+### Connection String configuration
+
+1. Open `appsettings.json` file in `SprintManager.API` project's folder.
+2. Change `ConnectionStrings` so that it's configured to your SQL Server instance.
+
+
+Navigate to `SprintManager.API` project in your command line and run the command down below. This will apply all pending migrations and create the database if it doesn't exist:
+
+```shell
+dotnet ef database update
+```
