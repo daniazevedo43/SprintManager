@@ -74,3 +74,7 @@ The following API functionalities are already live:
 * `POST /api/Comments`: Creates a new comment in a work item.
 * `PUT /api/Comments/{id}`: Updates a comment.
 * `DELETE /api/Comments/{id}`: Removes a comment.
+
+#### Images (`/api/Images`)
+
+* `POST /api/Images`: Adds a new image in a work item.
