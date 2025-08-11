@@ -88,6 +88,7 @@ Install SQL Server (if you haven't installed it yet).
 1. Open `appsettings.json` file in `SprintManager.API` project's folder.
 2. Change `ConnectionStrings` so that it's configured to your SQL Server instance.
 
+### Apply Migrations
 
 Navigate to `SprintManager.API` project in your command line and run the command down below. This will apply all pending migrations and create the database if it doesn't exist:
 
