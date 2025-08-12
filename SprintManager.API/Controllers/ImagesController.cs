@@ -20,6 +20,7 @@ namespace SprintManager.API.Controllers
         [ProducesResponseType(typeof(ImageDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         public async Task<IActionResult> AddImage(AddImageCommand command)
         {
             var result = await _mediator.Send(command);
