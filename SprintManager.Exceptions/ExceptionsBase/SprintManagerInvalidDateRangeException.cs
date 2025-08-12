@@ -2,9 +2,6 @@
 {
     public class SprintManagerInvalidDateRangeException : Exception
     {
-        public DateTime StartDate { get; }
-        public DateTime EndDate { get; }
-
         public SprintManagerInvalidDateRangeException()
         {
 

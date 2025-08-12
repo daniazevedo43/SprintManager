@@ -2,8 +2,6 @@
 {
     public class SprintManagerDateNotAllowedException : Exception
     {
-        public DateTime InvalidDate { get; }
-
         public SprintManagerDateNotAllowedException()
         {
 
