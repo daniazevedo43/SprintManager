@@ -40,7 +40,7 @@ namespace SprintManager.Application.Tests.UserTests
             var userDTO = new UserDTO { Id = user.Id, Name = user.Name, Email = user.Email };
 
             // Repository's Mock configuration
-            _mockUserRepository.Setup(r => r.GetByEmailAsync(user.Email)).ReturnsAsync((User?)null);
+            _mockUserRepository.Setup(r => r.GetByEmailAsync(command.Email)).ReturnsAsync((User?)null);
             _mockUserRepository.Setup(r => r.AddAsync(It.IsAny<User>())).Callback<User>(u => user = u);
 
             // Mapper's Mock configuration
@@ -53,7 +53,7 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal(userDTO.Email, result.Email);
 
             // Ensure GetByEmailAsync was called exactly once.
-            _mockUserRepository.Verify(r => r.GetByEmailAsync(user.Email), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByEmailAsync(command.Email), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockUserRepository.Verify(r => r.AddAsync(user), Times.Once);
