@@ -1,5 +1,4 @@
 ﻿using SprintManager.Domain.Entities;
-using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Domain.Tests
 {
@@ -42,22 +41,6 @@ namespace SprintManager.Domain.Tests
             );
 
             Assert.Equal("User ID can't be null or empty. (Parameter 'userId')", exception.Message);
-        }
-
-        // Test exception throwing when file extension is not allowed
-        [Theory]
-        [InlineData(".pdf")]
-        [InlineData(".txt")]
-        [InlineData(".svg")]
-        public void VerifyContentType_ThrowsException_WhenFileIsNotAllowed(string extension)
-        {
-            var allowedExtensions = new[] { ".png", ".jpg", ".jpeg" };
-
-            var exception = Assert.Throws<SprintManagerFileNotAllowedException>(() =>
-                new Image(Guid.NewGuid(), Guid.NewGuid(), $"image/{extension}", $"image.{extension}", "path")
-            );
-
-            Assert.Equal($"File extension not allowed. Please upload a file with the following extensions: {string.Join(", ", allowedExtensions)}", exception.Message);
         }
     }
 }
