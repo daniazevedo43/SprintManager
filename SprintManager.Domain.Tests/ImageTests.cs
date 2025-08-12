@@ -10,13 +10,13 @@ namespace SprintManager.Domain.Tests
         {
             Guid workItemId = Guid.NewGuid();
             Guid attachedByUserId = Guid.NewGuid();
-            var image = new Image(workItemId, attachedByUserId, "image/jpeg", "image", "path");
+            var image = new Image(workItemId, attachedByUserId, "image/jpeg", "image.jpeg", "path");
 
             Assert.NotEqual(Guid.Empty, image.Id);
             Assert.Equal(workItemId, image.WorkItemId);
             Assert.Equal(attachedByUserId, image.UserId);
             Assert.Equal("image/jpeg", image.ContentType);
-            Assert.Equal("image", image.FileName);
+            Assert.Equal("image.jpeg", image.FileName);
             Assert.Equal("path", image.FilePath);
             Assert.Equal(DateTime.UtcNow.Date, image.AttachmentDate.Date);
         }
@@ -26,7 +26,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyWorkItemId_ThrowsException_WhenWorkItemIsNullOrEmpty()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Image(Guid.Empty, Guid.NewGuid(), "image/jpeg", "image", "path")
+                new Image(Guid.Empty, Guid.NewGuid(), "image/jpeg", "image.jpeg", "path")
             );
 
             Assert.Equal("Work item ID can't be null or empty. (Parameter 'workItemId')", exception.Message);
@@ -34,10 +34,10 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when user ID is null or empty
         [Fact]
-        public void VerifyAttachedByUserId_ThrowsException_WhenAttachedByUserIdIsNullOrEmpty()
+        public void VerifyUserId_ThrowsException_WhenAttachedByUserIdIsNullOrEmpty()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Image(Guid.NewGuid(), Guid.Empty, "image/jpeg", "image", "path")
+                new Image(Guid.NewGuid(), Guid.Empty, "image/jpeg", "image.jpeg", "path")
             );
 
             Assert.Equal("User ID can't be null or empty. (Parameter 'userId')", exception.Message);

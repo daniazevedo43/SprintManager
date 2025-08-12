@@ -43,6 +43,7 @@ namespace SprintManager.API.Middleware
                 SprintManagerDateNotAllowedException => (int)HttpStatusCode.BadRequest, // 400 
                 SprintManagerNotFoundException => (int)HttpStatusCode.NotFound, // 404
                 SprintManagerConflictException => (int)HttpStatusCode.Conflict, // 409
+                SprintManagerFileNotAllowedException => (int)HttpStatusCode.UnsupportedMediaType, // 415
                 _ => (int)HttpStatusCode.InternalServerError // 500
             };
 

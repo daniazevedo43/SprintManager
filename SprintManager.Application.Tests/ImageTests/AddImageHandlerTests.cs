@@ -6,6 +6,7 @@ using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.Images;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.ImageTests
 {
@@ -89,6 +90,26 @@ namespace SprintManager.Application.Tests.ImageTests
 
             // Ensure the mapper's Map was called exactly once with the attached image.
             _mockMapper.Verify(m => m.Map<ImageDTO>(image), Times.Once);
+        }
+
+        // Test exception throwing when file extension is not allowed
+        [Fact]
+        public async Task VerifyFile_ThrowsException_WhenFileIsNotAllowed()
+        {
+            _mockFile.Setup(f => f.FileName).Returns("test_image.pdf");
+
+            var command = new AddImageCommand
+            {
+                WorkItemId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                Image = _mockFile.Object,
+            };
+
+            var exception = await Assert.ThrowsAsync<SprintManagerFileNotAllowedException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Contains("File extension not allowed.", exception.Message);
         }
     }
 }

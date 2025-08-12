@@ -4,6 +4,7 @@ using SprintManager.Application.Commands.Images;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Images
 {
@@ -12,6 +13,7 @@ namespace SprintManager.Application.Handlers.Images
         private readonly IImageRepository _imageRepository;
         private readonly IFileStorageService _fileStorageService;
         private readonly IMapper _mapper;
+        private readonly string[] AllowedExtensions = { ".png", ".jpg", ".jpeg" };
 
         public AddImageHandler(IImageRepository imageRepository, IFileStorageService fileStorageService, IMapper mapper) 
         { 
@@ -22,6 +24,9 @@ namespace SprintManager.Application.Handlers.Images
 
         public async Task<ImageDTO> Handle(AddImageCommand request, CancellationToken cancellationToken)
         {
+            if(!AllowedExtensions.Contains(Path.GetExtension(request.Image.FileName)))
+                throw new SprintManagerFileNotAllowedException($"File extension not allowed. Please upload a file with the following extensions: {string.Join(", ", AllowedExtensions)}.");
+
             var imagePath = await _fileStorageService.SaveFileAsync(request.Image, "Images");
 
             var image = new Image(
