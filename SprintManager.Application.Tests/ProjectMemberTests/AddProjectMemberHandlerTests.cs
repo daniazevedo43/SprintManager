@@ -47,7 +47,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             };
 
             // Repository's Mock configuration
-            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(projectMember.UserId, projectMember.ProjectId)).ReturnsAsync((ProjectMember?)null);
+            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId)).ReturnsAsync((ProjectMember?)null);
             _mockProjectMemberRepository.Setup(r => r.AddAsync(It.IsAny<ProjectMember>())).Callback<ProjectMember>(pm => projectMember = pm);
 
             // Mapper's Mock configuration
@@ -61,7 +61,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             Assert.Equal(projectMemberDTO.Role, result.Role);
 
             // Ensure GetByUserIdAsync was called exactly once.
-            _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(projectMember.UserId, projectMember.ProjectId), Times.Once);
+            _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.AddAsync(projectMember), Times.Once);
@@ -83,7 +83,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             var projectMember = new ProjectMember(command.ProjectId, command.UserId, command.Role);
 
             // Repository's Mock configuration
-            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(projectMember.UserId, projectMember.ProjectId)).ReturnsAsync(projectMember);
+            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId)).ReturnsAsync(projectMember);
 
             var exception = await Assert.ThrowsAsync<SprintManagerConflictException>(
                 () => _handler.Handle(command, CancellationToken.None)

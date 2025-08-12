@@ -45,7 +45,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             // Repository's Mock configuration
-            _mockProjectRepository.Setup(r => r.GetByNameAsync(project.Name)).ReturnsAsync((Project?)null);
+            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name)).ReturnsAsync((Project?)null);
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
             // Mapper's Mock configuration
@@ -60,7 +60,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             Assert.Equal(projectDTO.Status, result.Status);
 
             // Ensure GetByNameAsync was called exactly once.
-            _mockProjectRepository.Verify(r => r.GetByNameAsync(project.Name), Times.Once);
+            _mockProjectRepository.Verify(r => r.GetByNameAsync(command.Name), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.AddAsync(project), Times.Once);
@@ -90,7 +90,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             // Repository's Mock configuration
-            _mockProjectRepository.Setup(r => r.GetByNameAsync(project.Name)).ReturnsAsync((Project?)null);
+            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name)).ReturnsAsync((Project?)null);
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
             // Mapper's Mock configuration
@@ -105,7 +105,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             Assert.Equal(projectDTO.Status, result.Status);
 
             // Ensure GetByNameAsync was called exactly once.
-            _mockProjectRepository.Verify(r => r.GetByNameAsync(project.Name), Times.Once);
+            _mockProjectRepository.Verify(r => r.GetByNameAsync(command.Name), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.AddAsync(project), Times.Once);
