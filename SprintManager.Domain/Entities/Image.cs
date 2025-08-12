@@ -1,4 +1,6 @@
-﻿namespace SprintManager.Domain.Entities
+﻿using SprintManager.Exceptions.ExceptionsBase;
+
+namespace SprintManager.Domain.Entities
 {
     public class Image
     {
@@ -21,6 +23,11 @@
         {
             if (workItemId == Guid.Empty) throw new ArgumentNullException(nameof(workItemId), "Work item ID can't be null or empty.");
             if (userId == Guid.Empty) throw new ArgumentNullException(nameof(userId), "User ID can't be null or empty.");
+
+            var allowedExtensions = new[] { ".png", ".jpg", ".jpeg" };
+            var fileExtension = Path.GetExtension(fileName);
+            
+            if (!allowedExtensions.Contains(fileExtension)) throw new SprintManagerFileNotAllowedException($"File extension not allowed. Please upload a file with the following extensions: {string.Join(", ", allowedExtensions)}");
 
             Id = Guid.NewGuid();
             WorkItemId = workItemId;
