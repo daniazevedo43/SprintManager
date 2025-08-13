@@ -54,7 +54,7 @@ The following API functionalities are already live:
 #### Sprints (`/api/Sprints`)
 
 * `GET /api/Sprints`: Returns a list of all sprints from all projects.
-* `GET /api/Sprints/{id}`: Returns a sprint of a project.
+* `GET /api/Sprints/{id}`: Returns a sprint.
 * `POST /api/Sprints`: Create a new sprint for a project.
 * `PUT /api/Sprints/{id}`: Updates a sprint.
 * `DELETE /api/Sprints/{id}`: Removes a sprint from a project.
@@ -70,7 +70,7 @@ The following API functionalities are already live:
 #### Comments (`/api/Comments`)
 
 * `GET /api/Comments`: Returns a list of all comments in all work items.
-* `GET /api/Comments/{id}`: Returns a comment from a work item.
+* `GET /api/Comments/{id}`: Returns a comment.
 * `POST /api/Comments`: Creates a new comment in a work item.
 * `PUT /api/Comments/{id}`: Updates a comment.
 * `DELETE /api/Comments/{id}`: Removes a comment.
@@ -78,6 +78,7 @@ The following API functionalities are already live:
 #### Images (`/api/Images`)
 
 * `GET /api/Images`: Returns a list of all images in all work items.
+* `GET /api/Images/{id}`: Returns an image.
 * `POST /api/Images`: Adds a new image in a work item.
 
 ## Database setup
