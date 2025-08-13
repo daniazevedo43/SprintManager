@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Images;
 using SprintManager.Application.DTOs;
+using SprintManager.Application.Queries.Comments;
+using SprintManager.Application.Queries.Images;
 
 namespace SprintManager.API.Controllers
 {
@@ -14,6 +16,15 @@ namespace SprintManager.API.Controllers
         public ImagesController(IMediator mediator)
         { 
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ImageDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllImages()
+        {
+            var result = await _mediator.Send(new GetAllImagesQuery());
+
+            return Ok(result);
         }
 
         [HttpPost]
