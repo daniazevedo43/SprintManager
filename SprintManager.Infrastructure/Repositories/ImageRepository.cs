@@ -19,6 +19,8 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task<List<Image>> GetAllAsync()
         {
             return await _context.Images
+                .Include(i => i.WorkItem)
+                .Include(i => i.User)
                 .OrderBy(i => i.WorkItem)
                 .ToListAsync();
         }
