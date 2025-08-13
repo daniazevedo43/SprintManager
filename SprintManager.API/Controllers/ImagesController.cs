@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Images;
 using SprintManager.Application.DTOs;
-using SprintManager.Application.Queries.Comments;
 using SprintManager.Application.Queries.Images;
 
 namespace SprintManager.API.Controllers
@@ -27,6 +26,16 @@ namespace SprintManager.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ImageDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetImageById(Guid id)
+        {
+            var result = await _mediator.Send(new GetImageByIdQuery { Id = id });
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ImageDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,7 +45,7 @@ namespace SprintManager.API.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return CreatedAtAction(null, new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetImageById), new { id = result.Id }, result);
         }
     }
 }
