@@ -34,8 +34,8 @@ namespace SprintManager.Application.Tests.ImageTests
         [Fact]
         public async Task Handle_AddsImage_ReturnsImageDTO()
         {
-            _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
             _mockFile.Setup(f => f.ContentType).Returns("image/jpeg");
+            _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
 
             var command = new AddImageCommand
             {
