@@ -77,6 +77,7 @@ The following API functionalities are already live:
 
 #### Images (`/api/Images`)
 
+* `GET /api/Images`: Returns a list of all images in all work items.
 * `POST /api/Images`: Adds a new image in a work item.
 
 ## Database setup
