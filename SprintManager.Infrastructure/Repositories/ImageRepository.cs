@@ -25,6 +25,14 @@ namespace SprintManager.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<Image?> GetByIdAsync(Guid id)
+        {
+            return await _context.Images
+                .Include(c => c.WorkItem)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task AddAsync(Image image)
         {
             var workItem = await _context.WorkItems.FindAsync(image.WorkItemId);
