@@ -16,6 +16,13 @@ namespace SprintManager.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<List<Image>> GetAllAsync()
+        {
+            return await _context.Images
+                .OrderBy(i => i.WorkItem)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Image image)
         {
             var workItem = await _context.WorkItems.FindAsync(image.WorkItemId);
