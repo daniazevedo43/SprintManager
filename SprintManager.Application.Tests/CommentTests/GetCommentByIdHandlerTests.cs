@@ -62,7 +62,7 @@ namespace SprintManager.Application.Tests.CommentTests
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockCommentRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
 
-            // Ensure the mapper's Map was called exactly once with the created project.
+            // Ensure the mapper's Map was called exactly once.
             _mockMapper.Verify(m => m.Map<CommentDTO>(comment), Times.Once);
         }
 
