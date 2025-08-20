@@ -80,7 +80,7 @@ The following API functionalities are already live:
 * `GET /api/Images`: Returns a list of all images in all work items.
 * `GET /api/Images/{id}`: Returns an image.
 * `POST /api/Images`: Adds a new image in a work item.
-* `DELETE /api/Images/{id}`: Removes an image.
+* `DELETE /api/Images/{id}`: Removes an image from a work item.
 
 ## Database setup
 
