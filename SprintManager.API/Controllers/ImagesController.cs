@@ -47,5 +47,15 @@ namespace SprintManager.API.Controllers
 
             return CreatedAtAction(nameof(GetImageById), new { id = result.Id }, result);
         }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveImage(Guid id)
+        {
+            await _mediator.Send(new RemoveImageCommand { Id = id });
+
+            return NoContent();
+        }
     }
 }
