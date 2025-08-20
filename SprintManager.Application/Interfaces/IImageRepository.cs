@@ -7,5 +7,6 @@ namespace SprintManager.Application.Interfaces
         Task<List<Image>> GetAllAsync();
         Task<Image?> GetByIdAsync(Guid id);
         Task AddAsync(Image image);
+        Task DeleteAsync(Image image);
     }
 }

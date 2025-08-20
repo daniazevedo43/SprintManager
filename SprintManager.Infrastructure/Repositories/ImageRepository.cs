@@ -57,5 +57,11 @@ namespace SprintManager.Infrastructure.Repositories
             await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(Image image)
+        {
+            _context.Images.Remove(image);
+            await _context.SaveChangesAsync();
+        }
     }
 }

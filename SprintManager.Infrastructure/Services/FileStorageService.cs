@@ -31,5 +31,21 @@ namespace SprintManager.Infrastructure.Services
 
             return Path.Combine(subfolder, $"{file.FileName}");
         }
+
+        public void DeleteFile(string subfolder, string fileNameWithExtension)
+        {
+            if (string.IsNullOrEmpty(fileNameWithExtension))
+            {
+                throw new ArgumentNullException(nameof(fileNameWithExtension));
+            }
+
+            var directoryPath = Path.Combine(_storagePath, subfolder, fileNameWithExtension);
+
+            if (!File.Exists(directoryPath))
+            {
+                throw new FileNotFoundException($"Invalid file path");
+            }
+            File.Delete(directoryPath);
+        }
     }
 }
