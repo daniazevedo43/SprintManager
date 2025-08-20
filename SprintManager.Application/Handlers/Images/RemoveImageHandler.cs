@@ -5,18 +5,18 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Images
 {
-    public class DeleteImageHandler : IRequestHandler<DeleteImageCommand>
+    public class RemoveImageHandler : IRequestHandler<RemoveImageCommand>
     {
         private readonly IImageRepository _imageRepository;
         private readonly IFileStorageService _fileStorageService;
 
-        public DeleteImageHandler (IImageRepository imageRepository, IFileStorageService fileStorageService)
+        public RemoveImageHandler (IImageRepository imageRepository, IFileStorageService fileStorageService)
         {
             _imageRepository = imageRepository;
             _fileStorageService = fileStorageService;
         }
 
-        public async Task Handle(DeleteImageCommand request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveImageCommand request, CancellationToken cancellationToken)
         {
             var image = await _imageRepository.GetByIdAsync(request.Id);
 

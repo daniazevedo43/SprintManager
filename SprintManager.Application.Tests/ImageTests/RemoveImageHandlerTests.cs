@@ -7,26 +7,26 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.ImageTests
 {
-    public class DeleteImageHandlerTests
+    public class RemoveImageHandlerTests
     {
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<IFileStorageService> _mockFileStorageService;
-        private readonly DeleteImageHandler _handler;
+        private readonly RemoveImageHandler _handler;
 
-        public DeleteImageHandlerTests()
+        public RemoveImageHandlerTests()
         {
             // Initialize mock for each test
             _mockImageRepository = new Mock<IImageRepository>();
             _mockFileStorageService = new Mock<IFileStorageService>();
 
             // Initialize handler injecting the mock
-            _handler = new DeleteImageHandler(_mockImageRepository.Object, _mockFileStorageService.Object);
+            _handler = new RemoveImageHandler(_mockImageRepository.Object, _mockFileStorageService.Object);
         }
 
         [Fact]
         public async Task Handle_GivenValid_DeletesImage()
         {
-            var command = new DeleteImageCommand
+            var command = new RemoveImageCommand
             {
                 Id = Guid.NewGuid(),
             };
@@ -53,7 +53,7 @@ namespace SprintManager.Application.Tests.ImageTests
         [Fact]
         public async Task VerifyImage_ThrowsException_WhenImageIsNotFound()
         {
-            var command = new DeleteImageCommand
+            var command = new RemoveImageCommand
             {
                 Id = Guid.NewGuid(),
             };
