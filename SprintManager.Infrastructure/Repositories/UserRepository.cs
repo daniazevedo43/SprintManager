@@ -19,7 +19,7 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.Users.OrderBy(u => u.Name).ToListAsync();
         }
 
-        public async Task<User?> GetByIdAsync(Guid id)
+        public async Task<User?> GetByIdAsync(Guid? id)
         {
             return await _context.Users.FindAsync(id);
         }
