@@ -37,13 +37,13 @@ namespace SprintManager.Application.Handlers.Images
             if(!AllowedExtensions.Contains(Path.GetExtension(request.Image.FileName)))
                 throw new SprintManagerFileNotAllowedException($"File extension not allowed. Please upload a file with the following extensions: {string.Join(", ", AllowedExtensions)}.");
 
-            var workItemId = await _workItemRepository.GetByIdAsync(request.WorkItemId);
-            var userId = await _userRepository.GetByIdAsync(request.UserId);
+            var workItem = await _workItemRepository.GetByIdAsync(request.WorkItemId);
+            var user = await _userRepository.GetByIdAsync(request.UserId);
 
-            if (!string.IsNullOrWhiteSpace(request.WorkItemId.ToString()) && workItemId == null)
+            if (!string.IsNullOrWhiteSpace(request.WorkItemId.ToString()) && workItem == null)
                 throw new SprintManagerNotFoundException($"Work item with ID {request.WorkItemId} not found.");
 
-            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && userId == null)
+            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && user == null)
                 throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");
 
             var imagePath = _fileStorageService.GetFilePath("Images", request.Image.FileName);

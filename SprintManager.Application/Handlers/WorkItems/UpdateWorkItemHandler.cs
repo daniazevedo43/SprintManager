@@ -10,16 +10,34 @@ namespace SprintManager.Application.Handlers.WorkItems
     public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, WorkItemDTO>
     {
         private readonly IWorkItemRepository _workItemRepository;
+        private readonly ISprintRepository _sprintRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UpdateWorkItemHandler(IWorkItemRepository workItemRepository, IMapper mapper)
+        public UpdateWorkItemHandler(
+            IWorkItemRepository workItemRepository,
+            ISprintRepository sprintRepository,
+            IUserRepository userRepository,
+            IMapper mapper
+        )
         {
             _workItemRepository = workItemRepository;
+            _sprintRepository = sprintRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
         public async Task<WorkItemDTO> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
         {
+            var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
+            var user = await _userRepository.GetByIdAsync(request.UserId);
+
+            if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprint == null)
+                throw new SprintManagerNotFoundException($"Sprint with ID {request.SprintId} not found.");
+
+            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && user == null)
+                throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");
+
             var workItem = await _workItemRepository.GetByIdAsync(request.Id);
 
             if (workItem == null) throw new SprintManagerNotFoundException($"Work item with ID {request?.Id} not found.");
