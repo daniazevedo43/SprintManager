@@ -18,7 +18,8 @@ namespace SprintManager.Application.Handlers.WorkItems
             IWorkItemRepository workItemRepository,
             ISprintRepository sprintRepository,
             IUserRepository userRepository,
-            IMapper mapper)
+            IMapper mapper
+        )
         {
             _workItemRepository = workItemRepository;
             _sprintRepository = sprintRepository;
@@ -28,13 +29,13 @@ namespace SprintManager.Application.Handlers.WorkItems
 
         public async Task<WorkItemDTO> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
         {
-            var sprintId = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var userId = await _userRepository.GetByIdAsync(request.UserId);
+            var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
+            var user = await _userRepository.GetByIdAsync(request.UserId);
 
-            if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprintId == null)
+            if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprint == null)
                 throw new SprintManagerNotFoundException($"Sprint with ID {request.SprintId} not found.");
 
-            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && userId == null)
+            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && user == null)
                 throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");
 
             var workItem = await _workItemRepository.GetByIdAsync(request.Id);
