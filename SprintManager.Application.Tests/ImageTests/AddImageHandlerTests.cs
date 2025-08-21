@@ -121,7 +121,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
         // Test exception throwing when work item is not found
         [Fact]
-        public async Task VerifyWorkItemId_ThrowsException_WhenWorkItemIsNotFound()
+        public async Task VerifyWorkItem_ThrowsException_WhenWorkItemIsNotFound()
         {
             _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
 
@@ -147,7 +147,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
         // Test exception throwing when user is not found
         [Fact]
-        public async Task VerifyUserId_ThrowsException_WhenUserIsNotFound()
+        public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
         {
             _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
 
