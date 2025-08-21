@@ -23,7 +23,7 @@ namespace SprintManager.Infrastructure.Repositories
                 .ToListAsync();
         }
         
-        public async Task<Sprint?> GetByIdAsync(Guid id)
+        public async Task<Sprint?> GetByIdAsync(Guid? id)
         {
             return await _context.Sprints
                 .Include(s => s.Project)

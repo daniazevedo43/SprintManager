@@ -6,12 +6,16 @@ using SprintManager.Application.Handlers.WorkItems;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.WorkItemsTests
 {
     public class CreateWorkItemHandlerTests
     {
         private readonly Mock<IWorkItemRepository> _mockWorkItemRepository;
+        private readonly Mock<IProjectRepository> _mockProjectRepository;
+        private readonly Mock<ISprintRepository> _mockSprintRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly CreateWorkItemHandler _handler;
 
@@ -19,10 +23,19 @@ namespace SprintManager.Application.Tests.WorkItemsTests
         {
             // Initialize mocks for each test
             _mockWorkItemRepository = new Mock<IWorkItemRepository>();
+            _mockProjectRepository = new Mock<IProjectRepository>();
+            _mockSprintRepository = new Mock<ISprintRepository>();
+            _mockUserRepository = new Mock<IUserRepository>();
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
-            _handler = new CreateWorkItemHandler(_mockWorkItemRepository.Object, _mockMapper.Object);
+            _handler = new CreateWorkItemHandler(
+                _mockWorkItemRepository.Object, 
+                _mockProjectRepository.Object,
+                _mockSprintRepository.Object,
+                _mockUserRepository.Object,
+                _mockMapper.Object
+            );
         }
 
         // Test handler - basic work item creation
@@ -33,7 +46,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             {
                 ProjectId = Guid.NewGuid(),
                 WorkItemTitle = "Adjust feed page for mobile devices",
-                WorkItemType = WorkItemType.Task,
+                WorkItemType = WorkItemType.Task
             };
 
             var workItem = new WorkItem(command.ProjectId, command.WorkItemTitle, command.WorkItemType);
@@ -48,7 +61,10 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 CreationDate = workItem.CreationDate,
             };
 
-            // Repository's mock configuration
+            // Repositories mock configuration
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
@@ -64,6 +80,11 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.PriorityLevel, result.PriorityLevel);
             Assert.Equal(workItemDTO.CreationDate, result.CreationDate);
 
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+           
             // Ensure AddAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.AddAsync(workItem), Times.Once);
 
@@ -116,7 +137,10 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = workItem.HoursEstimate,
             };
 
-            // Repository's mock configuration
+            // Repositories mock configuration
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
@@ -137,11 +161,97 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.CompletionDate, result.CompletionDate);
             Assert.Equal(workItemDTO.HoursEstimate, result.HoursEstimate);
 
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+
             // Ensure AddAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.AddAsync(workItem), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created work item.
             _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
+        }
+
+        // Test exception throwing when project is not found
+        [Fact]
+        public async Task VerifyProjectId_ThrowsException_WhenProjectIsNotFound()
+        {
+            var command = new CreateWorkItemCommand
+            {
+                ProjectId = Guid.NewGuid(),
+                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemType = WorkItemType.Task
+            };
+
+            // Repository's mock configuration
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Project with ID {command.ProjectId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+        }
+
+        // Test exception throwing when sprint is not found
+        [Fact]
+        public async Task VerifySprintId_ThrowsException_WhenSprintIsNotFound()
+        {
+            var command = new CreateWorkItemCommand
+            {
+                ProjectId = Guid.NewGuid(),
+                SprintId = Guid.NewGuid(),
+                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemType = WorkItemType.Task
+            };
+
+            // Repositories mock configuration
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Sprint with ID {command.SprintId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
+        }
+
+        // Test exception throwing when sprint is not found
+        [Fact]
+        public async Task VerifyUserId_ThrowsException_WhenUserIsNotFound()
+        {
+            var command = new CreateWorkItemCommand
+            {
+                ProjectId = Guid.NewGuid(),
+                SprintId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemType = WorkItemType.Task
+            };
+
+            // Repositories mock configuration
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User with ID {command.UserId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
         }
     }
 }
