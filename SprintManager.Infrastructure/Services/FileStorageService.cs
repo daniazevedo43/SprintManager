@@ -13,6 +13,11 @@ namespace SprintManager.Infrastructure.Services
             _storagePath = configuration.GetValue<string>("ImageSettings:StoragePath")!;
         }
 
+        public string GetFilePath(string subfolder, string fileName)
+        {
+            return Path.Combine(subfolder, fileName);
+        }
+
         public async Task<string> SaveFileAsync(IFormFile file, string subfolder)
         {
             var directoryPath = Path.Combine(_storagePath, subfolder);
@@ -22,7 +27,7 @@ namespace SprintManager.Infrastructure.Services
                 Directory.CreateDirectory(directoryPath);
             }
 
-            var filePath = Path.Combine(directoryPath, $"{file.FileName}");
+            var filePath = GetFilePath(directoryPath, $"{file.FileName}");
             
             using (var stream = File.Create(filePath))
             {

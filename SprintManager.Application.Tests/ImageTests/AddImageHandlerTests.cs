@@ -13,6 +13,8 @@ namespace SprintManager.Application.Tests.ImageTests
     public class AddImageHandlerTests
     {
         private readonly Mock<IImageRepository> _mockImageRepository;
+        private readonly Mock<IWorkItemRepository> _mockWorkItemRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
         private readonly Mock<IFileStorageService> _mockFileStorageService;
         private readonly Mock<IFormFile> _mockFile;
         private readonly Mock<IMapper> _mockMapper;
@@ -22,12 +24,20 @@ namespace SprintManager.Application.Tests.ImageTests
         {
             // Initialize mocks for each test
             _mockImageRepository = new Mock<IImageRepository>();
+            _mockWorkItemRepository = new Mock<IWorkItemRepository>();
+            _mockUserRepository = new Mock<IUserRepository>();
             _mockFileStorageService = new Mock<IFileStorageService>();
             _mockFile = new Mock<IFormFile>();
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
-            _handler = new AddImageHandler(_mockImageRepository.Object, _mockFileStorageService.Object, _mockMapper.Object);
+            _handler = new AddImageHandler(
+                _mockImageRepository.Object, 
+                _mockWorkItemRepository.Object,
+                _mockUserRepository.Object,
+                _mockFileStorageService.Object, 
+                _mockMapper.Object
+             );
         }
 
         // Test handler - add image
@@ -63,10 +73,9 @@ namespace SprintManager.Application.Tests.ImageTests
                 AttachmentDate = image.AttachmentDate
             };
 
-            // File storage service's Mock configuration
+            _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
             _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "Images")).ReturnsAsync(image.FilePath);
-
-            // Repository's Mock configuration
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
 
             // Mapper's Mock configuration
@@ -82,13 +91,11 @@ namespace SprintManager.Application.Tests.ImageTests
             Assert.Equal(imageDTO.FilePath, result.FilePath);
             Assert.Equal(imageDTO.AttachmentDate, result.AttachmentDate);
 
-            // Ensure SaveFileAsync was called exactly once.
-            _mockFileStorageService.Verify(s => s.SaveFileAsync(_mockFile.Object, "Images"), Times.Once);
-
-            // Ensure AddAsync was called exactly once.
+            _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+            _mockFileStorageService.Verify(r => r.SaveFileAsync(_mockFile.Object, "Images"), Times.Once);
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
 
-            // Ensure the mapper's Map was called exactly once with the attached image.
             _mockMapper.Verify(m => m.Map<ImageDTO>(image), Times.Once);
         }
 
@@ -110,6 +117,60 @@ namespace SprintManager.Application.Tests.ImageTests
             );
 
             Assert.Contains("File extension not allowed.", exception.Message);
+        }
+
+        // Test exception throwing when work item is not found
+        [Fact]
+        public async Task VerifyWorkItemId_ThrowsException_WhenWorkItemIsNotFound()
+        {
+            _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
+
+            var command = new AddImageCommand
+            {
+                WorkItemId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                Image = _mockFile.Object,
+            };
+
+            // Repository's mock configuration
+            _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Work item with ID {command.WorkItemId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
+        }
+
+        // Test exception throwing when user is not found
+        [Fact]
+        public async Task VerifyUserId_ThrowsException_WhenUserIsNotFound()
+        {
+            _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
+
+            var command = new AddImageCommand
+            {
+                WorkItemId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                Image = _mockFile.Object,
+            };
+
+            // Repositories mock configuration
+            _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User with ID {command.UserId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
         }
     }
 }
