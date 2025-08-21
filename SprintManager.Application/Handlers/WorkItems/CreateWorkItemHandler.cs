@@ -21,7 +21,8 @@ namespace SprintManager.Application.Handlers.WorkItems
             IProjectRepository projectRepository,
             ISprintRepository sprintRepository,
             IUserRepository userRepository,
-            IMapper mapper)
+            IMapper mapper
+        )
         {
             _workItemRepository = workItemRepository;
             _projectRepository = projectRepository;
