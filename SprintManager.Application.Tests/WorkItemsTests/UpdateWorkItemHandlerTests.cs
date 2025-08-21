@@ -143,7 +143,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
         }
 
-        // Test exception throwing when sprint is not found
+        // Test exception throwing when user is not found
         [Fact]
         public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
         {
