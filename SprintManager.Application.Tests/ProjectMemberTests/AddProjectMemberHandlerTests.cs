@@ -81,8 +81,9 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockMapper.Verify(m => m.Map<ProjectMemberDTO>(projectMember), Times.Once);
         }
 
+        // Test exception throwing when a user is already in a project
         [Fact]
-        public async Task VerifyProject_ThrowsException_WhenProjectIsAlreadyInProject()
+        public async Task VerifyUserAndProject_ThrowsException_WhenUserIsAlreadyInProject()
         {
             var command = new AddProjectMemberCommand
             {
@@ -102,10 +103,11 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             Assert.Equal($"A user with ID {command.UserId} is already assigned to a project with ID {command.ProjectId}.", exception.Message);
 
-            // Ensure GetByUserIdAsync was called exactly once.
+            // Ensure GetByUserAndProjectIdAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
         }
 
+        // Test exception throwing when a project is not found
         [Fact]
         public async Task VerifyProject_ThrowsException_WhenProjectIsNotFound()
         {
@@ -128,11 +130,14 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             Assert.Equal($"Project with ID {command.ProjectId} not found.", exception.Message);
 
-            // Ensure GetByUserIdAsync was called exactly once.
+            // Ensure GetByUserAndProjectIdAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
+
+            // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
         }
 
+        // Test exception throwing when a user is not found
         [Fact]
         public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
         {
@@ -156,8 +161,10 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             Assert.Equal($"User with ID {command.UserId} not found.", exception.Message);
 
-            // Ensure GetByUserIdAsync was called exactly once.
+            // Ensure GetByUserAndProjectIdAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
+
+            // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
         }
