@@ -27,7 +27,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
         {
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
 
-            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} was not found");
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found.");
 
             var projectMembers = await _projectMemberRepository.GetMembersByProjectIdAsync(request.ProjectId);
 
