@@ -43,14 +43,9 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task<List<ProjectMember>> GetMembersByProjectIdAsync(Guid projectId)
         {
-            var project = _context.ProjectMembers
-                .FirstOrDefault(pm => pm.ProjectId == projectId);
-
-            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {projectId} was not found");
-            
             return await _context.ProjectMembers
                 .Include(pm => pm.User)
-                .Where(pm => pm.ProjectId == project.ProjectId)
+                .Where(pm => pm.ProjectId == projectId)
                 .OrderBy(pm => pm.User.Name)
                 .ToListAsync();
         }

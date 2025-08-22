@@ -3,22 +3,32 @@ using MediatR;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.ProjectMembers;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.ProjectMembers
 {
     public class GetProjectMembersByProjectIdHandler : IRequestHandler<GetProjectMembersByProjectIdQuery, List<ProjectMemberBasicDTO>>
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
 
-        public GetProjectMembersByProjectIdHandler(IProjectMemberRepository projectMemberRepository, IMapper mapper)
+        public GetProjectMembersByProjectIdHandler(
+            IProjectMemberRepository projectMemberRepository, 
+            IProjectRepository projectRepository,
+            IMapper mapper)
         {
             _projectMemberRepository = projectMemberRepository;
+            _projectRepository = projectRepository;
             _mapper = mapper;
         }
 
         public async Task<List<ProjectMemberBasicDTO>> Handle(GetProjectMembersByProjectIdQuery request, CancellationToken cancellationToken)
         {
+            var project = await _projectRepository.GetByIdAsync(request.ProjectId);
+
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} was not found");
+
             var projectMembers = await _projectMemberRepository.GetMembersByProjectIdAsync(request.ProjectId);
 
             return _mapper.Map<List<ProjectMemberBasicDTO>>(projectMembers);
