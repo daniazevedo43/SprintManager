@@ -6,12 +6,14 @@ using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Sprints;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.SprintTests
 {
     public class CreateSprintHandlerTests
     {
         private readonly Mock<ISprintRepository> _mockSprintRepository;
+        private readonly Mock<IProjectRepository> _mockProjectRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly CreateSprintHandler _handler;
 
@@ -19,10 +21,15 @@ namespace SprintManager.Application.Tests.SprintTests
         {
             // Initialize mocks for each test
             _mockSprintRepository = new Mock<ISprintRepository>();
+            _mockProjectRepository = new Mock<IProjectRepository>();
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
-            _handler = new CreateSprintHandler(_mockSprintRepository.Object, _mockMapper.Object);
+            _handler = new CreateSprintHandler(
+                _mockSprintRepository.Object, 
+                _mockProjectRepository.Object,
+                _mockMapper.Object
+            );
         }
 
         // Test handler - project creation without description
@@ -50,6 +57,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName)).ReturnsAsync((Sprint?)null);
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.AddAsync(It.IsAny<Sprint>())).Callback<Sprint>(s => sprint = s);
 
             // Mapper's mock configuration
@@ -67,6 +75,9 @@ namespace SprintManager.Application.Tests.SprintTests
 
             // Ensure GetByProjectIdAndNameAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName), Times.Once);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.AddAsync(sprint), Times.Once);
@@ -102,6 +113,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName)).ReturnsAsync((Sprint?)null);
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.AddAsync(It.IsAny<Sprint>())).Callback<Sprint>(s => sprint = s);
 
             // Mapper's mock configuration
@@ -120,6 +132,9 @@ namespace SprintManager.Application.Tests.SprintTests
             // Ensure GetByProjectIdAndNameAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName), Times.Once);
 
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+
             // Ensure AddAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.AddAsync(sprint), Times.Once);
 
@@ -127,7 +142,7 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockMapper.Verify(m => m.Map<SprintDTO>(sprint), Times.Once);
         }
 
-        // Test exception throwing when a project already exists
+        // Test exception throwing when a sprint's name already exists
         [Fact]
         public async Task VerifySprintName_ThrowsException_WhenSprintNameAlreadyExists()
         {
@@ -136,8 +151,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 ProjectId = Guid.NewGuid(),
                 SprintName = "Sprint 1",
                 StartDate = new DateTime(2025, 1, 6),
-                EndDate = new DateTime(2025, 1, 20),
-                Description = "Project setup and authentication"
+                EndDate = new DateTime(2025, 1, 20)
             };
 
             var sprint = new Sprint(command.ProjectId, command.SprintName, command.StartDate, command.EndDate);
@@ -153,6 +167,35 @@ namespace SprintManager.Application.Tests.SprintTests
 
             // Ensure GetByProjectIdAndNameAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName), Times.Once);
+        }
+
+        // Test exception throwing when a project is not found
+        [Fact]
+        public async Task VerifyProject_ThrowsException_WhenProjectIsNotFound()
+        {
+            var command = new CreateSprintCommand
+            {
+                ProjectId = Guid.NewGuid(),
+                SprintName = "Sprint 1",
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 20)
+            };
+
+            // Repository's mock configuration
+            _mockSprintRepository.Setup(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName));
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Project with ID {command.ProjectId} not found.", exception.Message);
+
+            // Ensure GetByProjectIdAndNameAsync was called exactly once.
+            _mockSprintRepository.Verify(r => r.GetByProjectIdAndSprintNameAsync(command.ProjectId, command.SprintName), Times.Once);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
         }
     }
 }
