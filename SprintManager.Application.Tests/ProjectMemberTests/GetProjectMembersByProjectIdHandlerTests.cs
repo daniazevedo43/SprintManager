@@ -77,8 +77,10 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
                 Assert.Equal(projectMembersDTOs[i].Role, result[i].Role);
             }
 
-            // Ensure GetMembersByProjectIdAsync was called exactly once.
+            // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(query.ProjectId), Times.Once);
+
+            // Ensure GetMembersByProjectIdAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetMembersByProjectIdAsync(query.ProjectId), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
