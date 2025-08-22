@@ -7,12 +7,15 @@ using SprintManager.Application.Handlers.ProjectMembers;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.ProjectMemberTests
 {
     public class AddProjectMemberHandlerTests
     {
         private readonly Mock<IProjectMemberRepository> _mockProjectMemberRepository;
+        private readonly Mock<IProjectRepository> _mockProjectRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly AddProjectMemberHandler _handler;
 
@@ -20,10 +23,17 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
         {
             // Initialize mocks for each test
             _mockProjectMemberRepository = new Mock<IProjectMemberRepository>();
+            _mockProjectRepository = new Mock<IProjectRepository>();
+            _mockUserRepository = new Mock<IUserRepository>();
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
-            _handler = new AddProjectMemberHandler(_mockProjectMemberRepository.Object, _mockMapper.Object);
+            _handler = new AddProjectMemberHandler(
+                _mockProjectMemberRepository.Object,
+                _mockProjectRepository.Object,
+                _mockUserRepository.Object,
+                _mockMapper.Object
+            );
         }
 
         // Test handler
@@ -47,7 +57,9 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             };
 
             // Repository's Mock configuration
-            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId)).ReturnsAsync((ProjectMember?)null);
+            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
             _mockProjectMemberRepository.Setup(r => r.AddAsync(It.IsAny<ProjectMember>())).Callback<ProjectMember>(pm => projectMember = pm);
 
             // Mapper's Mock configuration
@@ -59,11 +71,10 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             Assert.Equal(projectMemberDTO.ProjectId, result.ProjectId);
             Assert.Equal(projectMemberDTO.UserId, result.UserId);
             Assert.Equal(projectMemberDTO.Role, result.Role);
-
-            // Ensure GetByUserIdAsync was called exactly once.
+           
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
-
-            // Ensure AddAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
             _mockProjectMemberRepository.Verify(r => r.AddAsync(projectMember), Times.Once);
 
             // Ensure the mapper's Map was called exactly once.
@@ -71,7 +82,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
         }
 
         [Fact]
-        public async Task VerifyUserId_ThrowsException_WhenUserIsAlreadyInProject()
+        public async Task VerifyProject_ThrowsException_WhenProjectIsAlreadyInProject()
         {
             var command = new AddProjectMemberCommand
             {
@@ -93,6 +104,62 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             // Ensure GetByUserIdAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyProject_ThrowsException_WhenProjectIsNotFound()
+        {
+            var command = new AddProjectMemberCommand
+            {
+                ProjectId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                Role = ProjectMemberRole.Developer
+            };
+
+            var projectMember = new ProjectMember(command.ProjectId, command.UserId, command.Role);
+
+            // Repository's Mock configuration
+            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Project with ID {command.ProjectId} not found.", exception.Message);
+
+            // Ensure GetByUserIdAsync was called exactly once.
+            _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
+        {
+            var command = new AddProjectMemberCommand
+            {
+                ProjectId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                Role = ProjectMemberRole.Developer
+            };
+
+            var projectMember = new ProjectMember(command.ProjectId, command.UserId, command.Role);
+
+            // Repository's Mock configuration
+            _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User with ID {command.UserId} not found.", exception.Message);
+
+            // Ensure GetByUserIdAsync was called exactly once.
+            _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
         }
     }
 }
