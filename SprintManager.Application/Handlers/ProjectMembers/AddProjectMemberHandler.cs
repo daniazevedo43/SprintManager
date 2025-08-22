@@ -38,8 +38,8 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
             var user = await _userRepository.GetByIdAsync(request.UserId);
 
-            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found");
-            if (user == null) throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found");
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found.");
+            if (user == null) throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");
 
             var projectMember = new ProjectMember(request.ProjectId, request.UserId, request.Role);
             
