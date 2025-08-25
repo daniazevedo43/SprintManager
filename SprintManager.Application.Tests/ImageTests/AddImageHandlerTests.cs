@@ -40,7 +40,7 @@ namespace SprintManager.Application.Tests.ImageTests
              );
         }
 
-        // Test handler - add image
+        // Test handler
         [Fact]
         public async Task Handle_AddsImage_ReturnsImageDTO()
         {
