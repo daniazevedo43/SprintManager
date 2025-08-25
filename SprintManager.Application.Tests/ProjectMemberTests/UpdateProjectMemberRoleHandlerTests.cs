@@ -88,7 +88,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             Assert.Equal($"There's no relationship between a user and a project with ID {command.Id}.", exception.Message);
 
-            // Ensure GetByIdAsync was called exactly once with the correct ID.
+            // Ensure GetByIdAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }
