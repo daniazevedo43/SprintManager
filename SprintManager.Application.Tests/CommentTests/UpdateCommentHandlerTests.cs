@@ -6,6 +6,7 @@ using SprintManager.Application.Handlers.Comments;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
+using System.Xml.Linq;
 
 namespace SprintManager.Application.Tests.CommentTests
 {
@@ -80,11 +81,17 @@ namespace SprintManager.Application.Tests.CommentTests
                 Text = "Task completed!"
             };
 
+            // Repository's Mock configuration
+            _mockCommentRepository.Setup(r => r.GetByIdAsync(command.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"Comment with ID {command?.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockCommentRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }
 }

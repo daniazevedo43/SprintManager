@@ -75,11 +75,17 @@ namespace SprintManager.Application.Tests.CommentTests
                 Id = Guid.NewGuid()
             };
 
+            // Repository's mock configuration
+            _mockCommentRepository.Setup(r => r.GetByIdAsync(query.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(query, CancellationToken.None)
             );
 
             Assert.Equal($"Comment with ID {query.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockCommentRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
         }
     }
 }
