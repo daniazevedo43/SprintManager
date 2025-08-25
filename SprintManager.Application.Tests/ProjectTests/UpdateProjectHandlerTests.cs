@@ -89,11 +89,17 @@ namespace SprintManager.Application.Tests.ProjectTests
                 Status = ProjectStatus.Completed
             };
 
+            // Repository's Mock configuration
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(command.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"Project with ID {command?.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
 
         // Test exception throwing when a project already exists
