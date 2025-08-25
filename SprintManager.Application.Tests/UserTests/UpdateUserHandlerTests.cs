@@ -81,11 +81,17 @@ namespace SprintManager.Application.Tests.UserTests
                 Password = "abc123abc123"
             };
 
+            // Repository's Mock configuration
+            _mockUserRepository.Setup(r => r.GetByIdAsync(command.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"User with ID {command.Id} not found", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
 
         // Test exception throwing when an email already exists

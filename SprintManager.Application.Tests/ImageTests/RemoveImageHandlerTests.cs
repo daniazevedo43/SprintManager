@@ -23,6 +23,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _handler = new RemoveImageHandler(_mockImageRepository.Object, _mockFileStorageService.Object);
         }
 
+        // Test handler
         [Fact]
         public async Task Handle_GivenValid_DeletesImage()
         {
@@ -50,6 +51,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockImageRepository.Verify(r => r.DeleteAsync(image), Times.Once);
         }
 
+        // Test exception throwing when image is not found
         [Fact]
         public async Task VerifyImage_ThrowsException_WhenImageIsNotFound()
         {
@@ -58,11 +60,17 @@ namespace SprintManager.Application.Tests.ImageTests
                 Id = Guid.NewGuid(),
             };
 
+            // Repository's Mock configuration
+            _mockImageRepository.Setup(r => r.GetByIdAsync(command.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"Image with ID {command.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockImageRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }
 }

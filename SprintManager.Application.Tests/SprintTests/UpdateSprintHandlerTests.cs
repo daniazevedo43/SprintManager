@@ -92,11 +92,17 @@ namespace SprintManager.Application.Tests.SprintTests
                 Status = SprintStatus.Active
             };
 
+            // Repository's mock configuration
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"Sprint with ID {command?.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }
 }

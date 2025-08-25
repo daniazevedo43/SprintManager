@@ -3,7 +3,6 @@ using Moq;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.Images;
 using SprintManager.Application.Interfaces;
-using SprintManager.Application.Queries.Comments;
 using SprintManager.Application.Queries.Images;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
@@ -84,11 +83,17 @@ namespace SprintManager.Application.Tests.ImageTests
                 Id = Guid.NewGuid()
             };
 
+            // Repository's mock configuration
+            _mockImageRepository.Setup(r => r.GetByIdAsync(query.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(query, CancellationToken.None)
             );
 
             Assert.Equal($"Image with ID {query.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockImageRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
         }
     }
 }

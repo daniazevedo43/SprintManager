@@ -58,11 +58,17 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
                 Id = Guid.NewGuid(),
             };
 
+            // Repository's Mock configuration
+            _mockProjectMemberRepository.Setup(r => r.GetByIdAsync(command.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"There's no relationship between a user and a project with ID {command.Id}.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockProjectMemberRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }
 }

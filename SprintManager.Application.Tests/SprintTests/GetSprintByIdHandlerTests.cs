@@ -77,11 +77,17 @@ namespace SprintManager.Application.Tests.SprintTests
                 Id = Guid.NewGuid()
             };
 
+            // Repository's mock configuration
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(query.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(query, CancellationToken.None)
             );
 
             Assert.Equal($"Sprint with ID {query.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockSprintRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
         }
     }
 }
