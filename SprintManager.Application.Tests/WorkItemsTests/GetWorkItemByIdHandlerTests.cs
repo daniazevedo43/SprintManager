@@ -80,11 +80,17 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Id = Guid.NewGuid()
             };
 
+            // Repository's mock configuration
+            _mockWorkItemRepository.Setup(r => r.GetByIdAsync(query.Id));
+
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(query, CancellationToken.None)
             );
 
             Assert.Equal($"Work item with ID {query.Id} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockWorkItemRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
         }
     }
 }
