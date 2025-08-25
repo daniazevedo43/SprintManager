@@ -33,6 +33,11 @@ namespace SprintManager.Infrastructure.Repositories
                 .FirstOrDefaultAsync(w => w.Id == id);
         }
 
+        public async Task<WorkItem?> GetBySprintIdAsync(Guid sprintId)
+        {
+            return await _context.WorkItems.FirstOrDefaultAsync(w => w.SprintId == sprintId);
+        }
+
         public async Task AddAsync(WorkItem workItem)
         {
             await _context.WorkItems.AddAsync(workItem);
