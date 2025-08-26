@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SprintManager.API.Middleware;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Mappers;
+using SprintManager.Domain.Entities;
 using SprintManager.Infrastructure.Data;
 using SprintManager.Infrastructure.Repositories;
 using SprintManager.Infrastructure.Services;
@@ -17,6 +19,11 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
                       .AddEnvironmentVariables();
 
 // Add services to the container.
+
+// Identity
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Configure MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationMappingProfile).Assembly));
