@@ -26,13 +26,13 @@ namespace SprintManager.Infrastructure.Services
             };
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                                 .GetBytes(_config["JWT:SecretKey"]));
-            _ = int.TryParse(_config["JWT:TokenValidityInMinutes"], out
+                                 .GetBytes(_config["Jwt:SecretKey"]));
+            _ = int.TryParse(_config["Jwt:TokenValidityInMinutes"], out
                 int tokenValidityInMinutes);
 
             var token = new JwtSecurityToken(
-                issuer: _config["JWT:ValidIssuer"],
-                audience: _config["JWT:ValidAudience"],
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
                 expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

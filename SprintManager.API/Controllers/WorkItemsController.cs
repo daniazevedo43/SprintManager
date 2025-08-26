@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
@@ -6,6 +7,7 @@ using SprintManager.Application.Queries.WorkItems;
 
 namespace SprintManager.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WorkItemsController : ControllerBase

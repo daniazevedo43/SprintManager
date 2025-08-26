@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SprintManager.API.Middleware;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Mappers;
@@ -60,7 +61,40 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Sprint Manager API",
+        Version = "v1"
+    });
+
+    // Define security scheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+
+    // Apply security to endpoints
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -96,6 +130,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
