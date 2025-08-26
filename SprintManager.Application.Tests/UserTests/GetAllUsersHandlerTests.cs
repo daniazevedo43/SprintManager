@@ -41,13 +41,13 @@ namespace SprintManager.Application.Tests.UserTests
                 new UserDTO 
                 { 
                     Id = users[0].Id, 
-                    Name = users[0].Name, 
+                    Name = users[0].UserName, 
                     Email = users[0].Email 
                 },
                 new UserDTO
                 {
                     Id = users[1].Id,
-                    Name = users[1].Name,
+                    Name = users[1].UserName,
                     Email = users[1].Email
                 }
             };

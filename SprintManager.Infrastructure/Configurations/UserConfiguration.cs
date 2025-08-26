@@ -10,7 +10,7 @@ namespace SprintManager.Infrastructure.Configurations
         {
             builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Name)
+            builder.Property(u => u.UserName)
                    .IsRequired()     
                    .HasMaxLength(255);
 
@@ -20,10 +20,6 @@ namespace SprintManager.Infrastructure.Configurations
             
             builder.HasIndex(u => u.Email)
                 .IsUnique();    
-
-            builder.Property(u => u.PasswordHash)
-                .IsRequired()
-                .HasMaxLength(64);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace SprintManager.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Name);
+            var userExists = await _userManager.FindByEmailAsync(model.Email);
 
             if (userExists != null)
             {

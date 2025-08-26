@@ -37,7 +37,7 @@ namespace SprintManager.Application.Tests.UserTests
             };
 
             var user = new User(command.Name, command.Email, command.Password);
-            var userDTO = new UserDTO { Id = user.Id, Name = user.Name, Email = user.Email };
+            var userDTO = new UserDTO { Id = user.Id, Name = user.UserName, Email = user.Email };
 
             // Repository's Mock configuration
             _mockUserRepository.Setup(r => r.GetByEmailAsync(command.Email)).ReturnsAsync((User?)null);

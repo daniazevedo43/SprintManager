@@ -14,9 +14,8 @@ namespace SprintManager.Domain.Tests
             string passwordHash = user.PasswordHash;
 
             Assert.NotEqual(Guid.Empty, user.Id);
-            Assert.Equal("Daniel", user.Name);
+            Assert.Equal("Daniel", user.UserName);
             Assert.Equal("d@gmail.com", user.Email);
-            Assert.True(user.VerifyPassword("abc123abc123"));
         }
 
         // Test user's name change
@@ -27,7 +26,7 @@ namespace SprintManager.Domain.Tests
 
             user.SetName("Tiago");
 
-            Assert.Equal("Tiago", user.Name);
+            Assert.Equal("Tiago", user.UserName);
         }
 
         // Test email change
@@ -39,19 +38,6 @@ namespace SprintManager.Domain.Tests
             user.SetEmail("t@gmail.com");
 
             Assert.Equal("t@gmail.com", user.Email);
-        }
-        
-        // Test password change
-        [Fact]
-        public void SetPassword_UpdatesPasswordSuccessfully()
-        {
-            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
-
-            user.SetPassword("abc456abc456");
-
-            string passwordHash = user.PasswordHash;
-
-            Assert.True(user.VerifyPassword("abc456abc456"));
         }
 
         // Test exception throwing when user is null or empty
@@ -65,7 +51,7 @@ namespace SprintManager.Domain.Tests
                 new User(name, "d@gmail.com", "abc123abc123")
             );
 
-            Assert.Equal("Name can't be null or empty. (Parameter 'name')", exception.Message);
+            Assert.Equal("Name can't be null or empty. (Parameter 'userName')", exception.Message);
         }
 
         // Test exception throwing when name is too long
@@ -78,7 +64,7 @@ namespace SprintManager.Domain.Tests
                 new User(name, "d@gmail.com", "abc123abc123")
             );
 
-            Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
+            Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'userName')", exception.Message);
         }
 
         // Test exception throwing when email is null or empty

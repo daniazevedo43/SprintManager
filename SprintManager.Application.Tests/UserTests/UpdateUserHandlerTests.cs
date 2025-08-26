@@ -54,7 +54,6 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal(userDTO.Id, result.Id);
             Assert.Equal(userDTO.Name, result.Name);
             Assert.Equal(userDTO.Email, result.Email);
-            Assert.True(user.VerifyPassword(command.Password), user.PasswordHash);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
@@ -103,7 +102,7 @@ namespace SprintManager.Application.Tests.UserTests
             var command = new UpdateUserCommand
             {
                 Id = existingUser.Id,
-                Name = existingUser.Name,
+                Name = existingUser.UserName,
                 Email = "d2@gmail.com",
                 Password = existingUser.PasswordHash,
             };
