@@ -17,18 +17,13 @@ namespace SprintManager.Infrastructure.Services
             _config = config;
         }
 
-        public JwtSecurityToken CreateToken(User user, IList<string> roles)
+        public JwtSecurityToken CreateToken(User user)
         {
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
-
-            foreach (var role in roles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
-            }
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                                  .GetBytes(_config["JWT:SecretKey"]));

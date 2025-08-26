@@ -5,6 +5,6 @@ namespace SprintManager.Application.Interfaces
 {
     public interface ITokenService
     {
-        JwtSecurityToken CreateToken(User user, IList<string> roles);
+        JwtSecurityToken CreateToken(User user);
     }
 }

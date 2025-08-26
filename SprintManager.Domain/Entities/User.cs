@@ -3,9 +3,8 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Domain.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
-        public Guid Id { get; private set; }
 
         public User() 
         { 
@@ -23,7 +22,6 @@ namespace SprintManager.Domain.Entities
             if (password.Length < 12) throw new SprintManagerTooShortException("Password is too short.", 12, password.Length, nameof(password));
             if (password.Length > 64) throw new SprintManagerTooLongException("Password is too long.", 64, password.Length, nameof(password));
 
-            Id = Guid.NewGuid();
             UserName = userName;
             Email = email;
         }
