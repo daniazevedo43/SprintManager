@@ -45,23 +45,5 @@ namespace SprintManager.Domain.Entities
 
             Email = email;
         }
-
-        //// Update user's password
-        //public void SetPassword(string password)
-        //{
-        //    if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password), "Password can't be null or empty.");
-        //    if (password.Length < 12) throw new SprintManagerTooShortException("Password is too short.", 12, password.Length, nameof(password));
-        //    if (password.Length > 64) throw new SprintManagerTooLongException("Password is too long.", 64, password.Length, nameof(password));
-
-        //    PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
-        //}
-
-        //// Check if the provided password matches the stored hash 
-        //public bool VerifyPassword(string password)
-        //{
-        //    if (string.IsNullOrWhiteSpace(password)) return false; 
-
-        //    return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
-        //}
     }
 }
