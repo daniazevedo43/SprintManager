@@ -34,7 +34,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
             };
 
-            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
             var userDTO = new UserDTO { Id = query.Id, UserName = user.UserName, Email = user.Email };
 
             // Repository's Mock configuration

@@ -33,7 +33,7 @@ namespace SprintManager.Application.Tests.UserTests
             {
                 Name = "Daniel",
                 Email = "d@gmail.com",
-                Password = "abc123abc123"
+                Password = "Abc123abc123!"
             };
 
             var user = new User(command.Name, command.Email, command.Password);
@@ -70,7 +70,7 @@ namespace SprintManager.Application.Tests.UserTests
             {
                 Name = "Daniel",
                 Email = "d@gmail.com",
-                Password = "abc123abc123"
+                Password = "Abc123abc123!"
             };
 
             var user = new User(command.Name, command.Email, command.Password);
