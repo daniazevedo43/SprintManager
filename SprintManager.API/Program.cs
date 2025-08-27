@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Sprint Manager API",
+        Title = "SprintManagerAPI",
         Version = "v1"
     });
 
