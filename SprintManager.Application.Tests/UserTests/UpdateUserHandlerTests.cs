@@ -77,7 +77,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
                 Name = "Daniel",
                 Email = "d@gmail.com",
-                Password = "abc123abc123"
+                Password = "Abc123abc123!"
             };
 
             // Repository's Mock configuration

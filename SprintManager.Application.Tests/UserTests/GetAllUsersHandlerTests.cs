@@ -32,7 +32,7 @@ namespace SprintManager.Application.Tests.UserTests
 
             var users = new List<User>
             {
-                new User("Daniel", "d@gmail.com", "abc123abc123"),
+                new User("Daniel", "d@gmail.com", "Abc123abc123!"),
                 new User("Hugo", "h@gmail.com", "def456def456"),
             };
 

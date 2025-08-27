@@ -30,7 +30,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
             };
 
-            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
 
             // Repository's Mock configuration
             _mockUserRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(user);

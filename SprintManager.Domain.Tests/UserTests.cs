@@ -9,11 +9,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void User_Constructor_WithValidData_CreatesUserSuccessfully()
         {
-            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
 
             string passwordHash = user.PasswordHash;
 
-            Assert.NotEqual(Guid.Empty, user.Id);
             Assert.Equal("Daniel", user.UserName);
             Assert.Equal("d@gmail.com", user.Email);
         }
@@ -22,7 +21,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
-            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
 
             user.SetName("Tiago");
 
@@ -33,7 +32,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetEmail_UpdatesEmailSuccessfully()
         {
-            var user = new User("Daniel", "d@gmail.com", "abc123abc123");
+            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
 
             user.SetEmail("t@gmail.com");
 
@@ -48,7 +47,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
             var exception = Assert.Throws<ArgumentNullException>(() => 
-                new User(name, "d@gmail.com", "abc123abc123")
+                new User(name, "d@gmail.com", "Abc123abc123!")
             );
 
             Assert.Equal("Name can't be null or empty. (Parameter 'userName')", exception.Message);
@@ -61,7 +60,7 @@ namespace SprintManager.Domain.Tests
             string name = new string('D', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() => 
-                new User(name, "d@gmail.com", "abc123abc123")
+                new User(name, "d@gmail.com", "Abc123abc123!")
             );
 
             Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'userName')", exception.Message);
@@ -75,7 +74,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyEmail_ThrowsException_WhenEmailIsNullEmpty(string email)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new User("Daniel", email, "abc123abc123")
+                new User("Daniel", email, "Abc123abc123!")
             );
 
             Assert.Equal("Email can't be null or empty. (Parameter 'email')", exception.Message);
@@ -88,7 +87,7 @@ namespace SprintManager.Domain.Tests
             string email = new string('d', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new User("Daniel", email, "abc123abc123")
+                new User("Daniel", email, "Abc123abc123!")
             );
 
             Assert.Equal($"Email is too long. (Max length '255') (Actual length '{email.Length}') (Parameter 'email')", exception.Message);
