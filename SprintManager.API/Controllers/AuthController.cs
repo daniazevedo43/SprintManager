@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
@@ -24,27 +25,14 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO model)
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> Register(RegisterCommand command)
         {
-            var userExists = await _userManager.FindByEmailAsync(model.Email);
+            var result = await _mediator.Send(command);
 
-            if (userExists != null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new { Status = "Error", Message = "User already exists!" });
-            }
-
-            var user = new User(model.Name, model.Email, model.Password);
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                       new { Status = "Error", Message = "User creation failed." });
-            }
-
-            return Ok(new { Status = "Success", Message = "User created successfully!" });
+            return Ok(result);
         }
 
         [HttpPost("login")]
