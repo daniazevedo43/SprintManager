@@ -25,14 +25,14 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register(RegisterCommand command)
         {
             var result = await _mediator.Send(command);
 
-            return Ok(result);
+            return CreatedAtAction(nameof(UsersController.GetUserById), "Users", new { id = result.Id }, result);
         }
 
         [HttpPost("login")]
