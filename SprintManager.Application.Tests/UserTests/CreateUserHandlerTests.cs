@@ -37,7 +37,7 @@ namespace SprintManager.Application.Tests.UserTests
             };
 
             var user = new User(command.Name, command.Email, command.Password);
-            var userDTO = new UserDTO { Id = user.Id, Name = user.Name, Email = user.Email };
+            var userDTO = new UserDTO { Id = user.Id, UserName = user.UserName, Email = user.Email };
 
             // Repository's Mock configuration
             _mockUserRepository.Setup(r => r.GetByEmailAsync(command.Email)).ReturnsAsync((User?)null);
@@ -49,7 +49,7 @@ namespace SprintManager.Application.Tests.UserTests
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.Equal(userDTO.Id, result.Id);
-            Assert.Equal(userDTO.Name, result.Name);
+            Assert.Equal(userDTO.UserName, result.UserName);
             Assert.Equal(userDTO.Email, result.Email);
 
             // Ensure GetByEmailAsync was called exactly once.

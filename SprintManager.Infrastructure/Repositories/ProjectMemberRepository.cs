@@ -20,7 +20,7 @@ namespace SprintManager.Infrastructure.Repositories
                 .Include(pm => pm.Project)
                 .Include(pm => pm.User)
                 .OrderBy(pm => pm.Project)
-                .ThenBy(pm => pm.User.Name)
+                .ThenBy(pm => pm.User.UserName)
                 .ToListAsync();
         }
 
@@ -40,7 +40,7 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.ProjectMembers
                 .Include(pm => pm.User)
                 .Where(pm => pm.ProjectId == projectId)
-                .OrderBy(pm => pm.User.Name)
+                .OrderBy(pm => pm.User.UserName)
                 .ToListAsync();
         }
 

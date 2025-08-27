@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Images;
 using SprintManager.Application.DTOs;
@@ -6,6 +7,7 @@ using SprintManager.Application.Queries.Images;
 
 namespace SprintManager.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ImagesController : ControllerBase

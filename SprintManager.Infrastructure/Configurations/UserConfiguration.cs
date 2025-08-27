@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SprintManager.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace SprintManager.Infrastructure.Configurations
 {
@@ -10,7 +11,7 @@ namespace SprintManager.Infrastructure.Configurations
         {
             builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Name)
+            builder.Property(u => u.UserName)
                    .IsRequired()     
                    .HasMaxLength(255);
 
@@ -19,11 +20,11 @@ namespace SprintManager.Infrastructure.Configurations
                    .HasMaxLength(255);
             
             builder.HasIndex(u => u.Email)
-                .IsUnique();    
+                .IsUnique();
 
-            builder.Property(u => u.PasswordHash)
-                .IsRequired()
-                .HasMaxLength(64);
+            // Ignore properties
+            builder.Ignore(u => u.PhoneNumber);
+            builder.Ignore(u => u.PhoneNumberConfirmed);
         }
     }
 }
