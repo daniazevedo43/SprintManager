@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SprintManager.Domain.Entities;
-using System.Reflection.Emit;
 
 namespace SprintManager.Infrastructure.Configurations
 {
