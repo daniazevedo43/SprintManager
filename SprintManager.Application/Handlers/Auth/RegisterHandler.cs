@@ -27,7 +27,7 @@ namespace SprintManager.Application.Handlers.Auth
 
             var user = new User(request.UserName, request.Email, request.Password);
 
-            var result = await _userManager.CreateAsync(user, request.Password);
+            await _userManager.CreateAsync(user, request.Password);
 
             return _mapper.Map<UserDTO>(user);
         }
