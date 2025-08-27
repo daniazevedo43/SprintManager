@@ -53,8 +53,6 @@ namespace SprintManager.API.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-
                 // Call service to create token
                 var token = _tokenService.CreateToken(user);
 
