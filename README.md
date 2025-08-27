@@ -23,6 +23,52 @@ The API revolves around the following key domain entities:
 * **Comments:** Represents comments left by users in work items.
 * **Images:** Represents images attached by users in work items.
 
+## Authentication
+
+JWT is used for authentication and authorization. All endpoints, except for registration and login, require a valid token for access.
+
+#### How to get a token
+
+1. Send a `POST` request to register in the API.
+    * **Endpoint**: `/api/Auth/register`
+    * **Request Body**
+
+    ```json
+    {
+        "name": "your_name",
+        "email": "your_email@domain.com",
+        "password": "your_password"
+    }
+    ```
+
+2. Send a `POST` request to login in the API.
+    * **Endpoint**: `/api/Auth/login`
+    * **Request Body**
+
+    ```json
+    {
+        "email": "your_email@domain.com",
+        "password": "your_password"
+    }
+    ```
+
+3. If the login credentials are correct, the API will respond with a token in JSON format.
+
+#### How to use the Token
+
+After obtaining the token, you must include it in the authorization header of all your requests to the protected endpoints.
+
+* **Header**: `Authorization`
+* **Value**: `Bearer {your-token}`
+
+In case you're using Swagger, you can follow the following steps to use the token:
+
+1. Click the **"Authorize"** button
+2. Enter your token
+3. Click **"Authorize"**
+
+Once authorized, Swagger will automatically add the authorization header to all requests you make to the protected endpoints.
+
 ## Endpoints
 
 The following API functionalities are already live:
