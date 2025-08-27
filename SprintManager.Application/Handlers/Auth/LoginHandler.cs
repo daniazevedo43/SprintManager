@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using SprintManager.Application.Commands.Auth;
-using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 
 namespace SprintManager.Application.Handlers.Auth
 {
