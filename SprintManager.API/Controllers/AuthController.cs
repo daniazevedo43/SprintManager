@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
-using SprintManager.Application.Queries.Users;
 using SprintManager.Domain.Entities;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.API.Controllers
 {
