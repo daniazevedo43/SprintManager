@@ -27,21 +27,21 @@ namespace SprintManager.Domain.Entities
         }
 
         // Update userName
-        public void SetName(string userName) 
-        {
-            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentNullException(nameof(userName), "Name can't be null or empty.");
-            if (userName.Length > 255) throw new SprintManagerTooLongException("Name is too long.", 255, userName.Length, nameof(userName));
+        //public void SetName(string userName) 
+        //{
+        //    if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentNullException(nameof(userName), "Name can't be null or empty.");
+        //    if (userName.Length > 255) throw new SprintManagerTooLongException("Name is too long.", 255, userName.Length, nameof(userName));
 
-            UserName = userName; 
-        }
+        //    UserName = userName; 
+        //}
 
         // Update user's email
-        public void SetEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email), "Email can't be null or empty.");
-            if (email.Length > 255) throw new SprintManagerTooLongException("Email is too long.", 255, email.Length, nameof(email));
+        //public void SetEmail(string email)
+        //{
+        //    if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email), "Email can't be null or empty.");
+        //    if (email.Length > 255) throw new SprintManagerTooLongException("Email is too long.", 255, email.Length, nameof(email));
 
-            Email = email;
-        }
+        //    Email = email;
+        //}
     }
 }

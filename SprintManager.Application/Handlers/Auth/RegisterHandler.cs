@@ -25,9 +25,9 @@ namespace SprintManager.Application.Handlers.Auth
 
             if (existingUser != null) throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
 
-            var user = new User(request.Name, request.Email, request.Password);
+            var user = new User(request.UserName, request.Email, request.Password);
 
-            var result = await _userManager.CreateAsync(user, request.Password);
+            await _userManager.CreateAsync(user, request.Password);
 
             return _mapper.Map<UserDTO>(user);
         }

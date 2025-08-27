@@ -18,26 +18,26 @@ namespace SprintManager.Domain.Tests
         }
 
         // Test user's name change
-        [Fact]
-        public void SetName_UpdatesNameSuccessfully()
-        {
-            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
+        //[Fact]
+        //public void SetName_UpdatesNameSuccessfully()
+        //{
+        //    var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
 
-            user.SetName("Tiago");
+        //    user.SetName("Tiago");
 
-            Assert.Equal("Tiago", user.UserName);
-        }
+        //    Assert.Equal("Tiago", user.UserName);
+        //}
 
         // Test email change
-        [Fact]
-        public void SetEmail_UpdatesEmailSuccessfully()
-        {
-            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
+        //[Fact]
+        //public void SetEmail_UpdatesEmailSuccessfully()
+        //{
+        //    var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
 
-            user.SetEmail("t@gmail.com");
+        //    user.SetEmail("t@gmail.com");
 
-            Assert.Equal("t@gmail.com", user.Email);
-        }
+        //    Assert.Equal("t@gmail.com", user.Email);
+        //}
 
         // Test exception throwing when user is null or empty
         [Theory] 
