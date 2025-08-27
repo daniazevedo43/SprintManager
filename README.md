@@ -77,9 +77,6 @@ The following API functionalities are already live:
 
 * `GET /api/Users`: Returns a list of all users.
 * `GET /api/Users/{id}`: Returns a user.
-* `POST /api/Users`: Creates a new user.
-* `PUT /api/Users/{id}`: Updates an existing user.
-* `DELETE /api/Users/{id}`: Removes an existing user.
 
 #### Projects (`/api/Projects`)
 
