@@ -29,7 +29,9 @@ namespace SprintManager.Application.Mappers
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
             CreateMap<Image, ImageDTO>()
                 // Maps WorkItem.WorkItemTitle to Image.WorkItemTitle in DTO, with null verification
-                .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null));
+                .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null))
+                // Maps User.UserName to Image.UserName in DTO, with null verification
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
         }
     }
 }
