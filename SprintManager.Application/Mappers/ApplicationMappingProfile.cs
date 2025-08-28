@@ -10,17 +10,19 @@ namespace SprintManager.Application.Mappers
         {
             CreateMap<User, UserDTO>();
             CreateMap<Project, ProjectDTO>();
-            CreateMap<ProjectMember, ProjectMemberDTO>();
+            CreateMap<ProjectMember, ProjectMemberDTO>()
+                // Maps User.UserName to ProjectMember.UserName in DTO, with null verification
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
             CreateMap<ProjectMember, ProjectMemberBasicDTO>();
             CreateMap<Sprint, SprintDTO>();
             CreateMap<WorkItem, WorkItemDTO>()
-                // Maps Sprint.SprintName to SprintName in DTO, with null verification
+                // Maps Sprint.SprintName to WorkItem.SprintName in DTO, with null verification
                 .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null));
             CreateMap<Comment, CommentDTO>()
-                // Maps WorkItem.WorkItemTitle to WorkItemTitle in DTO, with null verification
+                // Maps WorkItem.WorkItemTitle to Comment.WorkItemTitle in DTO, with null verification
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null));
             CreateMap<Image, ImageDTO>()
-                // Maps WorkItem.WorkItemTitle to WorkItemTitle in DTO, with null verification
+                // Maps WorkItem.WorkItemTitle to Image.WorkItemTitle in DTO, with null verification
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null));
         }
     }
