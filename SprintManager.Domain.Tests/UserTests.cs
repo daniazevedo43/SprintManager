@@ -9,11 +9,12 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void User_Constructor_WithValidData_CreatesUserSuccessfully()
         {
-            var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
             string passwordHash = user.PasswordHash;
 
-            Assert.Equal("Daniel", user.UserName);
+            Assert.Equal("Daniel", user.Name);
+            Assert.Equal("daniazevedo43", user.UserName);
             Assert.Equal("d@gmail.com", user.Email);
         }
 
@@ -47,10 +48,10 @@ namespace SprintManager.Domain.Tests
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
             var exception = Assert.Throws<ArgumentNullException>(() => 
-                new User(name, "d@gmail.com", "Abc123abc123!")
+                new User(name, "daniazevedo43", "d@gmail.com", "Abc123abc123!")
             );
 
-            Assert.Equal("Name can't be null or empty. (Parameter 'userName')", exception.Message);
+            Assert.Equal("Name can't be null or empty. (Parameter 'name')", exception.Message);
         }
 
         // Test exception throwing when name is too long
@@ -60,10 +61,10 @@ namespace SprintManager.Domain.Tests
             string name = new string('D', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() => 
-                new User(name, "d@gmail.com", "Abc123abc123!")
+                new User(name, "daniazevedo43", "d@gmail.com", "Abc123abc123!")
             );
 
-            Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'userName')", exception.Message);
+            Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
         }
 
         // Test exception throwing when email is null or empty
@@ -74,7 +75,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyEmail_ThrowsException_WhenEmailIsNullEmpty(string email)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new User("Daniel", email, "Abc123abc123!")
+                new User("Daniel", "daniazevedo43", email, "Abc123abc123!")
             );
 
             Assert.Equal("Email can't be null or empty. (Parameter 'email')", exception.Message);
@@ -87,7 +88,7 @@ namespace SprintManager.Domain.Tests
             string email = new string('d', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new User("Daniel", email, "Abc123abc123!")
+                new User("Daniel", "daniazevedo43", email, "Abc123abc123!")
             );
 
             Assert.Equal($"Email is too long. (Max length '255') (Actual length '{email.Length}') (Parameter 'email')", exception.Message);
@@ -101,7 +102,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyPassword_ThrowsException_WhenPasswordIsNullOrEmpty(string password)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new User("Daniel", "d@gmail.com", password)
+                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
             );
 
             Assert.Equal("Password can't be null or empty. (Parameter 'password')", exception.Message);
@@ -114,7 +115,7 @@ namespace SprintManager.Domain.Tests
             string password = new string('a', 11);
 
             var exception = Assert.Throws<SprintManagerTooShortException>(() =>
-                new User("Daniel", "d@gmail.com", password)
+                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
             );
 
             Assert.Equal($"Password is too short. (Min length '12') (Actual length '{password.Length}') (Parameter 'password')", exception.Message);
@@ -127,7 +128,7 @@ namespace SprintManager.Domain.Tests
             string password = new string('a', 65);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new User("Daniel", "d@gmail.com", password)
+                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
             );
 
             Assert.Equal($"Password is too long. (Max length '64') (Actual length '{password.Length}') (Parameter 'password')", exception.Message);

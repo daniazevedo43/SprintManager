@@ -10,8 +10,12 @@ namespace SprintManager.Infrastructure.Configurations
         {
             builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.UserName)
+            builder.Property(u => u.Name)
                    .IsRequired()     
+                   .HasMaxLength(255);
+
+            builder.Property(u => u.UserName)
+                   .IsRequired()
                    .HasMaxLength(255);
 
             builder.Property(u => u.Email)
@@ -21,7 +25,7 @@ namespace SprintManager.Infrastructure.Configurations
             builder.HasIndex(u => u.Email)
                 .IsUnique();
 
-            // Ignore properties
+            // Ignore properties 
             builder.Ignore(u => u.PhoneNumber);
             builder.Ignore(u => u.PhoneNumberConfirmed);
         }
