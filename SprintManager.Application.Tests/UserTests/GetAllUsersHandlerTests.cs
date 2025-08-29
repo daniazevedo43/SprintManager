@@ -33,7 +33,7 @@ namespace SprintManager.Application.Tests.UserTests
             var users = new List<User>
             {
                 new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!"),
-                new User("Hugo", "daniazevedo43", "h@gmail.com", "def456def456"),
+                new User("Hugo", "daniazevedo43", "h@gmail.com", "Def456def456!"),
             };
 
             var usersDTOs = new List<UserDTO>
