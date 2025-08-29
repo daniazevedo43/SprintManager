@@ -67,6 +67,33 @@ namespace SprintManager.Domain.Tests
             Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
         }
 
+        // Test exception throwing when username is null or empty
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void VerifyUsername_ThrowsException_WhenUsernameIsNullOrEmpty(string username)
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() =>
+                new User("Daniel", username, "d@gmail.com", "Abc123abc123!")
+            );
+
+            Assert.Equal("Username can't be null or empty. (Parameter 'userName')", exception.Message);
+        }
+
+        // Test exception throwing when username has blank spaces
+        [Theory]
+        [InlineData("dani azevedo")]
+        [InlineData("dani azevedo 43")]
+        public void VerifyUsername_ThrowsException_WhenUsernameHasBlankSpaces(string username)
+        {
+            var exception = Assert.Throws<SprintManagerInvalidUsernameException>(() =>
+                new User("Daniel", username, "d@gmail.com", "Abc123abc123!")
+            );
+
+            Assert.Equal("Username can't have blank spaces.", exception.Message);
+        }
+
         // Test exception throwing when email is null or empty
         [Theory]
         [InlineData(null)]
