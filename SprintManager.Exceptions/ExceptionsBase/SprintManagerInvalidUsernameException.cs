@@ -9,9 +9,5 @@
         public SprintManagerInvalidUsernameException(string message) : base(message) 
         { 
         }
-
-        public SprintManagerInvalidUsernameException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
     }
 }
