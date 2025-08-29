@@ -21,6 +21,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<CommentDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllComments()
         {
             var result = await _mediator.Send(new GetAllCommentsQuery());
@@ -30,6 +31,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCommentById(Guid id)
         {
@@ -41,6 +43,7 @@ namespace SprintManager.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> CreateComment(CreateCommentCommand command)
         {
@@ -52,6 +55,7 @@ namespace SprintManager.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateComment(Guid id, UpdateCommentCommand command)
         {
@@ -67,6 +71,7 @@ namespace SprintManager.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteComment(Guid id)
         {

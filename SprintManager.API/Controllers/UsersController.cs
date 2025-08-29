@@ -20,6 +20,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllUsers()
         {
             var result = await _mediator.Send(new GetAllUsersQuery());
@@ -29,6 +30,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserById(Guid id)
         {

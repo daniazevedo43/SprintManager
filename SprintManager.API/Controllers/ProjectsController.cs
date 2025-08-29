@@ -21,6 +21,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<ProjectDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllProjects()
         {
             var result = await _mediator.Send(new GetAllProjectsQuery());
@@ -30,6 +31,7 @@ namespace SprintManager.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProjectById(Guid id)
         {
@@ -41,6 +43,7 @@ namespace SprintManager.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> CreateProject(CreateProjectCommand command)
         {
@@ -52,6 +55,7 @@ namespace SprintManager.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateProject(Guid id, UpdateProjectCommand command)
@@ -68,6 +72,7 @@ namespace SprintManager.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteProject(Guid id)
         {
