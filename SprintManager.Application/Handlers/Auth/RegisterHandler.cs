@@ -21,9 +21,11 @@ namespace SprintManager.Application.Handlers.Auth
 
         public async Task<UserDTO> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userManager.FindByEmailAsync(request.Email);
+            var existingUsername = await _userManager.FindByNameAsync(request.UserName);
+            var existingEmail = await _userManager.FindByEmailAsync(request.Email);
 
-            if (existingUser != null) throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
+            if (existingUsername != null) throw new SprintManagerConflictException($"A user with username '{request.UserName}' already exists.");
+            if (existingEmail != null) throw new SprintManagerConflictException($"A user with email '{request.Email}' already exists.");
 
             var user = new User(request.Name, request.UserName, request.Email, request.Password);
 
