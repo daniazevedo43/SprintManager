@@ -23,6 +23,67 @@ The API revolves around the following key domain entities:
 * **Comments:** Represents comments left by users in work items.
 * **Images:** Represents images attached by users in work items.
 
+## Endpoints
+
+The following API functionalities are already live:
+
+#### Auth (`api/Auth`)
+
+* `POST /api/Auth/register`: Where a user can register in the API.
+* `POST /api/Auth/login`: Where a user can login in the API.
+
+#### Users (`/api/Users`)
+
+* `GET /api/Users`: Returns a list of all users.
+* `GET /api/Users/{id}`: Returns a user.
+
+#### Projects (`/api/Projects`)
+
+* `GET /api/Projects`: Returns a list of all projects.
+* `GET /api/Projects/{id}`: Returns a project.
+* `POST /api/Projects`: Creates a new project.
+* `PUT /api/Projects/{id}`: Updates an existing project.
+* `DELETE /api/Projects/{id}`: Removes an existing project.
+
+#### ProjectMembers (`/api/ProjectMembers`)
+
+* `GET /api/ProjectMembers`: Returns a list of all projects that have users working on them.
+* `GET /api/ProjectMembers/{projectId}`: Returns a project that has users working on them.
+* `POST /api/ProjectMembers`: Associates a user with a project.
+* `PUT /api/ProjectMembers/{id}`: Changes the role of a user in a project.
+* `DELETE /api/ProjectMembers/{id}`: Removes a user from a project.
+
+#### Sprints (`/api/Sprints`)
+
+* `GET /api/Sprints`: Returns a list of all sprints from all projects.
+* `GET /api/Sprints/{id}`: Returns a sprint.
+* `POST /api/Sprints`: Create a new sprint for a project.
+* `PUT /api/Sprints/{id}`: Updates a sprint.
+* `DELETE /api/Sprints/{id}`: Removes a sprint from a project.
+
+#### WorkItems (`/api/Workitems`)
+
+* `GET /api/Workitems`: Returns a list of all work items in all projects.
+* `GET /api/Workitems/{id}`: Returns a project's work item.
+* `POST /api/Workitems`: Creates a new work item for a project.
+* `PUT /api/Workitems/{id}`: Updates a work item.
+* `DELETE /api/Workitems/{id}`: Removes a work item from a project.
+
+#### Comments (`/api/Comments`)
+
+* `GET /api/Comments`: Returns a list of all comments in all work items.
+* `GET /api/Comments/{id}`: Returns a comment.
+* `POST /api/Comments`: Creates a new comment in a work item.
+* `PUT /api/Comments/{id}`: Updates a comment.
+* `DELETE /api/Comments/{id}`: Removes a comment.
+
+#### Images (`/api/Images`)
+
+* `GET /api/Images`: Returns a list of all images in all work items.
+* `GET /api/Images/{id}`: Returns an image.
+* `POST /api/Images`: Adds a new image in a work item.
+* `DELETE /api/Images/{id}`: Removes an image from a work item.
+
 ## Database setup
 
 Install SQL Server (if you haven't installed it yet).
@@ -85,59 +146,3 @@ In case you're using Swagger, you can follow the following steps to use the toke
 3. Click **"Authorize"**
 
 Once authorized, Swagger will automatically add the authorization header to all requests you make to the protected endpoints.
-
-## Endpoints
-
-The following API functionalities are already live:
-
-#### Users (`/api/Users`)
-
-* `GET /api/Users`: Returns a list of all users.
-* `GET /api/Users/{id}`: Returns a user.
-
-#### Projects (`/api/Projects`)
-
-* `GET /api/Projects`: Returns a list of all projects.
-* `GET /api/Projects/{id}`: Returns a project.
-* `POST /api/Projects`: Creates a new project.
-* `PUT /api/Projects/{id}`: Updates an existing project.
-* `DELETE /api/Projects/{id}`: Removes an existing project.
-
-#### ProjectMembers (`/api/ProjectMembers`)
-
-* `GET /api/ProjectMembers`: Returns a list of all projects that have users working on them.
-* `GET /api/ProjectMembers/{projectId}`: Returns a project that has users working on them.
-* `POST /api/ProjectMembers`: Associates a user with a project.
-* `PUT /api/ProjectMembers/{id}`: Changes the role of a user in a project.
-* `DELETE /api/ProjectMembers/{id}`: Removes a user from a project.
-
-#### Sprints (`/api/Sprints`)
-
-* `GET /api/Sprints`: Returns a list of all sprints from all projects.
-* `GET /api/Sprints/{id}`: Returns a sprint.
-* `POST /api/Sprints`: Create a new sprint for a project.
-* `PUT /api/Sprints/{id}`: Updates a sprint.
-* `DELETE /api/Sprints/{id}`: Removes a sprint from a project.
-
-#### WorkItems (`/api/Workitems`)
-
-* `GET /api/Workitems`: Returns a list of all work items in all projects.
-* `GET /api/Workitems/{id}`: Returns a project's work item.
-* `POST /api/Workitems`: Creates a new work item for a project.
-* `PUT /api/Workitems/{id}`: Updates a work item.
-* `DELETE /api/Workitems/{id}`: Removes a work item from a project.
-
-#### Comments (`/api/Comments`)
-
-* `GET /api/Comments`: Returns a list of all comments in all work items.
-* `GET /api/Comments/{id}`: Returns a comment.
-* `POST /api/Comments`: Creates a new comment in a work item.
-* `PUT /api/Comments/{id}`: Updates a comment.
-* `DELETE /api/Comments/{id}`: Removes a comment.
-
-#### Images (`/api/Images`)
-
-* `GET /api/Images`: Returns a list of all images in all work items.
-* `GET /api/Images/{id}`: Returns an image.
-* `POST /api/Images`: Adds a new image in a work item.
-* `DELETE /api/Images/{id}`: Removes an image from a work item.
