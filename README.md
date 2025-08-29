@@ -23,6 +23,23 @@ The API revolves around the following key domain entities:
 * **Comments:** Represents comments left by users in work items.
 * **Images:** Represents images attached by users in work items.
 
+## Database setup
+
+Install SQL Server (if you haven't installed it yet).
+
+### Connection String configuration
+
+1. Open `appsettings.json` file in `SprintManager.API` project's folder.
+2. Change `ConnectionStrings` so that it's configured to your SQL Server instance.
+
+### Apply Migrations
+
+Navigate to `SprintManager.API` project in your command line and run the command down below. This will apply all pending migrations and create the database if it doesn't exist:
+
+```shell
+dotnet ef database update
+```
+
 ## Authentication
 
 JWT is used for authentication and authorization. All endpoints, except for registration and login, require a valid token for access.
@@ -124,20 +141,3 @@ The following API functionalities are already live:
 * `GET /api/Images/{id}`: Returns an image.
 * `POST /api/Images`: Adds a new image in a work item.
 * `DELETE /api/Images/{id}`: Removes an image from a work item.
-
-## Database setup
-
-Install SQL Server (if you haven't installed it yet).
-
-### Connection String configuration
-
-1. Open `appsettings.json` file in `SprintManager.API` project's folder.
-2. Change `ConnectionStrings` so that it's configured to your SQL Server instance.
-
-### Apply Migrations
-
-Navigate to `SprintManager.API` project in your command line and run the command down below. This will apply all pending migrations and create the database if it doesn't exist:
-
-```shell
-dotnet ef database update
-```
