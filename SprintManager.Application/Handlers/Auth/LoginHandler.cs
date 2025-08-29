@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
+using SprintManager.Exceptions.ExceptionsBase;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.Application.Handlers.Auth
@@ -25,14 +26,15 @@ namespace SprintManager.Application.Handlers.Auth
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            var jwtToken = "";
+            if (user == null) throw new SprintManagerNotFoundException("Invalid email or password.");
 
-            if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
-            {
-                // Call service to create token
-                var token = _tokenService.CreateToken(user);
-                jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-            }
+            var passwordExists = await _userManager.CheckPasswordAsync(user, request.Password);
+
+            if (!passwordExists) throw new SprintManagerNotFoundException("Invalid password.");
+
+            // Call service to create token
+            var token = _tokenService.CreateToken(user);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwtToken;
         }
