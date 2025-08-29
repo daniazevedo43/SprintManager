@@ -41,13 +41,15 @@ namespace SprintManager.Application.Tests.UserTests
                 new UserDTO 
                 { 
                     Id = users[0].Id,
-                    Name = users[0].Name, 
+                    Name = users[0].Name,
+                    UserName = users[0].UserName,
                     Email = users[0].Email 
                 },
                 new UserDTO
                 {
                     Id = users[1].Id,
                     Name = users[1].Name,
+                    UserName = users[0].UserName,
                     Email = users[1].Email
                 }
             };
@@ -64,6 +66,7 @@ namespace SprintManager.Application.Tests.UserTests
             {
                 Assert.Equal(usersDTOs[i].Id, result[i].Id);
                 Assert.Equal(usersDTOs[i].Name, result[i].Name);
+                Assert.Equal(usersDTOs[i].UserName, result[i].UserName);
                 Assert.Equal(usersDTOs[i].Email, result[i].Email);
             }
 
