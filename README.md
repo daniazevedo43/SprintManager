@@ -109,7 +109,7 @@ JWT is used for authentication and authorization. All endpoints, except for regi
 
 1. Send a `POST` request to register in the API.
     * **Endpoint**: `/api/Auth/register`
-    * **Request Body**
+    * **Request Body**:
 
     ```json
     {
@@ -121,7 +121,7 @@ JWT is used for authentication and authorization. All endpoints, except for regi
 
 2. Send a `POST` request to login in the API.
     * **Endpoint**: `/api/Auth/login`
-    * **Request Body**
+    * **Request Body**:
 
     ```json
     {
