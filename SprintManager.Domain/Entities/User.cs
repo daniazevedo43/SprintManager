@@ -19,6 +19,8 @@ namespace SprintManager.Domain.Entities
             if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email), "Email can't be null or empty.");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password), "Password can't be null or empty.");
 
+            if (userName.Contains(" ")) throw new SprintManagerInvalidUsernameException("Username can't have blank spaces.");
+
             if (name.Length > 255) throw new SprintManagerTooLongException("Name is too long.", 255, name.Length, nameof(name));
             if (userName.Length > 255) throw new SprintManagerTooLongException("UserName is too long.", 255, name.Length, nameof(name));
             if (email.Length > 255) throw new SprintManagerTooLongException("Email is too long.", 255, email.Length, nameof(email));
