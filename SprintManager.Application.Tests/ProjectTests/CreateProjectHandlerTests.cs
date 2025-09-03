@@ -45,7 +45,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             // Repository's Mock configuration
-            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name)).ReturnsAsync((Project?)null);
+            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name));
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
             // Mapper's Mock configuration
@@ -90,7 +90,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             // Repository's Mock configuration
-            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name)).ReturnsAsync((Project?)null);
+            _mockProjectRepository.Setup(r => r.GetByNameAsync(command.Name));
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
             // Mapper's Mock configuration
