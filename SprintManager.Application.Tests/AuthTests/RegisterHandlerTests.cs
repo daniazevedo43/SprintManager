@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.Commands.Auth;
-using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Auth;
@@ -57,7 +56,7 @@ namespace SprintManager.Application.Tests.AuthTests
 
         // Test handler - registration success
         [Fact]
-        public async Task Handle_RegistersUser_ReturnsUserDTO()
+        public async Task Handle_UserRegistration_ReturnsUserDTO()
         {
             var command = new RegisterCommand
             {
