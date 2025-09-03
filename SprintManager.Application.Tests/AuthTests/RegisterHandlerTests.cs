@@ -74,13 +74,11 @@ namespace SprintManager.Application.Tests.AuthTests
                 Email = command.Email
             };
 
-            // Repositories Mock configuration
             _mockUserManager.Setup(r => r.FindByNameAsync(command.UserName));
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
             _mockUserManager.Setup(r => r.CreateAsync(It.IsAny<User>(), command.Password))
                 .Callback<User, string>((u, p) => u.Id = Guid.NewGuid());
 
-            // Mapper's Mock configuration
             _mockMapper.Setup(m => m.Map<UserDTO>(It.IsAny<User>())).Returns(userDTO);
 
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -116,7 +114,6 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var user = new User(command.Name, command.UserName, command.Email, command.Password);
 
-            // Repository's Mock configuration
             _mockUserManager.Setup(r => r.FindByNameAsync(command.UserName)).ReturnsAsync(user);
 
             var exception = await Assert.ThrowsAsync<SprintManagerConflictException>(
@@ -143,7 +140,6 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var user = new User(command.Name, command.UserName, command.Email, command.Password);
 
-            // Repositories Mock configuration
             _mockUserManager.Setup(r => r.FindByNameAsync(command.UserName));
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
 

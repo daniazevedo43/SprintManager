@@ -69,7 +69,6 @@ namespace SprintManager.Application.Tests.AuthTests
             var securityToken = new JwtSecurityToken();
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
-            // Repositories Mock configuration
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
             _mockTokenService.Setup(r => r.CreateToken(user)).Returns(securityToken);
@@ -99,7 +98,6 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
-            // Repositories Mock configuration
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
@@ -121,7 +119,6 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
-            // Repository Mock configuration
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.CheckPasswordAsync(user, command.Password)).ReturnsAsync(false);
 
