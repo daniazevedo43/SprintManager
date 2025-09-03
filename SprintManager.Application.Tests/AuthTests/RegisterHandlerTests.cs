@@ -4,7 +4,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.Commands.Auth;
+using SprintManager.Application.Commands.Projects;
 using SprintManager.Application.DTOs;
+using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Auth;
 using SprintManager.Domain.Entities;
 
@@ -99,6 +101,64 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure the mapper's Map was called exactly once with the created project.
             _mockMapper.Verify(m => m.Map<UserDTO>(It.IsAny<User>()), Times.Once);
+        }
+
+        // Test exception throwing when a username already exists
+        [Fact]
+        public async Task VerifyUserName_ThrowsException_WhenUserNameAlreadyExists()
+        {
+            var command = new RegisterCommand
+            {
+                Name = "Daniel",
+                UserName = "daniazevedo43",
+                Email = "d@gmail.com",
+                Password = "Abc123abc123!"
+            };
+
+            var user = new User(command.Name, command.UserName, command.Email, command.Password);
+
+            // Repository's Mock configuration
+            _mockUserManager.Setup(r => r.FindByNameAsync(command.UserName)).ReturnsAsync(user);
+
+            var exception = await Assert.ThrowsAsync<SprintManagerConflictException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"A user with username '{command.UserName}' already exists.", exception.Message);
+
+            // Ensure FindByNameAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByNameAsync(command.UserName), Times.Once);
+        }
+
+        // Test exception throwing when an email already exists
+        [Fact]
+        public async Task VerifyEmail_ThrowsException_WhenEmailAlreadyExists()
+        {
+            var command = new RegisterCommand
+            {
+                Name = "Daniel",
+                UserName = "daniazevedo43",
+                Email = "d@gmail.com",
+                Password = "Abc123abc123!"
+            };
+
+            var user = new User(command.Name, command.UserName, command.Email, command.Password);
+
+            // Repositories Mock configuration
+            _mockUserManager.Setup(r => r.FindByNameAsync(command.UserName));
+            _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
+
+            var exception = await Assert.ThrowsAsync<SprintManagerConflictException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"A user with email '{command.Email}' already exists.", exception.Message);
+
+            // Ensure FindByNameAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByNameAsync(command.UserName), Times.Once);
+
+            // Ensure FindByEmailAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
         }
     }
 }
