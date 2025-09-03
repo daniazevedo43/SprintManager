@@ -130,7 +130,7 @@ JWT is used for authentication and authorization. All endpoints, except for regi
     }
     ```
 
-3. If the login credentials are correct, the API will respond with a token in JSON format.
+3. If the login credentials are correct, the API will respond with a token.
 
 #### How to use the Token
 
@@ -139,7 +139,7 @@ After obtaining the token, you must include it in the authorization header of al
 * **Header**: `Authorization`
 * **Value**: `Bearer {your-token}`
 
-In case you're using Swagger, you can follow the following steps to use the token:
+In case you're using Swagger, you can follow these steps to use the token:
 
 1. Click the **"Authorize"** button
 2. Enter your token
