@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using SprintManager.Application.Commands.Auth;
+using SprintManager.Application.Queries.Auth;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Auth
 {
-    public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand>
+    public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailQuery>
     {
         private readonly UserManager<User> _userManager;
 
@@ -15,9 +15,9 @@ namespace SprintManager.Application.Handlers.Auth
             _userManager = userManager;
         }
 
-        public async Task Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+        public async Task Handle(ConfirmEmailQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
             if (user == null) throw new SprintManagerNotFoundException("User not found.");
 

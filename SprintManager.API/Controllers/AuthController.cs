@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
+using SprintManager.Application.Queries.Auth;
+using SprintManager.Application.Queries.Users;
 using SprintManager.Domain.Entities;
 
 namespace SprintManager.API.Controllers
@@ -48,12 +50,12 @@ namespace SprintManager.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(Guid userId, string token)
         {
-            await _mediator.Send(command);
+            await _mediator.Send(new ConfirmEmailQuery { UserId = userId, Token = token });
 
-            return Ok();
+            return Ok("Email confirmed with success!");
         }
     }
 }
