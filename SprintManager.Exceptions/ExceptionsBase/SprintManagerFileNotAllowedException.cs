@@ -2,7 +2,7 @@
 {
     public class SprintManagerFileNotAllowedException : Exception
     {
-        public SprintManagerFileNotAllowedException() : base() 
+        public SprintManagerFileNotAllowedException() 
         { 
         }
 

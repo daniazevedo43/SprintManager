@@ -2,7 +2,7 @@
 {
     public class SprintManagerConflictException : Exception
     {
-        public SprintManagerConflictException() : base() 
+        public SprintManagerConflictException()
         { 
         }
 
