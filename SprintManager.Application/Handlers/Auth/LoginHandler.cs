@@ -28,6 +28,11 @@ namespace SprintManager.Application.Handlers.Auth
 
             if (user == null) throw new SprintManagerNotFoundException("Invalid email or password.");
 
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new Exception("Email not confirmed. Please check your inbox");
+            }
+
             var passwordExists = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!passwordExists) throw new SprintManagerNotFoundException("Invalid password.");

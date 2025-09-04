@@ -40,12 +40,20 @@ namespace SprintManager.API.Controllers
         {
             var result = await _mediator.Send(command);
 
-            if(result == null)
+            if (result == null)
             {
                 return Unauthorized();
             }
 
             return Ok(result);
+        }
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
         }
     }
 }
