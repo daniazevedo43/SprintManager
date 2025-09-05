@@ -70,6 +70,7 @@ namespace SprintManager.Application.Tests.AuthTests
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
+            _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
             _mockUserManager.Setup(r => r.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
             _mockTokenService.Setup(r => r.CreateToken(user)).Returns(securityToken);
 
@@ -79,6 +80,9 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure FindByEmailAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
+
+            // Ensure IsEmailConfirmedAsync was called exactly once.
+            _mockUserManager.Verify(r => r.IsEmailConfirmedAsync(user), Times.Once);
 
             // Ensure CheckPasswordAsync was called exactly once.
             _mockUserManager.Verify(r => r.CheckPasswordAsync(user, command.Password), Times.Once);
@@ -104,8 +108,37 @@ namespace SprintManager.Application.Tests.AuthTests
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
+            Assert.Equal($"Invalid email or password.", exception.Message);
+
             // Ensure FindByEmailAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyEmail_ThrowsException_WhenEmailWasNotConfirmed()
+        {
+            var command = new LoginCommand
+            {
+                Email = "d@gmail.com",
+                Password = "Abc123abc123!"
+            };
+
+            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+
+            _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
+            _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(false);
+
+            var exception = await Assert.ThrowsAsync<SprintManagerEmailNotConfirmed>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Email not confirmed. Please check your inbox.", exception.Message);
+
+            // Ensure FindByEmailAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
+
+            // Ensure IsEmailConfirmedAsync was called exactly once.
+            _mockUserManager.Verify(r => r.IsEmailConfirmedAsync(user), Times.Once);
         }
 
         [Fact]
@@ -120,14 +153,20 @@ namespace SprintManager.Application.Tests.AuthTests
             var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
+            _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
             _mockUserManager.Setup(r => r.CheckPasswordAsync(user, command.Password)).ReturnsAsync(false);
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
+            Assert.Equal($"Invalid password.", exception.Message);
+
             // Ensure FindByEmailAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
+
+            // Ensure IsEmailConfirmedAsync was called exactly once.
+            _mockUserManager.Verify(r => r.IsEmailConfirmedAsync(user), Times.Once);
 
             // Ensure CheckPasswordAsync was called exactly once.
             _mockUserManager.Verify(r => r.CheckPasswordAsync(user, command.Password), Times.Once);
