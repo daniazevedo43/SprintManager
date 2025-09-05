@@ -24,7 +24,6 @@ namespace SprintManager.Infrastructure.Services
             {
                 throw new Exception("Null SendGridKey");
             }
-            _logger.LogInformation($"DEBUG: SendGrid API Key length is {_options.ApiKey.Length}");
             await Execute(_options.ApiKey, subject, message, toEmail);
         }
 
@@ -40,25 +39,8 @@ namespace SprintManager.Infrastructure.Services
             };
             msg.AddTo(new EmailAddress(toEmail));
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.SetClickTracking(false, false);
-            //var response = await client.SendEmailAsync(msg);
-            try
-            {
-                var response = await client.SendEmailAsync(msg);
-                _logger.LogInformation("Email sent to {ToEmail}. Status Code: {StatusCode}", toEmail, response.StatusCode);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var body = await response.Body.ReadAsStringAsync();
-                    _logger.LogError("SendGrid API returned an error. Status Code: {StatusCode}, Body: {Body}", response.StatusCode, body);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An exception occurred while sending the email.");
-            }
+            var response = await client.SendEmailAsync(msg);
         }
     }
 }
