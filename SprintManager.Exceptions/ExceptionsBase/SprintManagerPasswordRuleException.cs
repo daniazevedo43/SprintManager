@@ -2,7 +2,7 @@
 {
     public class SprintManagerPasswordRuleException : Exception
     {
-        public SprintManagerPasswordRuleException() : base()
+        public SprintManagerPasswordRuleException()
         {
         }
 

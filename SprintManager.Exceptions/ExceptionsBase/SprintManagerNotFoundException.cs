@@ -4,7 +4,7 @@
     {
         public string? ParamName { get; }
 
-        public SprintManagerNotFoundException() : base() { }
+        public SprintManagerNotFoundException() { }
 
         public SprintManagerNotFoundException(string message) : base(message) { }
 

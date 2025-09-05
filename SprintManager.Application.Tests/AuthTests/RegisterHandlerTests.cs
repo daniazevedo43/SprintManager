@@ -7,6 +7,7 @@ using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Auth;
+using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Tests.AuthTests
@@ -14,6 +15,7 @@ namespace SprintManager.Application.Tests.AuthTests
     public class RegisterHandlerTests
     {
         private readonly Mock<UserManager<User>> _mockUserManager;
+        private readonly Mock<IEmailSender> _mockEmailSender;
         private readonly Mock<IMapper> _mockMapper;
         private readonly RegisterHandler _handler;
 
@@ -48,10 +50,15 @@ namespace SprintManager.Application.Tests.AuthTests
                 mockServiceProvider.Object,
                 mockLogger.Object
             );
+            _mockEmailSender = new Mock<IEmailSender>();
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
-            _handler = new RegisterHandler(_mockUserManager.Object, _mockMapper.Object);
+            _handler = new RegisterHandler(
+                _mockUserManager.Object,
+                _mockEmailSender.Object, 
+                _mockMapper.Object
+            );
         }
 
         // Test handler - registration success
@@ -78,6 +85,8 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
             _mockUserManager.Setup(r => r.CreateAsync(It.IsAny<User>(), command.Password))
                 .Callback<User, string>((u, p) => u.Id = Guid.NewGuid());
+            _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()));
+            _mockEmailSender.Setup(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()));
 
             _mockMapper.Setup(m => m.Map<UserDTO>(It.IsAny<User>())).Returns(userDTO);
 
@@ -95,6 +104,12 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure CreateAsync was called exactly once.
             _mockUserManager.Verify(r => r.CreateAsync(It.IsAny<User>(), command.Password), Times.Once);
+
+            // Ensure GenerateEmailConfirmationTokenAsync was called exactly once.
+            _mockUserManager.Verify(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()), Times.Once);
+
+            // Ensure SendEmailAsync was called exactly once.
+            _mockEmailSender.Verify(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
             _mockMapper.Verify(m => m.Map<UserDTO>(It.IsAny<User>()), Times.Once);

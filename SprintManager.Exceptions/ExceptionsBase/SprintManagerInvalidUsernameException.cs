@@ -2,7 +2,7 @@
 {
     public class SprintManagerInvalidUsernameException : Exception
     {
-        public SprintManagerInvalidUsernameException() : base()
+        public SprintManagerInvalidUsernameException()
         {
         }
 
