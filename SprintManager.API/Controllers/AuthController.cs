@@ -5,7 +5,6 @@ using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Auth;
-using SprintManager.Application.Queries.Users;
 using SprintManager.Domain.Entities;
 
 namespace SprintManager.API.Controllers
