@@ -16,7 +16,11 @@ namespace SprintManager.Application.Handlers.Auth
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
 
-        public RegisterHandler(UserManager<User> userManager, IEmailSender emailSender, IMapper mapper)
+        public RegisterHandler(
+            UserManager<User> userManager, 
+            IEmailSender emailSender, 
+            IMapper mapper
+        )
         {
             _userManager = userManager;
             _emailSender = emailSender;
