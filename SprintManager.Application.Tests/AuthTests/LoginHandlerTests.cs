@@ -91,6 +91,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockTokenService.Verify(r => r.CreateToken(user), Times.Once);
         }
 
+        // Test exception throwing when an email or password is invalid
         [Fact]
         public async Task VerifyEmail_ThrowsException_WhenEmailOrPasswordIsInvalid()
         {
@@ -114,6 +115,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
         }
 
+        // Test exception throwing when an email was not confirmed
         [Fact]
         public async Task VerifyEmail_ThrowsException_WhenEmailWasNotConfirmed()
         {
@@ -141,6 +143,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Verify(r => r.IsEmailConfirmedAsync(user), Times.Once);
         }
 
+        // Test exception throwing when a password is invalid
         [Fact]
         public async Task VerifyPassword_ThrowsException_WhenPasswordIsInvalid()
         {
