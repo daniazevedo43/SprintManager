@@ -126,17 +126,18 @@ builder.Services.AddAuthentication(options =>
             };
         });
 
+if(!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddTransient<IEmailSender, ConsoleEmailSender>();
+}
+
 var app = builder.Build();
 
 // Use the custom middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

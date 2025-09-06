@@ -31,6 +31,7 @@ The following API functionalities are already live:
 
 * `POST /api/Auth/register`: Where a user can register in the API.
 * `POST /api/Auth/login`: Where a user can login in the API.
+* `GET /api/Auth/confirm-email`: Confirms a user's email after registration.
 
 #### Users (`/api/Users`)
 
@@ -84,6 +85,13 @@ The following API functionalities are already live:
 * `POST /api/Images`: Adds a new image in a work item.
 * `DELETE /api/Images/{id}`: Removes an image from a work item.
 
+## Environments
+
+The API is configured to run in the following environments:
+
+* **Local:** Used for daily development. Uses logs to simulate sending emails and displays the details in the console.
+* **Development:** Used for testing integrations with SendGrid. For security reasons, the SendGrid key is not included in the repository
+
 ## Database setup
 
 Install SQL Server (if you haven't installed it yet).
@@ -119,7 +127,9 @@ JWT is used for authentication and authorization. All endpoints, except for regi
     }
     ```
 
-2. Send a `POST` request to login in the API.
+2. Click on the link shown in the console. The API will use the `/api/Auth/confirm-email` endpoint to automatically confirm the user's email. In "development" environment, a real email with a link is sent to the user.
+
+3. Send a `POST` request to login in the API.
     * **Endpoint**: `/api/Auth/login`
     * **Request Body**:
 
@@ -130,7 +140,7 @@ JWT is used for authentication and authorization. All endpoints, except for regi
     }
     ```
 
-3. If the login credentials are correct, the API will respond with a token.
+4. If the login credentials are correct, the API will respond with a token.
 
 #### How to use the Token
 
