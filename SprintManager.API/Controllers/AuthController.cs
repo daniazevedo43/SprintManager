@@ -50,6 +50,8 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("confirm-email")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ConfirmEmail(Guid userId, string token)
         {
             await _mediator.Send(new ConfirmEmailQuery { UserId = userId, Token = token });
