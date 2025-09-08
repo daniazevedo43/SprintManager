@@ -24,13 +24,8 @@ namespace SprintManager.Application.Handlers.Auth
             if (user == null) return;
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            
-            var emailContent = $"""
-                <p>Please, use the following data to reset your password:</p>
-                
-                <p>Your Id: {user.Id}
-                <p>Token: {token}</p>
-            """;
+
+            var emailContent = $"Please, use the following token to reset your password: {token}";
 
             await _emailSender.SendEmailAsync(request.Email, "Reset Password", emailContent);
         }
