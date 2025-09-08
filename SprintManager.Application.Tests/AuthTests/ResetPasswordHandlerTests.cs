@@ -56,20 +56,20 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new ResetPasswordCommand
             {
-                UserId = Guid.NewGuid(),
+                Email = "d@gmail.com",
                 Token = "token",
                 NewPassword = "Def456def456!"
             };
 
             var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
-            _mockUserManager.Setup(r => r.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(user);
+            _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword)).ReturnsAsync(IdentityResult.Success);
 
             await _handler.Handle(command, CancellationToken.None);
 
-            // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(r => r.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            // Ensure FindByEmailAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
 
             // Ensure ResetPasswordAsync was called exactly once.
             _mockUserManager.Verify(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword), Times.Once);
@@ -81,12 +81,12 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new ResetPasswordCommand
             {
-                UserId = Guid.NewGuid(),
+                Email = "d@gmail.com",
                 Token = "token",
                 NewPassword = "Def456def456!"
             };
 
-            _mockUserManager.Setup(r => r.FindByIdAsync(command.UserId.ToString()));
+            _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -94,8 +94,8 @@ namespace SprintManager.Application.Tests.AuthTests
 
             Assert.Equal($"User not found.", exception.Message);
 
-            // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(r => r.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            // Ensure FindByEmailAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email.ToString()), Times.Once);
         }
     }
 }

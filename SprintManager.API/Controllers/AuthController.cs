@@ -65,7 +65,7 @@ namespace SprintManager.API.Controllers
         {
             await _mediator.Send(command);
 
-            return Ok("If an account with this email exists, you'll receive an email with the necessary data to reset your password.");
+            return Ok("If an account with this email exists, you'll receive an email with a token that will be used to reset your password.");
         }
 
         [HttpPost("reset-password")]

@@ -17,7 +17,7 @@ namespace SprintManager.Application.Handlers.Auth
 
         public async Task Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            var user = await _userManager.FindByEmailAsync(request.Email.ToString());
 
             if (user == null) throw new SprintManagerNotFoundException("User not found.");
 
