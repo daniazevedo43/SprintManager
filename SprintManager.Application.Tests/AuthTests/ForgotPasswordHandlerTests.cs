@@ -64,7 +64,7 @@ namespace SprintManager.Application.Tests.AuthTests
                 Email = "d@gmail.com"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Daniel", "daniazevedo43", command.Email, "Abc123abc123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.GeneratePasswordResetTokenAsync(user)).ReturnsAsync(It.IsAny<string>());

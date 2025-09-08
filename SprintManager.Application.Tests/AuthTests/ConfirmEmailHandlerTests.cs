@@ -61,7 +61,6 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
-            // Repository's mock configuration
             _mockUserManager.Setup(r => r.FindByIdAsync(query.UserId.ToString())).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.ConfirmEmailAsync(user, query.Token)).ReturnsAsync(IdentityResult.Success);
 
@@ -84,7 +83,6 @@ namespace SprintManager.Application.Tests.AuthTests
                 Token = "testToken"
             };
 
-            // Repository's mock configuration
             _mockUserManager.Setup(r => r.FindByIdAsync(query.UserId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
