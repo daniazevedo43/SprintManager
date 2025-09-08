@@ -134,7 +134,7 @@ namespace SprintManager.Application.Tests.AuthTests
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"Email not confirmed. Please check your inbox.", exception.Message);
+            Assert.Equal($"Email not confirmed.", exception.Message);
 
             // Ensure FindByEmailAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);

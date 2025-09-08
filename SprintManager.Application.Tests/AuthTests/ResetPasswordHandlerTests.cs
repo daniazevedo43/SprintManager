@@ -2,19 +2,19 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Handlers.Auth;
-using SprintManager.Application.Queries.Auth;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.AuthTests
 {
-    public class ConfirmEmailHandlerTests
+    public class ResetPasswordHandlerTests
     {
         private readonly Mock<UserManager<User>> _mockUserManager;
-        private readonly ConfirmEmailHandler _handler;
+        private readonly ResetPasswordHandler _handler;
 
-        public ConfirmEmailHandlerTests()
+        public ResetPasswordHandlerTests()
         {
             // Create mocks for UserManager constructor's dependencies
             var mockUserStore = new Mock<IUserStore<User>>();
@@ -46,53 +46,56 @@ namespace SprintManager.Application.Tests.AuthTests
                 mockLogger.Object
             );
 
-            _handler = new ConfirmEmailHandler(_mockUserManager.Object);
+            // Initialize handler injecting the mocks
+            _handler = new ResetPasswordHandler(_mockUserManager.Object);
         }
 
-        // Test handler - email confirmed with success
+        // Test handler - reset password with success
         [Fact]
-        public async Task Handle_ConfirmsUserEmail()
+        public async Task Handle_ResetPassword()
         {
-            var query = new ConfirmEmailQuery
+            var command = new ResetPasswordCommand
             {
                 UserId = Guid.NewGuid(),
-                Token = "testToken"
+                Token = "token",
+                NewPassword = "Def456def456!"
             };
 
             var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
 
-            _mockUserManager.Setup(r => r.FindByIdAsync(query.UserId.ToString())).ReturnsAsync(user);
-            _mockUserManager.Setup(r => r.ConfirmEmailAsync(user, query.Token)).ReturnsAsync(IdentityResult.Success);
+            _mockUserManager.Setup(r => r.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(user);
+            _mockUserManager.Setup(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword)).ReturnsAsync(IdentityResult.Success);
 
-            await _handler.Handle(query, CancellationToken.None);
+            await _handler.Handle(command, CancellationToken.None);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(r => r.FindByIdAsync(query.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(r => r.FindByIdAsync(command.UserId.ToString()), Times.Once);
 
-            // Ensure ConfirmEmailAsync was called exactly once.
-            _mockUserManager.Verify(r => r.ConfirmEmailAsync(user, query.Token), Times.Once);
+            // Ensure ResetPasswordAsync was called exactly once.
+            _mockUserManager.Verify(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword), Times.Once);
         }
 
         // Test exception throwing when a user is not found
         [Fact]
         public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
         {
-            var query = new ConfirmEmailQuery
+            var command = new ResetPasswordCommand
             {
                 UserId = Guid.NewGuid(),
-                Token = "testToken"
+                Token = "token",
+                NewPassword = "Def456def456!"
             };
 
-            _mockUserManager.Setup(r => r.FindByIdAsync(query.UserId.ToString()));
+            _mockUserManager.Setup(r => r.FindByIdAsync(command.UserId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
-                () => _handler.Handle(query, CancellationToken.None)
+                () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Equal($"User not found.", exception.Message);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(r => r.FindByIdAsync(query.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(r => r.FindByIdAsync(command.UserId.ToString()), Times.Once);
         }
     }
 }
