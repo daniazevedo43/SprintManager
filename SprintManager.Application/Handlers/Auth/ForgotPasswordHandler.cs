@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
-using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Auth
 {
@@ -26,7 +25,12 @@ namespace SprintManager.Application.Handlers.Auth
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             
-            var emailContent = $"Please reset your password by clicking here: <a href='{token}'>click here</a> to confirm your email.";
+            var emailContent = $"""
+                <p>Please, use the following data to reset your password:</p>
+                
+                <p>User Id: {user.Id}
+                <p>Token: {token}</p>
+            """;
 
             await _emailSender.SendEmailAsync(request.Email, "Reset Password", emailContent);
         }

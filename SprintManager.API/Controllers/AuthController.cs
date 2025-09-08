@@ -58,5 +58,24 @@ namespace SprintManager.API.Controllers
 
             return Ok("Email confirmed with success!");
         }
+
+        [HttpPost("forgot-password")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok("If an account with this email exists, you'll receive an email with the necessary data to reset your password.");
+        }
+
+        [HttpPost("reset-password")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
     }
 }
