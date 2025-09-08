@@ -30,7 +30,7 @@ namespace SprintManager.Application.Handlers.Auth
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new SprintManagerEmailNotConfirmed("Email not confirmed. Please check your inbox.");
+                throw new SprintManagerEmailNotConfirmed("Email not confirmed.");
             }
 
             var passwordExists = await _userManager.CheckPasswordAsync(user, request.Password);
