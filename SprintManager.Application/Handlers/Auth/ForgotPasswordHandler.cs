@@ -22,7 +22,7 @@ namespace SprintManager.Application.Handlers.Auth
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user == null) throw new SprintManagerNotFoundException("Invalid email.");
+            if (user == null) return;
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             
