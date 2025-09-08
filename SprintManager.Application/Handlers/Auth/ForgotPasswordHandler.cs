@@ -28,7 +28,7 @@ namespace SprintManager.Application.Handlers.Auth
             var emailContent = $"""
                 <p>Please, use the following data to reset your password:</p>
                 
-                <p>User Id: {user.Id}
+                <p>Your Id: {user.Id}
                 <p>Token: {token}</p>
             """;
 
