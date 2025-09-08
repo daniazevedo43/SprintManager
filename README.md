@@ -32,6 +32,8 @@ The following API functionalities are already live:
 * `POST /api/Auth/register`: Where a user can register in the API.
 * `POST /api/Auth/login`: Where a user can login in the API.
 * `GET /api/Auth/confirm-email`: Confirms a user's email after registration.
+* `POST /api/Auth/forgot-password`: Sends the necessary details to the console so a user can reset it's password. On "development" environment, it sends an email.
+* `POST /api/Auth/reset-password`: Resets a user's password.
 
 #### Users (`/api/Users`)
 
@@ -90,7 +92,7 @@ The following API functionalities are already live:
 The API is configured to run in the following environments:
 
 * **Local:** Used for daily development. Uses logs to simulate sending emails and displays the details in the console.
-* **Development:** Used for testing integrations with SendGrid. For security reasons, the SendGrid key is not included in the repository
+* **Development:** Used for testing integrations with SendGrid. For security reasons, the SendGrid key is not included in the repository.
 
 ## Database setup
 
