@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.Auth;
+using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
@@ -8,21 +10,27 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.Application.Handlers.Auth
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, string>
+    public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
     {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IMapper _mapper;
 
         public LoginHandler(
             UserManager<User> userManager,
-            ITokenService tokenService
+            ITokenService tokenService,
+            IRefreshTokenRepository refreshTokenRepository,
+            IMapper mapper
         )
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _refreshTokenRepository = refreshTokenRepository;
+            _mapper = mapper;
         }
 
-        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -41,7 +49,24 @@ namespace SprintManager.Application.Handlers.Auth
             var token = _tokenService.CreateToken(user);
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return jwtToken;
+            var refreshToken = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Token = Guid.NewGuid().ToString(),
+                Expires = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false
+            };
+
+            await _refreshTokenRepository.AddAsync(refreshToken);
+
+            return new LoginDTO
+            {
+                AccessToken = jwtToken,
+                AccessTokenExpiration = token.ValidTo,
+                RefreshToken = refreshToken.Token,
+                RefreshTokenExpiration = refreshToken.Expires
+            };
         }
     }
 }
