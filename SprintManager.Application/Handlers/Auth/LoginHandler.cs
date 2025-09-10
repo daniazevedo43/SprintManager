@@ -15,19 +15,16 @@ namespace SprintManager.Application.Handlers.Auth
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
-        private readonly IMapper _mapper;
 
         public LoginHandler(
             UserManager<User> userManager,
             ITokenService tokenService,
-            IRefreshTokenRepository refreshTokenRepository,
-            IMapper mapper
+            IRefreshTokenRepository refreshTokenRepository
         )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _refreshTokenRepository = refreshTokenRepository;
-            _mapper = mapper;
         }
 
         public async Task<LoginDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
