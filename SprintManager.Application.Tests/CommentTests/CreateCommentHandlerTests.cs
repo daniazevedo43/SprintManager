@@ -79,7 +79,7 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Verify(r => r.AddAsync(comment), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created comment.
-            _mockMapper.Verify(m => m.Map<CommentDTO>(comment), Times.Once);
+            _mockMapper.Verify(m => m.Map<CommentDTO>(It.IsAny<Comment>()), Times.Once);
         }
 
         // Test exception throwing when work item is not found

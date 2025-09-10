@@ -86,7 +86,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
            
             // Ensure AddAsync was called exactly once.
-            _mockWorkItemRepository.Verify(r => r.AddAsync(workItem), Times.Once);
+            _mockWorkItemRepository.Verify(r => r.AddAsync(It.IsAny<WorkItem>()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created work item.
             _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);

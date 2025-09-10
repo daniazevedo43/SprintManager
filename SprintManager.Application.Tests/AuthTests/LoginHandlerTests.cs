@@ -15,6 +15,7 @@ namespace SprintManager.Application.Tests.AuthTests
     {
         private readonly Mock<UserManager<User>> _mockUserManager;
         private readonly Mock<ITokenService> _mockTokenService;
+        private readonly Mock<IRefreshTokenRepository> _mockRefreshTokenRepository;
         private readonly LoginHandler _handler;
 
         public LoginHandlerTests() 
@@ -49,9 +50,14 @@ namespace SprintManager.Application.Tests.AuthTests
                 mockLogger.Object
             );
             _mockTokenService = new Mock<ITokenService>();
+            _mockRefreshTokenRepository = new Mock<IRefreshTokenRepository>();
 
             // Initialize handler injecting the mocks
-            _handler = new LoginHandler(_mockUserManager.Object, _mockTokenService.Object);
+            _handler = new LoginHandler(
+                _mockUserManager.Object, 
+                _mockTokenService.Object,
+                _mockRefreshTokenRepository.Object
+            );
         }
 
         // Test handler - login success
@@ -68,15 +74,26 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var securityToken = new JwtSecurityToken();
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
+            
+            var refreshToken = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Token = Guid.NewGuid().ToString(),
+                Expires = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false
+            };
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
             _mockUserManager.Setup(r => r.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
             _mockTokenService.Setup(r => r.CreateToken(user)).Returns(securityToken);
+            _mockRefreshTokenRepository.Setup(r => r.AddAsync(It.IsAny<RefreshToken>())).Callback<RefreshToken>(t => refreshToken = t);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(jwtToken, result);
+            Assert.Equal(jwtToken, result.AccessToken);
+            Assert.Equal(refreshToken.Token, result.RefreshToken);
 
             // Ensure FindByEmailAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
@@ -89,6 +106,9 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure CreateToken was called exactly once.
             _mockTokenService.Verify(r => r.CreateToken(user), Times.Once);
+
+            // Ensure AddAsync was called exactly once.
+            _mockRefreshTokenRepository.Verify(r => r.AddAsync(It.IsAny<RefreshToken>()), Times.Once);
         }
 
         // Test exception throwing when an email or password is invalid

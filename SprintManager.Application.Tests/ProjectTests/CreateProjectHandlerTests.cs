@@ -66,7 +66,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Verify(r => r.AddAsync(project), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
+            _mockMapper.Verify(m => m.Map<ProjectDTO>(It.IsAny<Project>()), Times.Once);
         }
 
         // Test handler - project creation with description

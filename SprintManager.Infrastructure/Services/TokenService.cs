@@ -31,7 +31,7 @@ namespace SprintManager.Infrastructure.Services
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                                  .GetBytes(_config["Jwt:SecretKey"]));
 
-            _ = int.TryParse(_config["Jwt:TokenValidityInMinutes"], out int tokenValidityInMinutes);
+            _ = int.TryParse(_config["Jwt:AccessTokenValidityInMinutes"], out int tokenValidityInMinutes);
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
