@@ -79,7 +79,7 @@ namespace SprintManager.Application.Tests.AuthTests
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
-                Token = Guid.NewGuid().ToString(),
+                Token = "token",
                 Expires = DateTime.UtcNow.AddDays(7),
                 IsRevoked = false
             };
