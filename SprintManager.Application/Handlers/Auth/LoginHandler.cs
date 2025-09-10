@@ -63,9 +63,7 @@ namespace SprintManager.Application.Handlers.Auth
             return new LoginDTO
             {
                 AccessToken = jwtToken,
-                AccessTokenExpiration = token.ValidTo,
-                RefreshToken = refreshToken.Token,
-                RefreshTokenExpiration = refreshToken.Expires
+                RefreshToken = refreshToken.Token
             };
         }
     }
