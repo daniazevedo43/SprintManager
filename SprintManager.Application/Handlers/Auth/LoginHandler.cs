@@ -51,7 +51,7 @@ namespace SprintManager.Application.Handlers.Auth
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
                 Token = _tokenService.GenerateRefreshToken(),
-                Expires = DateTime.UtcNow.AddDays(7),
+                ExpirationDate = DateTime.UtcNow.AddDays(7),
                 IsRevoked = false
             };
 
