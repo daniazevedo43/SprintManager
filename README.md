@@ -113,9 +113,9 @@ dotnet ef database update
 
 ## Authentication
 
-JWT is used for authentication and authorization. All endpoints, except for registration and login, require a valid token for access.
+JWT is used for authentication and authorization. All endpoints, except for registration and login, require a valid access token.
 
-#### How to get a token
+#### How to get an access token
 
 1. Send a `POST` request to register in the API.
     * **Endpoint**: `/api/Auth/register`
@@ -142,19 +142,19 @@ JWT is used for authentication and authorization. All endpoints, except for regi
     }
     ```
 
-4. If the login credentials are correct, the API will respond with a token.
+4. If the login credentials are correct, the API will respond with an access token and a response token.
 
-#### How to use the Token
+#### How to use the access token
 
-After obtaining the token, you must include it in the authorization header of all your requests to the protected endpoints.
+After obtaining the access token, you must include it in the authorization header of all your requests to the protected endpoints.
 
 * **Header**: `Authorization`
-* **Value**: `Bearer {your-token}`
+* **Value**: `Bearer {your-access-token}`
 
-In case you're using Swagger, you can follow these steps to use the token:
+In case you're using Swagger, you can follow these steps to use the access token:
 
 1. Click the **"Authorize"** button
-2. Enter your token
+2. Enter your access token
 3. Click **"Authorize"**
 
 Once authorized, Swagger will automatically add the authorization header to all requests you make to the protected endpoints.
