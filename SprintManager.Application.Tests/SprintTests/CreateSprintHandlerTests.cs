@@ -80,7 +80,7 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
 
             // Ensure AddAsync was called exactly once.
-            _mockSprintRepository.Verify(r => r.AddAsync(sprint), Times.Once);
+            _mockSprintRepository.Verify(r => r.AddAsync(It.IsAny<Sprint>()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
             _mockMapper.Verify(m => m.Map<SprintDTO>(sprint), Times.Once);

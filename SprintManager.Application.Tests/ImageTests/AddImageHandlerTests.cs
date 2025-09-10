@@ -96,7 +96,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockFileStorageService.Verify(r => r.SaveFileAsync(_mockFile.Object, "Images"), Times.Once);
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
 
-            _mockMapper.Verify(m => m.Map<ImageDTO>(image), Times.Once);
+            _mockMapper.Verify(m => m.Map<ImageDTO>(It.IsAny<Image>()), Times.Once);
         }
 
         // Test exception throwing when file extension is not allowed

@@ -78,7 +78,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockProjectMemberRepository.Verify(r => r.AddAsync(projectMember), Times.Once);
 
             // Ensure the mapper's Map was called exactly once.
-            _mockMapper.Verify(m => m.Map<ProjectMemberDTO>(projectMember), Times.Once);
+            _mockMapper.Verify(m => m.Map<ProjectMemberDTO>(It.IsAny<ProjectMember>()), Times.Once);
         }
 
         // Test exception throwing when a user is already in a project

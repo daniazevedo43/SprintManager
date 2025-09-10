@@ -8,18 +8,18 @@ namespace SprintManager.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.HasKey(r => r.Id);
+            builder.HasKey(t => t.Id);
 
-            builder.Property(r => r.UserId)
+            builder.Property(t => t.UserId)
                .IsRequired();
 
-            builder.Property(r => r.Token)
+            builder.Property(t => t.Token)
                 .IsRequired();
 
-            builder.Property(r => r.Expires)
+            builder.Property(t => t.Expires)
                 .IsRequired();
 
-            builder.Property(r => r.IsRevoked)
+            builder.Property(t => t.IsRevoked)
                 .IsRequired();
         }
     }
