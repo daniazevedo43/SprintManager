@@ -31,7 +31,7 @@ namespace SprintManager.Application.Handlers.Auth
        
             if (refreshToken == null || refreshToken.IsRevoked || refreshToken.ExpirationDate < DateTime.UtcNow)
             {
-                throw new UnauthorizedAccessException("Invalid of expired refresh token.");
+                throw new UnauthorizedAccessException("Invalid or expired refresh token.");
             }
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId.ToString());
