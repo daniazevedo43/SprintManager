@@ -1,4 +1,5 @@
-﻿using SprintManager.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Infrastructure.Data;
 
@@ -13,9 +14,24 @@ namespace SprintManager.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<RefreshToken?> GetByTokenAsync(string? token)
+        {
+            return await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == token);
+        }
+
         public async Task AddAsync(RefreshToken refreshToken)
         {
             await _context.RefreshTokens.AddAsync(refreshToken);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(RefreshToken? refreshToken)
+        {
+            if (refreshToken != null)
+            {
+                _context.RefreshTokens.Update(refreshToken);
+            }
+
             await _context.SaveChangesAsync();
         }
     }
