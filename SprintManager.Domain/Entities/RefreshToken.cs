@@ -9,7 +9,6 @@
 
         public RefreshToken()
         {
-
         }
 
         public RefreshToken(Guid userId, string token)

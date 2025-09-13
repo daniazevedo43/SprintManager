@@ -24,7 +24,6 @@ namespace SprintManager.Domain.Entities
 
         public WorkItem()
         {
-
         }
 
         public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType)

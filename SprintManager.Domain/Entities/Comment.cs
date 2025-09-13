@@ -15,7 +15,6 @@ namespace SprintManager.Domain.Entities
 
         public Comment()
         {
-
         }
 
         public Comment(Guid workItemId, Guid userId, string text)

@@ -14,7 +14,6 @@
              
         public Image()
         {
-
         }
 
         public Image(Guid workItemId, Guid userId, string contentType, string fileName, string filePath)

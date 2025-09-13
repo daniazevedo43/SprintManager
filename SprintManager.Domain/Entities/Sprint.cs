@@ -16,7 +16,6 @@ namespace SprintManager.Domain.Entities
 
         public Sprint()
         {
-
         }
         
         public Sprint(Guid projectId, string sprintName, DateTime startDate, DateTime endDate)

@@ -13,7 +13,6 @@ namespace SprintManager.Domain.Entities
 
         public Project()
         {
-
         }
 
         public Project(string name)
