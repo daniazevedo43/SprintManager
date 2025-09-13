@@ -13,7 +13,6 @@ namespace SprintManager.Domain.Entities
 
         public ProjectMember()
         {
-            
         }
 
         public ProjectMember(Guid projectId, Guid userId, ProjectMemberRole role)

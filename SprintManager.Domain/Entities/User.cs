@@ -9,7 +9,6 @@ namespace SprintManager.Domain.Entities
 
         public User() 
         { 
-        
         }
 
         public User(string name, string username, string email, string password) 

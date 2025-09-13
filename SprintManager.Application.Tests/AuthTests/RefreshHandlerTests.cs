@@ -80,6 +80,7 @@ namespace SprintManager.Application.Tests.AuthTests
 
             _mockRefreshTokenRepository.Setup(r => r.GetByTokenAsync(command.RefreshToken)).ReturnsAsync(refreshToken);
             _mockUserManager.Setup(r => r.FindByIdAsync(refreshToken.UserId.ToString())).ReturnsAsync(user);
+            _mockRefreshTokenRepository.Setup(r => r.DeleteAsync(refreshToken));
             _mockTokenService.Setup(r => r.CreateToken(user)).Returns(securityToken);
             _mockTokenService.Setup(r => r.GenerateRefreshToken()).Returns(newRefreshToken.Token);
             _mockRefreshTokenRepository.Setup(r => r.AddAsync(It.IsAny<RefreshToken>())).Callback<RefreshToken>(t => newRefreshToken = t);
@@ -94,6 +95,9 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure FindByIdAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByIdAsync(refreshToken.UserId.ToString()), Times.Once);
+
+            // Ensure DeleteAsync was called exactly once.
+            _mockRefreshTokenRepository.Setup(r => r.DeleteAsync(refreshToken));
 
             // Ensure CreateToken was called exactly once.
             _mockTokenService.Verify(r => r.CreateToken(user), Times.Once);

@@ -29,7 +29,7 @@ namespace SprintManager.Application.Handlers.Auth
         {
             var refreshToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken);
        
-            if (refreshToken == null || refreshToken.IsRevoked || refreshToken.ExpirationDate < DateTime.UtcNow)
+            if (refreshToken == null || refreshToken.ExpirationDate < DateTime.UtcNow)
             {
                 throw new UnauthorizedAccessException("Invalid or expired refresh token.");
             }
@@ -41,7 +41,7 @@ namespace SprintManager.Application.Handlers.Auth
                 throw new UnauthorizedAccessException("User not found.");
             }
 
-            refreshToken.Revoke();
+            await _refreshTokenRepository.DeleteAsync(refreshToken);
 
             var token = _tokenService.CreateToken(user);
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
