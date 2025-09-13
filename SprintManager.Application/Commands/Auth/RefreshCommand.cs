@@ -3,7 +3,7 @@ using SprintManager.Application.DTOs;
 
 namespace SprintManager.Application.Commands.Auth
 {
-    public class RefreshTokenCommand : IRequest<LoginDTO>
+    public class RefreshCommand : IRequest<LoginDTO>
     {
         public string RefreshToken { get; set; }
     }

@@ -8,24 +8,24 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.Application.Handlers.Auth
 {
-    public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, LoginDTO>
+    public class RefreshHandler : IRequestHandler<RefreshCommand, LoginDTO>
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
-        private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly UserManager<User> _userManager;
 
-        public RefreshTokenHandler(
+        public RefreshHandler(
             IRefreshTokenRepository refreshTokenRepository, 
-            UserManager<User> userManager, 
-            ITokenService tokenService
+            ITokenService tokenService,
+            UserManager<User> userManager
         )
         {
             _refreshTokenRepository = refreshTokenRepository;
-            _userManager = userManager;
             _tokenService = tokenService;
+            _userManager = userManager;
         }
 
-        public async Task<LoginDTO> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDTO> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
             var refreshToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken);
        
@@ -41,20 +41,12 @@ namespace SprintManager.Application.Handlers.Auth
                 throw new UnauthorizedAccessException("User not found");
             }
 
-            refreshToken.IsRevoked = true;
-            await _refreshTokenRepository.UpdateAsync(refreshToken);
+            refreshToken.Revoke();
 
             var token = _tokenService.CreateToken(user);
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            var newRefreshToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = _tokenService.GenerateRefreshToken(),
-                ExpirationDate = DateTime.UtcNow.AddDays(7),
-                IsRevoked = false
-            };
+            var newRefreshToken = new RefreshToken(user.Id, _tokenService.GenerateRefreshToken());
 
             await _refreshTokenRepository.AddAsync(newRefreshToken);
 

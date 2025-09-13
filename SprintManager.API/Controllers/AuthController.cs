@@ -51,7 +51,7 @@ namespace SprintManager.API.Controllers
 
         [HttpPost("refresh")]
         [ProducesResponseType(typeof(LoginDTO), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Refresh(RefreshTokenCommand command)
+        public async Task<IActionResult> Refresh(RefreshCommand command)
         {
             var result = await _mediator.Send(command);
 

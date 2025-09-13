@@ -74,15 +74,8 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var securityToken = new JwtSecurityToken();
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
-            
-            var refreshToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = "token",
-                ExpirationDate = DateTime.UtcNow.AddDays(7),
-                IsRevoked = false
-            };
+
+            var refreshToken = new RefreshToken(user.Id, "token");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
