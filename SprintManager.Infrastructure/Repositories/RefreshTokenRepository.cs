@@ -24,5 +24,11 @@ namespace SprintManager.Infrastructure.Repositories
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(RefreshToken refreshToken)
+        {
+            _context.RefreshTokens.Remove(refreshToken);
+            await _context.SaveChangesAsync();
+        }
     }
 }

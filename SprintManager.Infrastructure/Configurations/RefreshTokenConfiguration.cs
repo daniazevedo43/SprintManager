@@ -18,9 +18,6 @@ namespace SprintManager.Infrastructure.Configurations
 
             builder.Property(t => t.ExpirationDate)
                 .IsRequired();
-
-            builder.Property(t => t.IsRevoked)
-                .IsRequired();
         }
     }
 }
