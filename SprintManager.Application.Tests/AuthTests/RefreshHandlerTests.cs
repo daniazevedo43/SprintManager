@@ -6,7 +6,6 @@ using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Handlers.Auth;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
-using SprintManager.Exceptions.ExceptionsBase;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.Application.Tests.AuthTests
@@ -104,6 +103,54 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure AddAsync was called exactly once.
             _mockRefreshTokenRepository.Verify(r => r.AddAsync(It.IsAny<RefreshToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyRefreshToken_ThrowsException_WhenInvalidOrExpiredRefreshToken()
+        {
+            var command = new RefreshCommand
+            {
+                RefreshToken = "token"
+            };
+
+            _mockRefreshTokenRepository.Setup(r => r.GetByTokenAsync(command.RefreshToken));
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Invalid or expired refresh token.", exception.Message);
+
+            // Ensure GetByTokenAsync was called exactly once.
+            _mockRefreshTokenRepository.Verify(r => r.GetByTokenAsync(command.RefreshToken), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyUser_ThrowsException_WhenUserWasNotFound()
+        {
+            var command = new RefreshCommand
+            {
+                RefreshToken = "token"
+            };
+
+            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+
+            var refreshToken = new RefreshToken(user.Id, "token");
+
+            _mockRefreshTokenRepository.Setup(r => r.GetByTokenAsync(command.RefreshToken)).ReturnsAsync(refreshToken);
+            _mockUserManager.Setup(r => r.FindByIdAsync(refreshToken.UserId.ToString()));
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User not found.", exception.Message);
+
+            // Ensure GetByTokenAsync was called exactly once.
+            _mockRefreshTokenRepository.Verify(r => r.GetByTokenAsync(command.RefreshToken), Times.Once);
+
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(r => r.FindByIdAsync(refreshToken.UserId.ToString()), Times.Once);
         }
     }
 }
