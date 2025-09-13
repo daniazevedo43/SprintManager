@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.DTOs;
@@ -46,14 +45,7 @@ namespace SprintManager.Application.Handlers.Auth
             var token = _tokenService.CreateToken(user);
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            var refreshToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = _tokenService.GenerateRefreshToken(),
-                Expires = DateTime.UtcNow.AddDays(7),
-                IsRevoked = false
-            };
+            var refreshToken = new RefreshToken(user.Id, _tokenService.GenerateRefreshToken());
 
             await _refreshTokenRepository.AddAsync(refreshToken);
 

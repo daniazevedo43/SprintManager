@@ -1,0 +1,28 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace SprintManager.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class ChangeExpiresColumnNameToExpirationDate : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.RenameColumn(
+                name: "Expires",
+                table: "RefreshTokens",
+                newName: "ExpirationDate");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.RenameColumn(
+                name: "ExpirationDate",
+                table: "RefreshTokens",
+                newName: "Expires");
+        }
+    }
+}

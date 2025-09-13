@@ -43,6 +43,7 @@ namespace SprintManager.API.Middleware
                 SprintManagerDateNotAllowedException => (int)HttpStatusCode.BadRequest, // 400 
                 SprintManagerInvalidUsernameException => (int)HttpStatusCode.BadRequest, // 400 
                 SprintManagerPasswordRuleException => (int)HttpStatusCode.BadRequest, // 400 
+                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized, // 401
                 SprintManagerEmailNotConfirmed => (int)HttpStatusCode.Forbidden, // 403
                 SprintManagerNotFoundException => (int)HttpStatusCode.NotFound, // 404
                 SprintManagerConflictException => (int)HttpStatusCode.Conflict, // 409

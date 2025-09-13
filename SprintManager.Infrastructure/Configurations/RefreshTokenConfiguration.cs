@@ -16,7 +16,7 @@ namespace SprintManager.Infrastructure.Configurations
             builder.Property(t => t.Token)
                 .IsRequired();
 
-            builder.Property(t => t.Expires)
+            builder.Property(t => t.ExpirationDate)
                 .IsRequired();
 
             builder.Property(t => t.IsRevoked)

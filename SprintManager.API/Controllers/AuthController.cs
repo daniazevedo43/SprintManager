@@ -36,7 +36,9 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Login(LoginCommand command)
         {
             var result = await _mediator.Send(command);
@@ -45,6 +47,16 @@ namespace SprintManager.API.Controllers
             {
                 return Unauthorized();
             }
+
+            return Ok(result);
+        }
+
+        [HttpPost("refresh")]
+        [ProducesResponseType(typeof(LoginDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Refresh(RefreshCommand command)
+        {
+            var result = await _mediator.Send(command);
 
             return Ok(result);
         }
