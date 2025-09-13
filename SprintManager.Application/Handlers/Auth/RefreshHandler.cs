@@ -38,7 +38,7 @@ namespace SprintManager.Application.Handlers.Auth
             
             if (user == null)
             {
-                throw new UnauthorizedAccessException("User not found");
+                throw new UnauthorizedAccessException("User not found.");
             }
 
             refreshToken.Revoke();
