@@ -16,7 +16,8 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task<RefreshToken?> GetByTokenAsync(string? token)
         {
-            return await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == token);
+            return await _context.RefreshTokens
+                .FirstOrDefaultAsync(t => t.Token == token);
         }
 
         public async Task AddAsync(RefreshToken refreshToken)
@@ -28,6 +29,16 @@ namespace SprintManager.Infrastructure.Repositories
         public async Task DeleteAsync(RefreshToken refreshToken)
         {
             _context.RefreshTokens.Remove(refreshToken);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAllByUserIdAsync(Guid userId)
+        {
+            var refreshTokens = await _context.RefreshTokens
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+
+            _context.RefreshTokens.RemoveRange(refreshTokens);
             await _context.SaveChangesAsync();
         }
     }

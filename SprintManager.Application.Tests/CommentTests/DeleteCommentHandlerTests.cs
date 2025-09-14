@@ -4,7 +4,6 @@ using SprintManager.Application.Handlers.Comments;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
-using System.Xml.Linq;
 
 namespace SprintManager.Application.Tests.CommentTests
 {

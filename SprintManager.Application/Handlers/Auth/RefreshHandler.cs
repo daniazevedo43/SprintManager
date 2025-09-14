@@ -36,10 +36,7 @@ namespace SprintManager.Application.Handlers.Auth
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId.ToString());
             
-            if (user == null)
-            {
-                throw new UnauthorizedAccessException("User not found.");
-            }
+            if (user == null) throw new UnauthorizedAccessException("User not found.");
 
             await _refreshTokenRepository.DeleteAsync(refreshToken);
 

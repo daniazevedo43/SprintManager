@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SprintManager.Application.Commands.Auth;
@@ -49,6 +50,17 @@ namespace SprintManager.API.Controllers
             }
 
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Logout()
+        {
+            await _mediator.Send(new LogoutCommand());
+
+            return Ok();
         }
 
         [HttpPost("refresh")]
