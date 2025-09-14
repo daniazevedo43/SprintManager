@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace SprintManager.Application.Handlers.Auth
