@@ -101,5 +101,17 @@ namespace SprintManager.API.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpDelete("delete-account")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteAccount(DeleteAccountCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
     }
 }
