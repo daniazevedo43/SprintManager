@@ -12,18 +12,18 @@ namespace SprintManager.Application.Handlers.Auth
     public class DeleteAccountHandler : IRequestHandler<DeleteAccountCommand>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public DeleteAccountHandler(
-            IHttpContextAccessor httpContextAccessor, 
-            IRefreshTokenRepository refreshTokenRepository,
-            UserManager<User> userManager
+            IHttpContextAccessor httpContextAccessor,
+            UserManager<User> userManager,
+            IRefreshTokenRepository refreshTokenRepository
         ) 
         { 
             _httpContextAccessor = httpContextAccessor;
-            _refreshTokenRepository = refreshTokenRepository;
             _userManager = userManager;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task Handle(DeleteAccountCommand request, CancellationToken cancellationToken)
