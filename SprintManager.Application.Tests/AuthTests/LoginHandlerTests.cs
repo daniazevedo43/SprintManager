@@ -77,10 +77,10 @@ namespace SprintManager.Application.Tests.AuthTests
 
             var refreshToken = new RefreshToken(user.Id, "token");
 
-            _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
-            _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
-            _mockUserManager.Setup(r => r.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
-            _mockTokenService.Setup(r => r.CreateToken(user)).Returns(securityToken);
+            _mockUserManager.Setup(m => m.FindByEmailAsync(command.Email)).ReturnsAsync(user);
+            _mockUserManager.Setup(m => m.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
+            _mockUserManager.Setup(m => m.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
+            _mockTokenService.Setup(s => s.CreateToken(user)).Returns(securityToken);
             _mockRefreshTokenRepository.Setup(r => r.AddAsync(It.IsAny<RefreshToken>())).Callback<RefreshToken>(t => refreshToken = t);
 
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -89,19 +89,19 @@ namespace SprintManager.Application.Tests.AuthTests
             Assert.Equal(refreshToken.Token, result.RefreshToken);
 
             // Ensure FindByEmailAsync was called exactly once.
-            _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
+            _mockUserManager.Verify(m => m.FindByEmailAsync(command.Email), Times.Once);
 
             // Ensure IsEmailConfirmedAsync was called exactly once.
-            _mockUserManager.Verify(r => r.IsEmailConfirmedAsync(user), Times.Once);
+            _mockUserManager.Verify(m => m.IsEmailConfirmedAsync(user), Times.Once);
 
             // Ensure CheckPasswordAsync was called exactly once.
-            _mockUserManager.Verify(r => r.CheckPasswordAsync(user, command.Password), Times.Once);
+            _mockUserManager.Verify(m => m.CheckPasswordAsync(user, command.Password), Times.Once);
 
             // Ensure CreateToken was called exactly once.
-            _mockTokenService.Verify(r => r.CreateToken(user), Times.Once);
+            _mockTokenService.Verify(s => s.CreateToken(user), Times.Once);
 
             // Ensure AddAsync was called exactly once.
-            _mockRefreshTokenRepository.Verify(r => r.AddAsync(It.IsAny<RefreshToken>()), Times.Once);
+            _mockRefreshTokenRepository.Verify(t => t.AddAsync(It.IsAny<RefreshToken>()), Times.Once);
         }
 
         // Test exception throwing when an email or password is invalid

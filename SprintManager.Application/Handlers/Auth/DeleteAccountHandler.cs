@@ -11,20 +11,20 @@ namespace SprintManager.Application.Handlers.Auth
 {
     public class DeleteAccountHandler : IRequestHandler<DeleteAccountCommand>
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IWorkItemRepository _workItemRepository;
 
         public DeleteAccountHandler(
-            IHttpContextAccessor httpContextAccessor,
             UserManager<User> userManager,
+            IHttpContextAccessor httpContextAccessor,
             IRefreshTokenRepository refreshTokenRepository,
             IWorkItemRepository workItemRepository
         ) 
-        { 
-            _httpContextAccessor = httpContextAccessor;
+        {
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
             _refreshTokenRepository = refreshTokenRepository;
             _workItemRepository = workItemRepository;
         }
