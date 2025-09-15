@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.Auth;
+using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 using System.Security.Claims;
@@ -11,14 +12,17 @@ namespace SprintManager.Application.Handlers.Auth
     public class DeleteAccountHandler : IRequestHandler<DeleteAccountCommand>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly UserManager<User> _userManager;
 
         public DeleteAccountHandler(
             IHttpContextAccessor httpContextAccessor, 
+            IRefreshTokenRepository refreshTokenRepository,
             UserManager<User> userManager
         ) 
         { 
             _httpContextAccessor = httpContextAccessor;
+            _refreshTokenRepository = refreshTokenRepository;
             _userManager = userManager;
         }
 
@@ -37,6 +41,8 @@ namespace SprintManager.Application.Handlers.Auth
             var passwordIsValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!passwordIsValid) throw new UnauthorizedAccessException("Invalid password.");
+
+            await _refreshTokenRepository.DeleteAllByUserIdAsync(userId);
 
             await _userManager.DeleteAsync(user);
         }
