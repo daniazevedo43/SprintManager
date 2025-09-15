@@ -14,16 +14,19 @@ namespace SprintManager.Application.Handlers.Auth
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IWorkItemRepository _workItemRepository;
 
         public DeleteAccountHandler(
             IHttpContextAccessor httpContextAccessor,
             UserManager<User> userManager,
-            IRefreshTokenRepository refreshTokenRepository
+            IRefreshTokenRepository refreshTokenRepository,
+            IWorkItemRepository workItemRepository
         ) 
         { 
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _refreshTokenRepository = refreshTokenRepository;
+            _workItemRepository = workItemRepository;
         }
 
         public async Task Handle(DeleteAccountCommand request, CancellationToken cancellationToken)
@@ -41,6 +44,14 @@ namespace SprintManager.Application.Handlers.Auth
             var passwordIsValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!passwordIsValid) throw new UnauthorizedAccessException("Invalid password.");
+
+            var workItems = await _workItemRepository.GetAllByUserIdAsync(userId);
+
+            foreach (var workItem in workItems)
+            {
+                workItem.SetAssignedUserId(null);
+                await _workItemRepository.UpdateAsync(workItem);
+            }
 
             await _refreshTokenRepository.DeleteAllByUserIdAsync(userId);
 
