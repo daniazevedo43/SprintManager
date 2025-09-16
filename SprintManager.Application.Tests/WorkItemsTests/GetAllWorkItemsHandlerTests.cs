@@ -35,16 +35,16 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             {
                 new WorkItem(
                     Guid.NewGuid(),
-                    "Adjust feed page for mobile devices", WorkItemType.Task,
+                    "Test title", WorkItemType.Task,
                     Guid.NewGuid(), Guid.NewGuid(),
-                    "The feed page needs to be responsive for mobile devices.",
+                    "Test description",
                     WorkItemPriorityLevel.Low, 
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 ),
                 new WorkItem(
-                    Guid.NewGuid(), "Fix start date and end date bug", 
+                    Guid.NewGuid(), "Test title 2", 
                     WorkItemType.Bug, Guid.NewGuid(), Guid.NewGuid(),
-                    "Start date and end date not showing correct year.",
+                    "Test description 2",
                     WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 )
