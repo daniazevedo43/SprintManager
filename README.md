@@ -34,6 +34,7 @@ The following API functionalities are already live:
 * `POST /api/Auth/logout`: Where a user can logout.
 * `POST /api/Auth/refresh`: Where a user can refresh the access token when it expires.
 * `GET /api/Auth/confirm-email`: Confirms a user's email after registration.
+* `POST /api/Auth/resend-confirmation-email`: Sends a new confirmation email. Users can use this endpoint in case they don't receive the email the first time.
 * `POST /api/Auth/forgot-password`: Sends the necessary details to the console so a user can reset it's password. On "development" environment, it sends an email.
 * `POST /api/Auth/reset-password`: Resets a user's password.
 * `DELETE /api/Auth/delete-account`: Where a user can delete his account.
