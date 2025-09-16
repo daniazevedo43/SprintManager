@@ -36,6 +36,7 @@ The following API functionalities are already live:
 * `GET /api/Auth/confirm-email`: Confirms a user's email after registration.
 * `POST /api/Auth/forgot-password`: Sends the necessary details to the console so a user can reset it's password. On "development" environment, it sends an email.
 * `POST /api/Auth/reset-password`: Resets a user's password.
+* `DELETE /api/Auth/delete-account`: Where a user can delete his account.
 
 #### Users (`/api/Users`)
 

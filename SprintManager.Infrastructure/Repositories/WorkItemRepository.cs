@@ -24,6 +24,13 @@ namespace SprintManager.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<WorkItem>> GetAllByUserIdAsync(Guid userId)
+        {
+            return await _context.WorkItems
+                .Where(w => w.UserId == userId)
+                .ToListAsync();
+        }
+
         public async Task<WorkItem?> GetByIdAsync(Guid id)
         {
             return await _context.WorkItems

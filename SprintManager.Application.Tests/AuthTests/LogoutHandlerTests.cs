@@ -32,7 +32,7 @@ namespace SprintManager.Application.Tests.AuthTests
             var userId = Guid.NewGuid();
 
             _mockHttpContextAccessor
-                .Setup(r => r.HttpContext.User
+                .Setup(a => a.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier))
                 .Returns(new Claim(ClaimTypes.NameIdentifier, userId.ToString()));
 
@@ -43,7 +43,8 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
-                .Verify(r => r.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
 
             // Ensure DeleteAllByUserIdAsync was called exactly once.
             _mockRefreshTokenRepository
@@ -51,7 +52,7 @@ namespace SprintManager.Application.Tests.AuthTests
         }
 
         [Fact]
-        public async Task VerifyUserId_ThrowException_WhenAuthenticatedUserIsNotFound()
+        public async Task VerifyUser_ThrowException_WhenAuthenticatedUserIsNotFound()
         {
             var command = new LogoutCommand();
 
