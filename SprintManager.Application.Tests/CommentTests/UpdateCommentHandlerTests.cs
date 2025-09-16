@@ -33,7 +33,7 @@ namespace SprintManager.Application.Tests.CommentTests
             var command = new UpdateCommentCommand
             {
                 Id = Guid.NewGuid(),
-                Text = "Task completed!"
+                Text = "Test comment"
             };
 
             var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), command.Text);
@@ -78,7 +78,7 @@ namespace SprintManager.Application.Tests.CommentTests
             var command = new UpdateCommentCommand
             {
                 Id = Guid.NewGuid(),
-                Text = "Task completed!"
+                Text = "Test comment"
             };
 
             // Repository's Mock configuration

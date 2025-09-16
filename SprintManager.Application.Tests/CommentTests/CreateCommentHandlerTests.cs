@@ -42,7 +42,7 @@ namespace SprintManager.Application.Tests.CommentTests
             {
                 WorkItemId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
-                Text = "Task completed!"
+                Text = "Test comment"
             };
 
             var comment = new Comment(command.WorkItemId, command.UserId, command.Text);
@@ -90,7 +90,7 @@ namespace SprintManager.Application.Tests.CommentTests
             {
                 WorkItemId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
-                Text = "Task completed!"
+                Text = "Test comment"
             };
 
             // Repository's mock configuration
@@ -114,7 +114,7 @@ namespace SprintManager.Application.Tests.CommentTests
             {
                 WorkItemId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
-                Text = "Task completed!"
+                Text = "Test comment"
             };
 
             // Repository's mock configuration

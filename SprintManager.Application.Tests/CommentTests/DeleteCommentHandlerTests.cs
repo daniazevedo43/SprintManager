@@ -30,7 +30,7 @@ namespace SprintManager.Application.Tests.CommentTests
                 Id = Guid.NewGuid(),
             };
 
-            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Task completed!");
+            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Test comment");
 
             // Repository's mock configuration
             _mockCommentRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(comment);
