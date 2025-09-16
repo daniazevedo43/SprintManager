@@ -66,16 +66,16 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new LoginCommand
             {
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
             var securityToken = new JwtSecurityToken();
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
-            var refreshToken = new RefreshToken(user.Id, "token");
+            var refreshToken = new RefreshToken(user.Id, "test_token");
 
             _mockUserManager.Setup(m => m.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(m => m.IsEmailConfirmedAsync(user)).ReturnsAsync(true);
@@ -110,11 +110,11 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new LoginCommand
             {
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
 
@@ -134,11 +134,11 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new LoginCommand
             {
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(false);
@@ -162,11 +162,11 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new LoginCommand
             {
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.IsEmailConfirmedAsync(user)).ReturnsAsync(true);

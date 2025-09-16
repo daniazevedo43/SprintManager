@@ -59,7 +59,7 @@ namespace SprintManager.Application.Tests.AuthTests
                 Token = "testToken"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
             _mockUserManager.Setup(r => r.FindByIdAsync(query.UserId.ToString())).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.ConfirmEmailAsync(user, query.Token)).ReturnsAsync(IdentityResult.Success);

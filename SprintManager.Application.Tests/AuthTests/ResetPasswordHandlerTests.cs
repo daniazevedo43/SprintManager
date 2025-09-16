@@ -56,12 +56,12 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new ResetPasswordCommand
             {
-                Email = "d@gmail.com",
-                Token = "token",
-                NewPassword = "Def456def456!"
+                Email = "test@gmail.com",
+                Token = "test_token",
+                NewPassword = "Test123test123!"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword)).ReturnsAsync(IdentityResult.Success);
@@ -81,9 +81,9 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new ResetPasswordCommand
             {
-                Email = "d@gmail.com",
-                Token = "token",
-                NewPassword = "Def456def456!"
+                Email = "test@gmail.com",
+                Token = "test_token",
+                NewPassword = "Test123test123!"
             };
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));

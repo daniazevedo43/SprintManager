@@ -72,25 +72,25 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new DeleteAccountCommand
             {
-                Password = "Abc123abc123!",
+                Password = "Test123test123!",
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", command.Password);
+            var user = new User("Test", "test", "test@gmail.com", command.Password);
 
             var workItems = new List<WorkItem>()
             {
                 new WorkItem(
                     Guid.NewGuid(),
-                    "Adjust feed page for mobile devices", WorkItemType.Task,
+                    "Test title", WorkItemType.Task,
                     Guid.NewGuid(), user.Id,
-                    "The feed page needs to be responsive for mobile devices.",
+                    "Test description",
                     WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 ),
                 new WorkItem(
-                    Guid.NewGuid(), "Fix start date and end date bug",
+                    Guid.NewGuid(), "Test title 2",
                     WorkItemType.Bug, Guid.NewGuid(), user.Id,
-                    "Start date and end date not showing correct year.",
+                    "Test description 2",
                     WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 )
@@ -139,7 +139,7 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new DeleteAccountCommand
             {
-                Password = "Abc123abc123!",
+                Password = "Test123test123!",
             };
 
             _mockHttpContextAccessor
@@ -162,10 +162,10 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new DeleteAccountCommand
             {
-                Password = "Abc123abc123!",
+                Password = "Test123test123!",
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", command.Password);
+            var user = new User("Test", "test", "test@gmail.com", command.Password);
 
             _mockHttpContextAccessor
                 .Setup(r => r.HttpContext.User
@@ -193,10 +193,10 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new DeleteAccountCommand
             {
-                Password = "Abc123abc123!",
+                Password = "Test123test123!",
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", command.Password);
+            var user = new User("Test", "test", "test@gmail.com", command.Password);
 
             _mockHttpContextAccessor
                 .Setup(r => r.HttpContext.User

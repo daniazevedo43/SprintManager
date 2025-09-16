@@ -66,12 +66,12 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new RefreshCommand
             {
-                RefreshToken = "token"
+                RefreshToken = "test_token"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
-            var refreshToken = new RefreshToken(user.Id, "token");
+            var refreshToken = new RefreshToken(user.Id, "test_token");
 
             var securityToken = new JwtSecurityToken();
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
@@ -114,7 +114,7 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new RefreshCommand
             {
-                RefreshToken = "token"
+                RefreshToken = "test_token"
             };
 
             _mockRefreshTokenRepository.Setup(r => r.GetByTokenAsync(command.RefreshToken));
@@ -134,12 +134,12 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new RefreshCommand
             {
-                RefreshToken = "token"
+                RefreshToken = "test_token"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
-            var refreshToken = new RefreshToken(user.Id, "token");
+            var refreshToken = new RefreshToken(user.Id, "test_token");
 
             _mockRefreshTokenRepository.Setup(r => r.GetByTokenAsync(command.RefreshToken)).ReturnsAsync(refreshToken);
             _mockUserManager.Setup(r => r.FindByIdAsync(refreshToken.UserId.ToString()));
