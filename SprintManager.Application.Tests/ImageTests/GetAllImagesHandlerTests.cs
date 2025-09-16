@@ -33,14 +33,14 @@ namespace SprintManager.Application.Tests.ImageTests
             var images = new List<Image>()
             {
                 new Image(
-                    Guid.NewGuid(), Guid.NewGuid(), "image/jpg", 
-                    "first_image.jpg", 
-                    Path.Combine("images", "first_image.jpg")
+                    Guid.NewGuid(), Guid.NewGuid(), "test_image/jpg", 
+                    "test_image.jpg",
+                    Path.Combine("test_path", "test_path_2.jpg")
                 ),
                 new Image(
-                    Guid.NewGuid(), Guid.NewGuid(), "image/jpg",
-                    "second_image.jpg",
-                    Path.Combine("images", "second_image.jpg")
+                    Guid.NewGuid(), Guid.NewGuid(), "test_image/jpg",
+                    "test_image_2.jpg",
+                    Path.Combine("test_path", "test_path_2.jpg")
                 )
             };
 

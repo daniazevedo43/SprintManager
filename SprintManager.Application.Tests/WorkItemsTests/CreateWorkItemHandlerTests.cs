@@ -45,7 +45,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             var command = new CreateWorkItemCommand
             {
                 ProjectId = Guid.NewGuid(),
-                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task
             };
 
@@ -101,9 +101,9 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 ProjectId = Guid.NewGuid(),
                 SprintId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
-                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task,
-                Description = "The feed page needs to be responsive for mobile devices.",
+                Description = "Test description",
                 PriorityLevel = WorkItemPriorityLevel.Medium,
                 CompletionDate = DateTime.UtcNow.ToUniversalTime().AddDays(1),
                 HoursEstimate = 6
@@ -180,7 +180,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             var command = new CreateWorkItemCommand
             {
                 ProjectId = Guid.NewGuid(),
-                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task
             };
 
@@ -205,7 +205,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             {
                 ProjectId = Guid.NewGuid(),
                 SprintId = Guid.NewGuid(),
-                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task
             };
 
@@ -233,7 +233,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 ProjectId = Guid.NewGuid(),
                 SprintId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
-                WorkItemTitle = "Adjust feed page for mobile devices",
+                WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task
             };
 

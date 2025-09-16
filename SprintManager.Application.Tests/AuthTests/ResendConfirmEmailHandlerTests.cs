@@ -61,10 +61,10 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new ResendConfirmationEmailCommand
             {
-                Email = "d@gmail.com"
+                Email = "test@gmail.com"
             };
 
-            var user = new User("Daniel", "daniazevedo43", command.Email, "Abc123abc123!");
+            var user = new User("Test", "test", command.Email, "Test123test123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(user));

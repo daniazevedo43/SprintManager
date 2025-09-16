@@ -33,10 +33,10 @@ namespace SprintManager.Application.Tests.CommentTests
             var comments = new List<Comment>()
             {
                 new Comment(
-                    Guid.NewGuid(), Guid.NewGuid(), "Task completed!"
+                    Guid.NewGuid(), Guid.NewGuid(), "Test comment"
                 ),
                 new Comment(
-                    Guid.NewGuid(), Guid.NewGuid(), "Great!"
+                    Guid.NewGuid(), Guid.NewGuid(), "Test comment 2"
                 )
             };
 

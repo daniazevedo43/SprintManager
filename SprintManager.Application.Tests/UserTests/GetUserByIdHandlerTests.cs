@@ -34,7 +34,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
             var userDTO = new UserDTO 
             { 
                 Id = query.Id, 

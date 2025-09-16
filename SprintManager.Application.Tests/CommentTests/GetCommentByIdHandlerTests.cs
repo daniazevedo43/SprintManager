@@ -34,7 +34,7 @@ namespace SprintManager.Application.Tests.CommentTests
                 Id = Guid.NewGuid()
             };
 
-            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Task completed!");
+            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Test comment");
 
             var commentDTO = new CommentDTO
             {

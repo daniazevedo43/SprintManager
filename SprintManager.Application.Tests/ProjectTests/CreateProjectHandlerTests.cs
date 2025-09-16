@@ -31,7 +31,7 @@ namespace SprintManager.Application.Tests.ProjectTests
         {
             var command = new CreateProjectCommand
             {
-                Name = "Recipe Forum",
+                Name = "Test",
             };
 
             var project = new Project(command.Name);
@@ -75,8 +75,8 @@ namespace SprintManager.Application.Tests.ProjectTests
         {
             var command = new CreateProjectCommand
             {
-                Name = "Recipe Forum",
-                Description = "Forum where users can share recipes",
+                Name = "Test",
+                Description = "Test Description",
             };
 
             var project = new Project(command.Name, command.Description);
@@ -120,8 +120,8 @@ namespace SprintManager.Application.Tests.ProjectTests
         {
             var command = new CreateProjectCommand
             {
-                Name = "Recipe Forum",
-                Description = "Forum where users can share recipes",
+                Name = "Test",
+                Description = "Test Description",
             };
 
             var project = new Project(command.Name, command.Description);

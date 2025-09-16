@@ -35,9 +35,9 @@ namespace SprintManager.Application.Tests.ImageTests
             };
 
             var image = new Image(
-                Guid.NewGuid(), Guid.NewGuid(), "image/jpg",
-                "profile_page.jpg",
-                Path.Combine("images", "profile_page.jpg")
+                Guid.NewGuid(), Guid.NewGuid(), "test_image/jpg",
+                "test_image.jpg",
+                Path.Combine("test_path", "test_path_2.jpg")
             );
 
             var imageDTO = new ImageDTO

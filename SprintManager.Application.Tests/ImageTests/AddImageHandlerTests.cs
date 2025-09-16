@@ -44,7 +44,7 @@ namespace SprintManager.Application.Tests.ImageTests
         [Fact]
         public async Task Handle_AddsImage_ReturnsImageDTO()
         {
-            _mockFile.Setup(f => f.ContentType).Returns("image/jpeg");
+            _mockFile.Setup(f => f.ContentType).Returns("test_image/jpeg");
             _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
 
             var command = new AddImageCommand
@@ -59,7 +59,7 @@ namespace SprintManager.Application.Tests.ImageTests
                 command.UserId, 
                 command.Image.ContentType,
                 command.Image.FileName,
-                Path.Combine("images", "unique_test_file.jpg")
+                Path.Combine("test_path", "test_path_2.jpg")
             );
 
             var imageDTO = new ImageDTO
@@ -75,7 +75,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
             _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
-            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "Images")).ReturnsAsync(image.FilePath);
+            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
 
             // Mapper's Mock configuration
@@ -93,7 +93,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
             _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
-            _mockFileStorageService.Verify(r => r.SaveFileAsync(_mockFile.Object, "Images"), Times.Once);
+            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
 
             _mockMapper.Verify(m => m.Map<ImageDTO>(It.IsAny<Image>()), Times.Once);

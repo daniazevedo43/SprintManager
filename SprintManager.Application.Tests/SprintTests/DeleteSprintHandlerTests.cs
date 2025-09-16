@@ -36,7 +36,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Id = Guid.NewGuid(),
             };
 
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 8, 4), new DateTime(2025, 8, 11));
+            var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 8, 4), new DateTime(2025, 8, 11));
 
             // Repositories mock configuration
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(sprint);

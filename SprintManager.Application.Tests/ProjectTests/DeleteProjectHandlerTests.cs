@@ -30,7 +30,7 @@ namespace SprintManager.Application.Tests.ProjectTests
                 Id = Guid.NewGuid(),
             };
 
-            var project = new Project("Recipe Forum", "Forum where users can share recipes");
+            var project = new Project("Test", "Test Description");
 
             // Repository's Mock configuration
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(project);

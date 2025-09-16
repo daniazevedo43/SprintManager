@@ -32,8 +32,8 @@ namespace SprintManager.Application.Tests.ProjectTests
 
             var projects = new List<Project>()
             {
-                new Project("Recipe Forum", "Forum where users can share recipes"),
-                new Project("Contact Manager", "Application that allows users to store, view, edit and delete information about contacts.")
+                new Project("Test", "Test Description"),
+                new Project("Test 2", "Test Description 2")
             };
 
             var projectsDTOs = new List<ProjectDTO>()

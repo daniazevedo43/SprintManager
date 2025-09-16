@@ -35,7 +35,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Id = Guid.NewGuid()
             };
 
-            var workItem = new WorkItem(Guid.NewGuid(), "Adjust feed page for mobile devices", WorkItemType.Task);
+            var workItem = new WorkItem(Guid.NewGuid(), "Test title", WorkItemType.Task);
 
             var workItemDTO = new WorkItemDTO
             {

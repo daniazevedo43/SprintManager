@@ -11,12 +11,12 @@ namespace SprintManager.Domain.Tests
         {
             Guid workItemId = Guid.NewGuid();
             Guid userId = Guid.NewGuid();
-            var comment = new Comment(workItemId, userId, "Comment 1");
+            var comment = new Comment(workItemId, userId, "Test comment");
 
             Assert.NotEqual(Guid.Empty, comment.Id);
             Assert.Equal(workItemId, comment.WorkItemId);
             Assert.Equal(userId, comment.UserId);
-            Assert.Equal("Comment 1", comment.Text);
+            Assert.Equal("Test comment", comment.Text);
             Assert.Equal(DateTime.UtcNow.Date, comment.CreationDate.Date);
             Assert.Null(comment.UpdateDate?.Date);
         }
@@ -25,11 +25,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetText_UpdatesTextSuccessfully()
         {
-            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Comment 1");
+            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Test comment");
 
-            comment.SetText("Comment 2");
+            comment.SetText("Test comment 2");
 
-            Assert.Equal("Comment 2", comment.Text);
+            Assert.Equal("Test comment 2", comment.Text);
             Assert.Equal(DateTime.UtcNow.Date, comment.UpdateDate?.Date);
         }
 
@@ -38,7 +38,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyWorkItemId_ThrowsException_WhenWorkItemIsNullOrEmpty()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Comment(Guid.Empty, Guid.NewGuid(), "Comment 1")
+                new Comment(Guid.Empty, Guid.NewGuid(), "Test comment")
             );
 
             Assert.Equal("Work item ID can't be null or empty. (Parameter 'workItemId')", exception.Message);
@@ -49,7 +49,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyUserId_ThrowsException_WhenUserIsNullOrEmpty()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Comment(Guid.NewGuid(), Guid.Empty, "Comment 1")
+                new Comment(Guid.NewGuid(), Guid.Empty, "Test comment")
             );
 
             Assert.Equal("User ID can't be null or empty. (Parameter 'userId')", exception.Message);

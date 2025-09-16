@@ -9,34 +9,12 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void User_Constructor_WithValidData_CreatesUserSuccessfully()
         {
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
 
-            Assert.Equal("Daniel", user.Name);
-            Assert.Equal("daniazevedo43", user.UserName);
-            Assert.Equal("d@gmail.com", user.Email);
+            Assert.Equal("Test", user.Name);
+            Assert.Equal("test", user.UserName);
+            Assert.Equal("test@gmail.com", user.Email);
         }
-
-        // Test user's name change
-        //[Fact]
-        //public void SetName_UpdatesNameSuccessfully()
-        //{
-        //    var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
-
-        //    user.SetName("Tiago");
-
-        //    Assert.Equal("Tiago", user.UserName);
-        //}
-
-        // Test email change
-        //[Fact]
-        //public void SetEmail_UpdatesEmailSuccessfully()
-        //{
-        //    var user = new User("Daniel", "d@gmail.com", "Abc123abc123!");
-
-        //    user.SetEmail("t@gmail.com");
-
-        //    Assert.Equal("t@gmail.com", user.Email);
-        //}
 
         // Test exception throwing when user is null or empty
         [Theory] 
@@ -46,7 +24,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyName_ThrowsException_WhenNameIsNullOrEmpty(string name)
         {
             var exception = Assert.Throws<ArgumentNullException>(() => 
-                new User(name, "daniazevedo43", "d@gmail.com", "Abc123abc123!")
+                new User(name, "test", "test@gmail.com", "Test123test123!")
             );
 
             Assert.Equal("Name can't be null or empty. (Parameter 'name')", exception.Message);
@@ -56,10 +34,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyName_ThrowsException_WhenNameIsTooLong()
         {
-            string name = new string('D', 256);
+            string name = new string('T', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() => 
-                new User(name, "daniazevedo43", "d@gmail.com", "Abc123abc123!")
+                new User(name, "test", "test@gmail.com", "Test123test123!")
             );
 
             Assert.Equal($"Name is too long. (Max length '255') (Actual length '{name.Length}') (Parameter 'name')", exception.Message);
@@ -73,7 +51,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyUsername_ThrowsException_WhenUsernameIsNullOrEmpty(string username)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new User("Daniel", username, "d@gmail.com", "Abc123abc123!")
+                new User("Test", username, "test@gmail.com", "Test123test123!")
             );
 
             Assert.Equal("Username can't be null or empty. (Parameter 'username')", exception.Message);
@@ -81,12 +59,12 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when username has blank spaces
         [Theory]
-        [InlineData("dani azevedo")]
-        [InlineData("dani azevedo 43")]
+        [InlineData("test test")]
+        [InlineData("test test 12")]
         public void VerifyUsername_ThrowsException_WhenUsernameHasBlankSpaces(string username)
         {
             var exception = Assert.Throws<SprintManagerInvalidUsernameException>(() =>
-                new User("Daniel", username, "d@gmail.com", "Abc123abc123!")
+                new User("Test", username, "test@gmail.com", "Test123test123!")
             );
 
             Assert.Equal("Username can't have blank spaces.", exception.Message);
@@ -96,10 +74,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyUsername_ThrowsException_WhenUsernameIsTooLong()
         {
-            string username = new string('d', 256);
+            string username = new string('t', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new User("Daniel", username, "d@gmail.com", "Abc123abc123!")
+                new User("Test", username, "test@gmail.com", "Test123test123!")
             );
 
             Assert.Equal($"UserName is too long. (Max length '255') (Actual length '{username.Length}') (Parameter 'username')", exception.Message);
@@ -113,7 +91,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyEmail_ThrowsException_WhenEmailIsNullEmpty(string email)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new User("Daniel", "daniazevedo43", email, "Abc123abc123!")
+                new User("Test", "test", email, "Test123test123!")
             );
 
             Assert.Equal("Email can't be null or empty. (Parameter 'email')", exception.Message);
@@ -123,10 +101,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyEmail_ThrowsException_WhenEmailIsTooLong()
         {
-            string email = new string('d', 256);
+            string email = new string('t', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new User("Daniel", "daniazevedo43", email, "Abc123abc123!")
+                new User("Test", "test", email, "Test123test123!")
             );
 
             Assert.Equal($"Email is too long. (Max length '255') (Actual length '{email.Length}') (Parameter 'email')", exception.Message);
@@ -140,7 +118,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyPassword_ThrowsException_WhenPasswordIsNullOrEmpty(string password)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
+                new User("Test", "test", "test@gmail.com", password)
             );
 
             Assert.Equal("Password can't be null or empty. (Parameter 'password')", exception.Message);
@@ -148,11 +126,11 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when password needs an uppercase letter
         [Theory]
-        [InlineData("abc123abc123!")]
+        [InlineData("test123test123!")]
         public void VerifyPassword_ThrowsException_WhenPasswordNeedsUppercaseLetter(string password)
         {
             var exception = Assert.Throws<SprintManagerPasswordRuleException>(() =>
-                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
+                new User("Test", "test", "test@gmail.com", password)
             );
 
             Assert.Equal($"Password needs to have at least one uppercase letter.", exception.Message);
@@ -160,11 +138,11 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when password needs a number
         [Theory]
-        [InlineData("Abcabcabcabc!")]
+        [InlineData("Testtestesttest!")]
         public void VerifyPassword_ThrowsException_WhenPasswordNeedsNumber(string password)
         {
             var exception = Assert.Throws<SprintManagerPasswordRuleException>(() =>
-                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
+                new User("Test", "test", "test@gmail.com", password)
             );
 
             Assert.Equal($"Password needs to have at least one number.", exception.Message);
@@ -172,11 +150,11 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when password needs a special character
         [Theory]
-        [InlineData("Abc123abc123a")]
+        [InlineData("Test123test123t")]
         public void VerifyPassword_ThrowsException_WhenPasswordNeedsSpecialCharacter(string password)
         {
             var exception = Assert.Throws<SprintManagerPasswordRuleException>(() =>
-                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
+                new User("Test", "test", "test@gmail.com", password)
             );
 
             Assert.Equal($"Password needs to have at least one special character.", exception.Message);
@@ -184,11 +162,11 @@ namespace SprintManager.Domain.Tests
 
         // Test exception throwing when password is too short
         [Theory]
-        [InlineData("Abc123!")]
+        [InlineData("Test123!")]
         public void VerifyPassword_ThrowsException_WhenPasswordIsTooShort(string password)
         {
             var exception = Assert.Throws<SprintManagerTooShortException>(() =>
-                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
+                new User("Test", "test", "test@gmail.com", password)
             );
 
             Assert.Equal($"Password is too short. (Min length '12') (Actual length '{password.Length}') (Parameter 'password')", exception.Message);
@@ -202,11 +180,11 @@ namespace SprintManager.Domain.Tests
 
             for (int i = 0; i < 65; i++)
             {
-                password += "Abc123!";
+                password += "Test123!";
             }
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new User("Daniel", "daniazevedo43", "d@gmail.com", password)
+                new User("Test", "test", "test@gmail.com", password)
             );
 
             Assert.Equal($"Password is too long. (Max length '64') (Actual length '{password.Length}') (Parameter 'password')", exception.Message);

@@ -67,10 +67,10 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new RegisterCommand
             {
-                Name = "Daniel",
-                UserName = "daniazevedo43",
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Name = "Test",
+                UserName = "test",
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
             var userDTO = new UserDTO
@@ -85,7 +85,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
             _mockUserManager.Setup(r => r.CreateAsync(It.IsAny<User>(), command.Password))
                 .Callback<User, string>((u, p) => u.Id = Guid.NewGuid());
-            _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>())).ReturnsAsync("token");
+            _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>())).ReturnsAsync("test_token");
             _mockEmailSender.Setup(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()));
 
             _mockMapper.Setup(m => m.Map<UserDTO>(It.IsAny<User>())).Returns(userDTO);
@@ -121,10 +121,10 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new RegisterCommand
             {
-                Name = "Daniel",
-                UserName = "daniazevedo43",
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Name = "Test",
+                UserName = "test",
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
             var user = new User(command.Name, command.UserName, command.Email, command.Password);
@@ -147,10 +147,10 @@ namespace SprintManager.Application.Tests.AuthTests
         {
             var command = new RegisterCommand
             {
-                Name = "Daniel",
-                UserName = "daniazevedo43",
-                Email = "d@gmail.com",
-                Password = "Abc123abc123!"
+                Name = "Test",
+                UserName = "test",
+                Email = "test@gmail.com",
+                Password = "Test123test123!"
             };
 
             var user = new User(command.Name, command.UserName, command.Email, command.Password);
