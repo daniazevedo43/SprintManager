@@ -39,7 +39,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                SprintName = "Sprint 1",
+                SprintName = "Test",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20)
             };
@@ -93,10 +93,10 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                SprintName = "Sprint 1",
+                SprintName = "Test",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
-                Description = "Project setup and authentication"
+                Description = "Test description"
             };
 
             var sprint = new Sprint(command.ProjectId, command.SprintName, command.StartDate, command.EndDate, command.Description);
@@ -149,7 +149,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                SprintName = "Sprint 1",
+                SprintName = "Test",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20)
             };
@@ -176,7 +176,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new CreateSprintCommand
             {
                 ProjectId = Guid.NewGuid(),
-                SprintName = "Sprint 1",
+                SprintName = "Test",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20)
             };

@@ -33,7 +33,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new UpdateSprintCommand
             {
                 Id = Guid.NewGuid(),
-                SprintName = "Sprint 1",
+                SprintName = "Test",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
                 Description = "Forum where users can share recipes",
@@ -85,7 +85,7 @@ namespace SprintManager.Application.Tests.SprintTests
             var command = new UpdateSprintCommand
             {
                 Id = Guid.NewGuid(),
-                SprintName = "Sprint 1",
+                SprintName = "Test",
                 StartDate = new DateTime(2025, 1, 6),
                 EndDate = new DateTime(2025, 1, 20),
                 Description = "Forum where users can share recipes",

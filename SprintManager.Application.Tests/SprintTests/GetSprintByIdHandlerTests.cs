@@ -34,7 +34,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 Id = Guid.NewGuid()
             };
 
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 6, 3), new DateTime(2025, 6, 4));
+            var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 6, 3), new DateTime(2025, 6, 4));
 
             var sprintDTO = new SprintDTO
             {

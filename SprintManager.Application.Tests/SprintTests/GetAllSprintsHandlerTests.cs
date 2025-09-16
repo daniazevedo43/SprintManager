@@ -32,8 +32,8 @@ namespace SprintManager.Application.Tests.SprintTests
 
             var sprints = new List<Sprint>()
             {
-                new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 6, 3), new DateTime(2025, 6, 4)),
-                new Sprint(Guid.NewGuid(), "Sprint 2", new DateTime(2025, 6, 5), new DateTime(2025, 6, 6)),
+                new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 6, 3), new DateTime(2025, 6, 4)),
+                new Sprint(Guid.NewGuid(), "Test sprint 2", new DateTime(2025, 6, 5), new DateTime(2025, 6, 6)),
             };
 
             var sprintsDTOs = new List<SprintDTO>()
