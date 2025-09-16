@@ -61,7 +61,7 @@ namespace SprintManager.Application.Tests.AuthTests
             );
         }
 
-        // Test handler - registration success
+        // Test handler
         [Fact]
         public async Task Handle_UserRegistration_ReturnsUserDTO()
         {
@@ -85,7 +85,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
             _mockUserManager.Setup(r => r.CreateAsync(It.IsAny<User>(), command.Password))
                 .Callback<User, string>((u, p) => u.Id = Guid.NewGuid());
-            _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()));
+            _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>())).ReturnsAsync("token");
             _mockEmailSender.Setup(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()));
 
             _mockMapper.Setup(m => m.Map<UserDTO>(It.IsAny<User>())).Returns(userDTO);
