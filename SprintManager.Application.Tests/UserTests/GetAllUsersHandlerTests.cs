@@ -32,8 +32,8 @@ namespace SprintManager.Application.Tests.UserTests
 
             var users = new List<User>
             {
-                new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!"),
-                new User("Hugo", "daniazevedo43", "h@gmail.com", "Def456def456!"),
+                new User("Test", "test", "test@gmail.com", "Test123test123!"),
+                new User("Test 2", "test2", "test@gmail.com", "Test456test456!"),
             };
 
             var usersDTOs = new List<UserDTO>
