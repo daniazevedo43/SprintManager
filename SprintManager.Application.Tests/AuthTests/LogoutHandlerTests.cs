@@ -52,7 +52,7 @@ namespace SprintManager.Application.Tests.AuthTests
         }
 
         [Fact]
-        public async Task VerifyUserId_ThrowException_WhenAuthenticatedUserIsNotFound()
+        public async Task VerifyUser_ThrowException_WhenAuthenticatedUserIsNotFound()
         {
             var command = new LogoutCommand();
 
