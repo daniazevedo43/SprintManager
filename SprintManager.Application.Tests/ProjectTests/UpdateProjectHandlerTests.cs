@@ -34,8 +34,8 @@ namespace SprintManager.Application.Tests.ProjectTests
             var command = new UpdateProjectCommand
             {
                 Id = Guid.NewGuid(),
-                Name = "Recipe Forum",
-                Description = "Forum where users can share recipes",
+                Name = "Test",
+                Description = "Test Description",
                 Status = ProjectStatus.Completed
             };
 
@@ -84,8 +84,8 @@ namespace SprintManager.Application.Tests.ProjectTests
             var command = new UpdateProjectCommand
             {
                 Id = Guid.NewGuid(),
-                Name = "Recipe Forum",
-                Description = "Forum where users can share recipes",
+                Name = "Test",
+                Description = "Test Description",
                 Status = ProjectStatus.Completed
             };
 
@@ -106,12 +106,12 @@ namespace SprintManager.Application.Tests.ProjectTests
         [Fact]
         public async Task VerifyProjectName_ThrowsException_WhenProjectNameAlreadyExists()
         {
-            var existingProject = new Project("Recipe Forum", "Forum where users can share recipes");
+            var existingProject = new Project("Test", "Test Description");
 
             var command = new UpdateProjectCommand
             {
                 Id = Guid.NewGuid(),
-                Name = "Recipe Forum 2",
+                Name = "Test",
                 Description = existingProject.Description,
                 Status = existingProject.Status
             };
