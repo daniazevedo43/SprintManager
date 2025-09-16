@@ -34,10 +34,10 @@ namespace SprintManager.Application.Tests.ImageTests
 
             var image = new Image(
                 Guid.NewGuid(), 
-                Guid.NewGuid(), 
-                "image/jpeg", 
+                Guid.NewGuid(),
+                "test_image/jpeg", 
                 "test_image.jpg", 
-                Path.Combine("images", "unique_test_file.jpg")
+                Path.Combine("test_path", "test_path_2.jpg")
             );
 
             _mockImageRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(image);
