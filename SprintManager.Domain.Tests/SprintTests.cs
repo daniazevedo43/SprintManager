@@ -11,11 +11,11 @@ namespace SprintManager.Domain.Tests
         public void Sprint_Constructor_WithoutDescription_CreatesSprintSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            var sprint = new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(projectId, "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
             Assert.Equal(projectId, sprint.ProjectId);
-            Assert.Equal("Sprint 1", sprint.SprintName);
+            Assert.Equal("Test sprint", sprint.SprintName);
             Assert.Equal(new DateTime(2025, 7, 7).ToUniversalTime(), sprint.StartDate);
             Assert.Equal(new DateTime(2025, 7, 21).ToUniversalTime(), sprint.EndDate);
             Assert.Null(sprint.Description);
@@ -27,14 +27,14 @@ namespace SprintManager.Domain.Tests
         public void Sprint_Constructor_WithDescription_CreatesSprintSuccessfully()
         {
             Guid projectId = Guid.NewGuid();
-            var sprint = new Sprint(projectId, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Description 1");
+            var sprint = new Sprint(projectId, "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Test description");
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
             Assert.Equal(projectId, sprint.ProjectId);
-            Assert.Equal("Sprint 1", sprint.SprintName);
+            Assert.Equal("Test sprint", sprint.SprintName);
             Assert.Equal(new DateTime(2025, 7, 7).ToUniversalTime(), sprint.StartDate);
             Assert.Equal(new DateTime(2025, 7, 21).ToUniversalTime(), sprint.EndDate);
-            Assert.Equal("Description 1", sprint.Description);
+            Assert.Equal("Test description", sprint.Description);
             Assert.Equal(SprintStatus.Active, sprint.Status);
         }
 
@@ -42,18 +42,18 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetSprintName_UpdatesNameSuccessfully()
         {
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
-            sprint.SetSprintName("Sprint 2");
+            sprint.SetSprintName("Test sprint 2");
 
-            Assert.Equal("Sprint 2", sprint.SprintName);
+            Assert.Equal("Test sprint 2", sprint.SprintName);
         }
 
         // Test start date and end date change
         [Fact]
         public void SetStartDate_UpdatesStartDateSuccessfully()
         {
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             sprint.SetDates(new DateTime(2025, 7, 8), new DateTime(2025, 7, 22));
 
@@ -65,18 +65,18 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetDescription_UpdatesDescriptionSuccessfully()
         {
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Description 1");
+            var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Test description");
 
-            sprint.SetDescription("Description 2");
+            sprint.SetDescription("Test description 2");
 
-            Assert.Equal("Description 2", sprint.Description);
+            Assert.Equal("Test description 2", sprint.Description);
         }
 
         // Test status change
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
+            var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             sprint.SetStatus(SprintStatus.Active);
 
@@ -88,7 +88,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Sprint(Guid.Empty, "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
+                new Sprint(Guid.Empty, "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
             );
 
             Assert.Equal("Project ID can't be null or empty. (Parameter 'projectId')", exception.Message);
@@ -126,7 +126,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyStartDate_ThrowsException_WhenStartDateIsHigherThanEndDate()
         {
             var exception = Assert.Throws<SprintManagerInvalidDateRangeException>(() =>
-                new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 22), new DateTime(2025, 7, 21))
+                new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 22), new DateTime(2025, 7, 21))
             );
 
             Assert.Equal($"Start date {new DateTime(2025, 7, 22).ToString("dd/MM/yyyy")} is higher than end date {new DateTime(2025, 7, 21).ToString("dd/MM/yyyy")}", exception.Message);
@@ -139,7 +139,7 @@ namespace SprintManager.Domain.Tests
             string description = new string('D', 501);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new Sprint(Guid.NewGuid(), "Sprint 1", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), description)
+                new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), description)
             );
 
             Assert.Equal($"Description is too long. (Max length '500') (Actual length '{description.Length}') (Parameter 'description')", exception.Message);

@@ -10,10 +10,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Project_Constructor_WithoutDescription_CreatesProjectSuccessfully()
         {
-            var project = new Project("Project 1");
+            var project = new Project("Test project");
 
             Assert.NotEqual(Guid.Empty, project.Id);
-            Assert.Equal("Project 1", project.Name); 
+            Assert.Equal("Test project", project.Name); 
             Assert.Null(project.Description);
             Assert.Equal(ProjectStatus.Active, project.Status);
         }
@@ -22,11 +22,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Project_Constructor_WithDescription_CreatesProjectSuccessfully()
         {
-            var project = new Project("Project 1", "Description 1");
+            var project = new Project("Test project", "Test description");
 
             Assert.NotEqual(Guid.Empty, project.Id);
-            Assert.Equal("Project 1", project.Name);
-            Assert.Equal("Description 1", project.Description);
+            Assert.Equal("Test project", project.Name);
+            Assert.Equal("Test description", project.Description);
             Assert.Equal(ProjectStatus.Active, project.Status);
         }
 
@@ -34,29 +34,29 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetName_UpdatesNameSuccessfully()
         {
-            var project = new Project("Project 1");
+            var project = new Project("Test project");
 
-            project.SetName("Project 2");
+            project.SetName("Test project 2");
 
-            Assert.Equal("Project 2", project.Name);
+            Assert.Equal("Test project 2", project.Name);
         }
 
         // Test description change
         [Fact]
         public void SetDescription_UpdatesDescriptionSuccessfully()
         {
-            var project = new Project("Project 1", "Description 1");
+            var project = new Project("Test project", "Test description");
 
-            project.SetDescription("Description 2");
+            project.SetDescription("Test description 2");
 
-            Assert.Equal("Description 2", project.Description);
+            Assert.Equal("Test description 2", project.Description);
         }
 
         // Test status change
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            var project = new Project("Project 1");
+            var project = new Project("Test project 1");
 
             project.SetStatus(ProjectStatus.Completed);
 
