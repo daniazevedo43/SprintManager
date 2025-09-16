@@ -50,7 +50,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _handler = new ResetPasswordHandler(_mockUserManager.Object);
         }
 
-        // Test handler - reset password with success
+        // Test handler
         [Fact]
         public async Task Handle_ResetPassword()
         {
