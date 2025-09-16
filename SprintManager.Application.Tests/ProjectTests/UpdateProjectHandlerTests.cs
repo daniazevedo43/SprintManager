@@ -111,7 +111,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             var command = new UpdateProjectCommand
             {
                 Id = Guid.NewGuid(),
-                Name = "Test",
+                Name = "Test 2",
                 Description = existingProject.Description,
                 Status = existingProject.Status
             };
