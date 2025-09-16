@@ -4,17 +4,18 @@ using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Handlers.Auth;
+using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
-using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.AuthTests
 {
-    public class ResetPasswordHandlerTests
+    public class ResendConfirmEmailHandlerTests
     {
         private readonly Mock<UserManager<User>> _mockUserManager;
-        private readonly ResetPasswordHandler _handler;
+        private readonly Mock<IEmailSender> _mockEmailSender;
+        private readonly ResendConfirmationEmailHandler _handler;
 
-        public ResetPasswordHandlerTests()
+        public ResendConfirmEmailHandlerTests()
         {
             // Create mocks for UserManager constructor's dependencies
             var mockUserStore = new Mock<IUserStore<User>>();
@@ -45,57 +46,40 @@ namespace SprintManager.Application.Tests.AuthTests
                 mockServiceProvider.Object,
                 mockLogger.Object
             );
+            _mockEmailSender = new Mock<IEmailSender>();
 
             // Initialize handler injecting the mocks
-            _handler = new ResetPasswordHandler(_mockUserManager.Object);
+            _handler = new ResendConfirmationEmailHandler(
+                _mockUserManager.Object,
+                _mockEmailSender.Object
+            );
         }
 
         // Test handler
         [Fact]
-        public async Task Handle_ResetPassword()
+        public async Task Handle_ResendConfirmationEmail()
         {
-            var command = new ResetPasswordCommand
+            var command = new ResendConfirmationEmailCommand
             {
-                Email = "d@gmail.com",
-                Token = "token",
-                NewPassword = "Def456def456!"
+                Email = "d@gmail.com"
             };
 
-            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", "Abc123abc123!");
+            var user = new User("Daniel", "daniazevedo43", command.Email, "Abc123abc123!");
 
             _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email)).ReturnsAsync(user);
-            _mockUserManager.Setup(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword)).ReturnsAsync(IdentityResult.Success);
+            _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(user));
+            _mockEmailSender.Setup(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()));
 
             await _handler.Handle(command, CancellationToken.None);
 
             // Ensure FindByEmailAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email), Times.Once);
 
-            // Ensure ResetPasswordAsync was called exactly once.
-            _mockUserManager.Verify(r => r.ResetPasswordAsync(user, command.Token, command.NewPassword), Times.Once);
-        }
+            // Ensure GenerateEmailConfirmationTokenAsync was called exactly once.
+            _mockUserManager.Verify(r => r.GenerateEmailConfirmationTokenAsync(user), Times.Once);
 
-        // Test exception throwing when a user is not found
-        [Fact]
-        public async Task VerifyUser_ThrowsException_WhenUserIsNotFound()
-        {
-            var command = new ResetPasswordCommand
-            {
-                Email = "d@gmail.com",
-                Token = "token",
-                NewPassword = "Def456def456!"
-            };
-
-            _mockUserManager.Setup(r => r.FindByEmailAsync(command.Email));
-
-            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
-                () => _handler.Handle(command, CancellationToken.None)
-            );
-
-            Assert.Equal($"User not found.", exception.Message);
-
-            // Ensure FindByEmailAsync was called exactly once.
-            _mockUserManager.Verify(r => r.FindByEmailAsync(command.Email.ToString()), Times.Once);
+            // Ensure SendEmailAsync was called exactly once.
+            _mockEmailSender.Verify(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()), Times.Once);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace SprintManager.Application.Tests.AuthTests
 
         // Test handler - login success
         [Fact]
-        public async Task Handle_UserLogin_ReturnsToken()
+        public async Task Handle_UserLogin_ReturnsTokens()
         {
             var command = new LoginCommand
             {

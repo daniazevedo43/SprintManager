@@ -49,7 +49,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _handler = new ConfirmEmailHandler(_mockUserManager.Object);
         }
 
-        // Test handler - email confirmed with success
+        // Test handler
         [Fact]
         public async Task Handle_ConfirmsUserEmail()
         {

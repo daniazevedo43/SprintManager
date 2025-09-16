@@ -83,6 +83,15 @@ namespace SprintManager.API.Controllers
             return Ok("Email confirmed with success!");
         }
 
+        [HttpPost("resend-confirmation-email")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ResendConfirmationEmail(ResendConfirmationEmailCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
         [HttpPost("forgot-password")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command)

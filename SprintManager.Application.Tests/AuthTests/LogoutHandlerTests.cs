@@ -23,7 +23,7 @@ namespace SprintManager.Application.Tests.AuthTests
             );
         }
 
-        // Test handler - logout success
+        // Test handler
         [Fact]
         public async Task Handle_UserLogout_DeletesAllRefreshTokens()
         {

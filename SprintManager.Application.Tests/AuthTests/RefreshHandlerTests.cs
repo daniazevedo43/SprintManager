@@ -60,7 +60,7 @@ namespace SprintManager.Application.Tests.AuthTests
             );
         }
 
-        // Test handler - refresh success
+        // Test handler
         [Fact]
         public async Task Handle_Refresh_ReturnsNewAccessAndRefreshToken()
         {
