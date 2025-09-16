@@ -8,6 +8,7 @@ using SprintManager.Application.Handlers.Auth;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
+using SprintManager.Exceptions.ExceptionsBase;
 using System.Security.Claims;
 
 namespace SprintManager.Application.Tests.AuthTests
@@ -131,6 +132,95 @@ namespace SprintManager.Application.Tests.AuthTests
 
             // Ensure DeleteAsync was called exactly once.
             _mockUserManager.Verify(r => r.DeleteAsync(user), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyUser_ThrowException_WhenAuthenticatedUserIsNotFound()
+        {
+            var command = new DeleteAccountCommand
+            {
+                Password = "Abc123abc123!",
+            };
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier));
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User not authenticated.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyUser_ThrowException_WhenUserWasNotFound()
+        {
+            var command = new DeleteAccountCommand
+            {
+                Password = "Abc123abc123!",
+            };
+
+            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", command.Password);
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+            _mockUserManager.Setup(m => m.FindByIdAsync(user.Id.ToString()));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(m => m.FindByIdAsync(user.Id.ToString()), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyPassword_ThrowException_WhenPasswordIsInvalid()
+        {
+            var command = new DeleteAccountCommand
+            {
+                Password = "Abc123abc123!",
+            };
+
+            var user = new User("Daniel", "daniazevedo43", "d@gmail.com", command.Password);
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+            _mockUserManager.Setup(m => m.FindByIdAsync(user.Id.ToString())).ReturnsAsync(user);
+            _mockUserManager.Setup(m => m.CheckPasswordAsync(user, command.Password)).ReturnsAsync(false);
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Invalid password.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(m => m.FindByIdAsync(user.Id.ToString()), Times.Once);
+
+            // Ensure CheckPasswordAsync was called exactly once.
+            _mockUserManager.Verify(m => m.CheckPasswordAsync(user, command.Password), Times.Once);
         }
     }
 }
