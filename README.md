@@ -22,6 +22,7 @@ The API revolves around the following key domain entities:
 * **WorkItems:** Represents a functionality that needs to be implemented in a project.
 * **Comments:** Represents comments left by users in work items.
 * **Images:** Represents images attached by users in work items.
+* **RefreshTokens:** Represents the refresh tokens created for the authenticated users.
 
 ## Endpoints
 
