@@ -15,14 +15,14 @@ An api focused on organizing and tracking tasks. It provides a solid foundation 
 
 The API revolves around the following key domain entities:
 
-* **Users:** Represents the users who access and manage tasks.
-* **Projects:** Represents the different projects where tasks will be organized.
-* **ProjectMembers:** Defines which users belong to which projects and their roles.
-* **Sprints:** Organizes tasks into work cycles.
-* **WorkItems:** Represents a functionality that needs to be implemented in a project.
-* **Comments:** Represents comments left by users in work items.
-* **Images:** Represents images attached by users in work items.
-* **RefreshTokens:** Represents the refresh tokens created for the authenticated users.
+* **User:** Represents the users who access and manage tasks.
+* **Project:** Represents the different projects where tasks will be organized.
+* **ProjectMember:** Defines which users belong to which projects and their roles.
+* **Sprint:** Organizes tasks into work cycles.
+* **WorkItem:** Represents a functionality that needs to be implemented in a project.
+* **Comment:** Represents comments left by users in work items.
+* **Image:** Represents images attached by users in work items.
+* **RefreshToken:** Represents the refresh tokens created for the authenticated users.
 
 ## Endpoints
 
