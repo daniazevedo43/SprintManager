@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using SprintManager.Application.Commands.Auth;
 using SprintManager.Application.Commands.Comments;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.Comments;
