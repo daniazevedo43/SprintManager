@@ -88,6 +88,7 @@ namespace SprintManager.Application.Tests.UserTests
             };
 
             var mockUsers = users.BuildMock();
+            
             _mockUserManager.Setup(m => m.Users).Returns(mockUsers);
 
             // Mapper's Mock configuration
