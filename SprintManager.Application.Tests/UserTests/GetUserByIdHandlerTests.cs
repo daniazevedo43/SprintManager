@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Handlers.Users;
-using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Users;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
@@ -11,18 +13,48 @@ namespace SprintManager.Application.Tests.UserTests
 {
     public class GetUserByIdHandlerTests
     {
-        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<UserManager<User>> _mockUserManager;
         private readonly Mock<IMapper> _mockMapper;
         private readonly GetUserByIdHandler _handler;
 
         public GetUserByIdHandlerTests()
         {
-            // Initialize mocks for each test
-            _mockUserRepository = new Mock<IUserRepository>();
+            // Create mocks for UserManager constructor's dependencies
+            var mockUserStore = new Mock<IUserStore<User>>();
+            var mockOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockPasswordHasher = new Mock<IPasswordHasher<User>>();
+            var mockUserValidator = new List<IUserValidator<User>>
+            {
+                new Mock<IUserValidator<User>>().Object
+            };
+            var mockPasswordValidator = new List<IPasswordValidator<User>>
+            {
+                new Mock<IPasswordValidator<User>>().Object
+            };
+            var mockLookupNormalizer = new Mock<ILookupNormalizer>();
+            var mockErrors = new Mock<IdentityErrorDescriber>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockLogger = new Mock<ILogger<UserManager<User>>>();
+
+            // Initialize mock for each test
+            _mockUserManager = new Mock<UserManager<User>>(
+                mockUserStore.Object,
+                mockOptions.Object,
+                mockPasswordHasher.Object,
+                mockUserValidator,
+                mockPasswordValidator,
+                mockLookupNormalizer.Object,
+                mockErrors.Object,
+                mockServiceProvider.Object,
+                mockLogger.Object
+            );
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
-            _handler = new GetUserByIdHandler(_mockUserRepository.Object, _mockMapper.Object);
+            _handler = new GetUserByIdHandler(
+                _mockUserManager.Object, 
+                _mockMapper.Object
+            );
         }
 
         // Test handler
@@ -43,8 +75,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Email = user.Email 
             };
 
-            // Repository's Mock configuration
-            _mockUserRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(user);
+            _mockUserManager.Setup(r => r.FindByIdAsync(query.Id.ToString())).ReturnsAsync(user);
 
             // Mapper's Mock configuration
             _mockMapper.Setup(m => m.Map<UserDTO>(user)).Returns(userDTO);
@@ -56,8 +87,8 @@ namespace SprintManager.Application.Tests.UserTests
             Assert.Equal(userDTO.UserName, result.UserName);
             Assert.Equal(userDTO.Email, result.Email);
 
-            // Ensure GetByIdAsync was called exactly once with the correct ID.
-            _mockUserRepository.Verify(r => r.GetByIdAsync(query.Id), Times.Once);
+            // Ensure FindByIdAsync was called exactly once with the correct ID.
+            _mockUserManager.Verify(m => m.FindByIdAsync(query.Id.ToString()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created user.
             _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
@@ -72,8 +103,7 @@ namespace SprintManager.Application.Tests.UserTests
                 Id = Guid.NewGuid(),
             };
 
-            // Repository's Mock configuration
-            _mockUserRepository.Setup(r => r.GetByIdAsync(query.Id));
+            _mockUserManager.Setup(m => m.FindByIdAsync(query.Id.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(query, CancellationToken.None)
@@ -81,8 +111,8 @@ namespace SprintManager.Application.Tests.UserTests
 
             Assert.Equal($"User with ID {query.Id} not found", exception.Message);
 
-            // Ensure GetByIdAsync was called exactly once.
-            _mockUserRepository.Verify(r => r.GetByIdAsync(query.Id), Times.Once);
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(m => m.FindByIdAsync(query.Id.ToString()), Times.Once);
         }
     }
 }
