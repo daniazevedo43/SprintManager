@@ -55,7 +55,6 @@ namespace SprintManager.Application.Tests.CommentTests
                 CreationDate = comment.CreationDate
             };
 
-            // Repository's Mock configuration
             _mockHttpContextAccessor
                 .Setup(a => a.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier))
@@ -141,6 +140,40 @@ namespace SprintManager.Application.Tests.CommentTests
             );
 
             Assert.Equal($"Comment with ID {command?.Id} not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockCommentRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
+        }
+
+        // Test exception throwing when comment was not made by authenticated user
+        [Fact]
+        public async Task VerifyComment_ThrowsException_WhenCommentWasNotMadeByAuthenticatedUser()
+        {
+            var command = new UpdateCommentCommand
+            {
+                Id = Guid.NewGuid(),
+                Text = "Test comment"
+            };
+
+            var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), command.Text);
+
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()));
+
+            _mockCommentRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(comment);
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"You can't update comments made by other users.", exception.Message);
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
