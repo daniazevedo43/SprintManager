@@ -51,6 +51,7 @@ namespace SprintManager.Application.Tests.AuthTests
                 .Verify(r => r.DeleteAllByUserIdAsync(userId), Times.Once);
         }
 
+        // Test exception throwing when user is not authenticated
         [Fact]
         public async Task VerifyUser_ThrowException_WhenAuthenticatedUserIsNotFound()
         {
