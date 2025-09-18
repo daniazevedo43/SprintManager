@@ -183,7 +183,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             // Repository's Mock configuration
             _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
-            _mockUserManager.Setup(r => r.FindByIdAsync(command.UserId.ToString()));
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -196,7 +196,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
-            _mockUserManager.Verify(r => r.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
         }
     }
 }
