@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.Commands.ProjectMembers;
 using SprintManager.Application.DTOs;
@@ -15,23 +18,50 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
     {
         private readonly Mock<IProjectMemberRepository> _mockProjectMemberRepository;
         private readonly Mock<IProjectRepository> _mockProjectRepository;
-        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<UserManager<User>> _mockUserManager;
         private readonly Mock<IMapper> _mockMapper;
         private readonly AddProjectMemberHandler _handler;
 
         public AddProjectMemberHandlerTests()
         {
+            // Create mocks for UserManager constructor's dependencies
+            var mockUserStore = new Mock<IUserStore<User>>();
+            var mockOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockPasswordHasher = new Mock<IPasswordHasher<User>>();
+            var mockUserValidator = new List<IUserValidator<User>>
+            {
+                new Mock<IUserValidator<User>>().Object
+            };
+            var mockPasswordValidator = new List<IPasswordValidator<User>>
+            {
+                new Mock<IPasswordValidator<User>>().Object
+            };
+            var mockLookupNormalizer = new Mock<ILookupNormalizer>();
+            var mockErrors = new Mock<IdentityErrorDescriber>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockLogger = new Mock<ILogger<UserManager<User>>>();
+
             // Initialize mocks for each test
             _mockProjectMemberRepository = new Mock<IProjectMemberRepository>();
             _mockProjectRepository = new Mock<IProjectRepository>();
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserManager = new Mock<UserManager<User>>(
+                mockUserStore.Object,
+                mockOptions.Object,
+                mockPasswordHasher.Object,
+                mockUserValidator,
+                mockPasswordValidator,
+                mockLookupNormalizer.Object,
+                mockErrors.Object,
+                mockServiceProvider.Object,
+                mockLogger.Object
+            );
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
             _handler = new AddProjectMemberHandler(
                 _mockProjectMemberRepository.Object,
                 _mockProjectRepository.Object,
-                _mockUserRepository.Object,
+                _mockUserManager.Object,
                 _mockMapper.Object
             );
         }
@@ -59,7 +89,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             // Repository's Mock configuration
             _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(new User());
             _mockProjectMemberRepository.Setup(r => r.AddAsync(It.IsAny<ProjectMember>())).Callback<ProjectMember>(pm => projectMember = pm);
 
             // Mapper's Mock configuration
@@ -74,7 +104,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
            
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
             _mockProjectMemberRepository.Verify(r => r.AddAsync(projectMember), Times.Once);
 
             // Ensure the mapper's Map was called exactly once.
@@ -153,7 +183,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             // Repository's Mock configuration
             _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId));
+            _mockUserManager.Setup(r => r.FindByIdAsync(command.UserId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -166,7 +196,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+            _mockUserManager.Verify(r => r.FindByIdAsync(command.UserId.ToString()), Times.Once);
         }
     }
 }
