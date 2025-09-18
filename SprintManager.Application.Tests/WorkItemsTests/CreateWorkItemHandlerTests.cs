@@ -93,7 +93,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
@@ -114,7 +114,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
            
             // Ensure AddAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.AddAsync(It.IsAny<WorkItem>()), Times.Once);
@@ -170,7 +170,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
@@ -196,7 +196,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.AddAsync(workItem), Times.Once);
@@ -271,7 +271,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()));
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -284,7 +284,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
         }
     }
 }
