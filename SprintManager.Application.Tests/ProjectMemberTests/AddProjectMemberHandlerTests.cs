@@ -86,7 +86,6 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
                 Role = projectMember.Role,
             };
 
-            // Repository's Mock configuration
             _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(new User());
@@ -180,7 +179,6 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
             var projectMember = new ProjectMember(command.ProjectId, command.UserId, command.Role);
 
-            // Repository's Mock configuration
             _mockProjectMemberRepository.Setup(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId));
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()));
