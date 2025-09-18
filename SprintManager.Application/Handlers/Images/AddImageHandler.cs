@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.Images;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
@@ -12,7 +13,7 @@ namespace SprintManager.Application.Handlers.Images
     {
         private readonly IImageRepository _imageRepository;
         private readonly IWorkItemRepository _workItemRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IFileStorageService _fileStorageService;
         private readonly IMapper _mapper;
         private readonly string[] AllowedExtensions = { ".png", ".jpg", ".jpeg" };
@@ -20,14 +21,14 @@ namespace SprintManager.Application.Handlers.Images
         public AddImageHandler(
             IImageRepository imageRepository,
             IWorkItemRepository workItemRepository,
-            IUserRepository userRepository,
+            UserManager<User> userManager,
             IFileStorageService fileStorageService, 
             IMapper mapper
         ) 
         { 
             _imageRepository = imageRepository;
             _workItemRepository = workItemRepository;
-            _userRepository = userRepository;
+            _userManager = userManager;
             _fileStorageService = fileStorageService;
             _mapper = mapper;
         }
@@ -38,7 +39,7 @@ namespace SprintManager.Application.Handlers.Images
                 throw new SprintManagerFileNotAllowedException($"File extension not allowed. Please upload a file with the following extensions: {string.Join(", ", AllowedExtensions)}.");
 
             var workItem = await _workItemRepository.GetByIdAsync(request.WorkItemId);
-            var user = await _userRepository.GetByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
             if (!string.IsNullOrWhiteSpace(request.WorkItemId.ToString()) && workItem == null)
                 throw new SprintManagerNotFoundException($"Work item with ID {request.WorkItemId} not found.");

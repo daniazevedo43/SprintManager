@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.ProjectMembers;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Exceptions;
@@ -13,19 +14,19 @@ namespace SprintManager.Application.Handlers.ProjectMembers
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IProjectRepository _projectRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
         public AddProjectMemberHandler(
             IProjectMemberRepository projectMemberRepository,
             IProjectRepository projectRepository,
-            IUserRepository userRepository,
+            UserManager<User> userManager,
             IMapper mapper
         ) 
         {
             _projectMemberRepository = projectMemberRepository;
             _projectRepository = projectRepository;
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -36,7 +37,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             if (existingProjectMember != null) throw new SprintManagerConflictException($"A user with ID {request.UserId} is already assigned to a project with ID {request.ProjectId}.");
 
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
-            var user = await _userRepository.GetByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
             if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found.");
             if (user == null) throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");

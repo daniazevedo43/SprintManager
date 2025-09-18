@@ -1,26 +1,27 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.DTOs;
-using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Users;
+using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Users
 {
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDTO>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public GetUserByIdHandler(IUserRepository userRepository, IMapper mapper) 
+        public GetUserByIdHandler(UserManager<User> userManager, IMapper mapper) 
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         public async Task<UserDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
+            var user = await _userManager.FindByIdAsync(request.Id.ToString());
 
             if (user == null) throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
 

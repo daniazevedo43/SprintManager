@@ -1,25 +1,27 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SprintManager.Application.DTOs;
-using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Users;
+using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Handlers.Users
 {
     public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, List<UserDTO>>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public GetAllUsersHandler(IUserRepository userRepository, IMapper mapper)
+        public GetAllUsersHandler(UserManager<User> userManager, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         public async Task<List<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAllAsync();
+            var users = await _userManager.Users.ToListAsync(cancellationToken);
 
             return _mapper.Map<List<UserDTO>>(users);
         }

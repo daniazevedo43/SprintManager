@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
+using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.WorkItems
@@ -11,26 +13,26 @@ namespace SprintManager.Application.Handlers.WorkItems
     {
         private readonly IWorkItemRepository _workItemRepository;
         private readonly ISprintRepository _sprintRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
         public UpdateWorkItemHandler(
             IWorkItemRepository workItemRepository,
             ISprintRepository sprintRepository,
-            IUserRepository userRepository,
+            UserManager<User> userManager,
             IMapper mapper
         )
         {
             _workItemRepository = workItemRepository;
             _sprintRepository = sprintRepository;
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         public async Task<WorkItemDTO> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var user = await _userRepository.GetByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString()!);
 
             if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprint == null)
                 throw new SprintManagerNotFoundException($"Sprint with ID {request.SprintId} not found.");

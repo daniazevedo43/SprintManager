@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
@@ -14,23 +17,50 @@ namespace SprintManager.Application.Tests.WorkItemsTests
     {
         private readonly Mock<IWorkItemRepository> _mockWorkItemRepository;
         private readonly Mock<ISprintRepository> _mockSprintRepository;
-        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<UserManager<User>> _mockUserManager;
         private readonly Mock<IMapper> _mockMapper;
         private readonly UpdateWorkItemHandler _handler;
 
         public UpdateWorkItemHandlerTests()
         {
+            // Create mocks for UserManager constructor's dependencies
+            var mockUserStore = new Mock<IUserStore<User>>();
+            var mockOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockPasswordHasher = new Mock<IPasswordHasher<User>>();
+            var mockUserValidator = new List<IUserValidator<User>>
+            {
+                new Mock<IUserValidator<User>>().Object
+            };
+            var mockPasswordValidator = new List<IPasswordValidator<User>>
+            {
+                new Mock<IPasswordValidator<User>>().Object
+            };
+            var mockLookupNormalizer = new Mock<ILookupNormalizer>();
+            var mockErrors = new Mock<IdentityErrorDescriber>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockLogger = new Mock<ILogger<UserManager<User>>>();
+
             // Initialize mocks for each test
             _mockWorkItemRepository = new Mock<IWorkItemRepository>();
             _mockSprintRepository = new Mock<ISprintRepository>();
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserManager = new Mock<UserManager<User>>(
+                mockUserStore.Object,
+                mockOptions.Object,
+                mockPasswordHasher.Object,
+                mockUserValidator,
+                mockPasswordValidator,
+                mockLookupNormalizer.Object,
+                mockErrors.Object,
+                mockServiceProvider.Object,
+                mockLogger.Object
+            );
             _mockMapper = new Mock<IMapper>();
 
             // Initialize handler injecting the mocks
             _handler = new UpdateWorkItemHandler(
                 _mockWorkItemRepository.Object,
                 _mockSprintRepository.Object,
-                _mockUserRepository.Object,
+                _mockUserManager.Object,
                 _mockMapper.Object
             );
         }
@@ -76,9 +106,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = workItem.HoursEstimate,
             };
 
-            // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(workItem);
             _mockWorkItemRepository.Setup(r => r.UpdateAsync(workItem));
 
@@ -100,15 +129,10 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.CompletionDate, result.CompletionDate);
             Assert.Equal(workItemDTO.HoursEstimate, result.HoursEstimate);
 
-            // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
-
-            // Ensure UpdateAsync was called exactly once with the modified work item.
             _mockWorkItemRepository.Verify(r => r.UpdateAsync(workItem), Times.Once);
-
-            // Ensure the mapper's Map was called exactly once with the modified work item.
             _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
         }
 
@@ -130,7 +154,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = 6
             };
 
-            // Repositories mock configuration
+            // Repository's mock configuration
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
@@ -161,9 +185,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = 6
             };
 
-            // Repositories mock configuration
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId));
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -173,7 +196,9 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
             // Ensure GetByIdAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
         }
 
         // Test exception throwing when work item is not found
@@ -194,9 +219,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = 6
             };
 
-            // Repositories mock configuration
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.Id));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
@@ -205,9 +229,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
             Assert.Equal($"Work item with ID {command.Id} not found.", exception.Message);
 
-            // Ensure GetByIdAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }

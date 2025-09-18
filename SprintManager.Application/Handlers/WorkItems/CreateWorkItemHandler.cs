@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
@@ -13,21 +14,21 @@ namespace SprintManager.Application.Handlers.WorkItems
         private readonly IWorkItemRepository _workItemRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly ISprintRepository _sprintRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
         public CreateWorkItemHandler(
             IWorkItemRepository workItemRepository,
             IProjectRepository projectRepository,
             ISprintRepository sprintRepository,
-            IUserRepository userRepository,
+            UserManager<User> userManager,
             IMapper mapper
         )
         {
             _workItemRepository = workItemRepository;
             _projectRepository = projectRepository;
             _sprintRepository = sprintRepository;
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -35,7 +36,7 @@ namespace SprintManager.Application.Handlers.WorkItems
         {
             var projectId = await _projectRepository.GetByIdAsync(request.ProjectId);
             var sprintId = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var userId = await _userRepository.GetByIdAsync(request.UserId);
+            var userId = await _userManager.FindByIdAsync(request.UserId.ToString()!);
 
             if (!string.IsNullOrWhiteSpace(request.ProjectId.ToString()) && projectId == null)
                 throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found.");
