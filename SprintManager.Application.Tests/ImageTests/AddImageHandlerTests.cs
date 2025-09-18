@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using SprintManager.Application.Commands.Images;
 using SprintManager.Application.DTOs;
@@ -14,7 +17,7 @@ namespace SprintManager.Application.Tests.ImageTests
     {
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<IWorkItemRepository> _mockWorkItemRepository;
-        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<UserManager<User>> _mockUserManager;
         private readonly Mock<IFileStorageService> _mockFileStorageService;
         private readonly Mock<IFormFile> _mockFile;
         private readonly Mock<IMapper> _mockMapper;
@@ -22,10 +25,37 @@ namespace SprintManager.Application.Tests.ImageTests
 
         public AddImageHandlerTests()
         {
+            // Create mocks for UserManager constructor's dependencies
+            var mockUserStore = new Mock<IUserStore<User>>();
+            var mockOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockPasswordHasher = new Mock<IPasswordHasher<User>>();
+            var mockUserValidator = new List<IUserValidator<User>>
+            {
+                new Mock<IUserValidator<User>>().Object
+            };
+            var mockPasswordValidator = new List<IPasswordValidator<User>>
+            {
+                new Mock<IPasswordValidator<User>>().Object
+            };
+            var mockLookupNormalizer = new Mock<ILookupNormalizer>();
+            var mockErrors = new Mock<IdentityErrorDescriber>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockLogger = new Mock<ILogger<UserManager<User>>>();
+
             // Initialize mocks for each test
             _mockImageRepository = new Mock<IImageRepository>();
             _mockWorkItemRepository = new Mock<IWorkItemRepository>();
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserManager = new Mock<UserManager<User>>(
+                mockUserStore.Object,
+                mockOptions.Object,
+                mockPasswordHasher.Object,
+                mockUserValidator,
+                mockPasswordValidator,
+                mockLookupNormalizer.Object,
+                mockErrors.Object,
+                mockServiceProvider.Object,
+                mockLogger.Object
+            );
             _mockFileStorageService = new Mock<IFileStorageService>();
             _mockFile = new Mock<IFormFile>();
             _mockMapper = new Mock<IMapper>();
@@ -34,7 +64,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _handler = new AddImageHandler(
                 _mockImageRepository.Object, 
                 _mockWorkItemRepository.Object,
-                _mockUserRepository.Object,
+                _mockUserManager.Object,
                 _mockFileStorageService.Object, 
                 _mockMapper.Object
              );
@@ -74,7 +104,7 @@ namespace SprintManager.Application.Tests.ImageTests
             };
 
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(new User());
             _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
 
@@ -92,7 +122,7 @@ namespace SprintManager.Application.Tests.ImageTests
             Assert.Equal(imageDTO.AttachmentDate, result.AttachmentDate);
 
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
             _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
 
@@ -158,9 +188,8 @@ namespace SprintManager.Application.Tests.ImageTests
                 Image = _mockFile.Object,
             };
 
-            // Repositories mock configuration
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
-            _mockUserRepository.Setup(r => r.GetByIdAsync(command.UserId));
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -170,7 +199,9 @@ namespace SprintManager.Application.Tests.ImageTests
 
             // Ensure GetByIdAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
-            _mockUserRepository.Verify(r => r.GetByIdAsync(command.UserId), Times.Once);
+
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
         }
     }
 }
