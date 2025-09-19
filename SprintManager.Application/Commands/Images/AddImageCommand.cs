@@ -11,9 +11,6 @@ namespace SprintManager.Application.Commands.Images
         public Guid WorkItemId { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
-
-        [Required]
         public IFormFile Image {  get; set; }
     }
 }
