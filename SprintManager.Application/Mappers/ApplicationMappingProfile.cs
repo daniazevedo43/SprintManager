@@ -20,8 +20,10 @@ namespace SprintManager.Application.Mappers
             CreateMap<WorkItem, WorkItemDTO>()
                 // Maps Sprint.SprintName to WorkItem.SprintName in DTO, with null verification
                 .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null))
-                // Maps User.UserName to WorkItem.UserName in DTO, with null verification
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
+                // Maps AssignedUser.UserName to WorkItem.UserName in DTO, with null verification
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.AssignedUser != null ? src.AssignedUser.UserName : null))
+                // Maps CreatorUser.UserName to WorkItem.UserName in DTO, with null verification
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.CreatorUser != null ? src.CreatorUser.UserName : null));
             CreateMap<Comment, CommentDTO>()
                 // Maps WorkItem.WorkItemTitle to Comment.WorkItemTitle in DTO, with null verification
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null))
