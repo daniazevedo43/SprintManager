@@ -27,6 +27,20 @@ namespace SprintManager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -106,7 +120,8 @@ namespace SprintManager.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SprintId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AssignedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     WorkItemTitle = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     WorkItemType = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -132,8 +147,13 @@ namespace SprintManager.Infrastructure.Migrations
                         principalTable: "Sprints",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_WorkItems_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_WorkItems_Users_AssignedUserId",
+                        column: x => x.AssignedUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_WorkItems_Users_CreatorUserId",
+                        column: x => x.CreatorUserId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
@@ -237,6 +257,16 @@ namespace SprintManager.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_WorkItems_AssignedUserId",
+                table: "WorkItems",
+                column: "AssignedUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkItems_CreatorUserId",
+                table: "WorkItems",
+                column: "CreatorUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WorkItems_ProjectId",
                 table: "WorkItems",
                 column: "ProjectId");
@@ -245,11 +275,6 @@ namespace SprintManager.Infrastructure.Migrations
                 name: "IX_WorkItems_SprintId",
                 table: "WorkItems",
                 column: "SprintId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkItems_UserId",
-                table: "WorkItems",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -263,6 +288,9 @@ namespace SprintManager.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProjectMembers");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "WorkItems");

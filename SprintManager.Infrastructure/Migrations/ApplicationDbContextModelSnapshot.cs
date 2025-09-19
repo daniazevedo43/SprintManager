@@ -263,11 +263,17 @@ namespace SprintManager.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -292,9 +298,6 @@ namespace SprintManager.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("WorkItemTitle")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -306,11 +309,13 @@ namespace SprintManager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedUserId");
+
+                    b.HasIndex("CreatorUserId");
+
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("SprintId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("WorkItems");
                 });
@@ -385,6 +390,14 @@ namespace SprintManager.Infrastructure.Migrations
 
             modelBuilder.Entity("SprintManager.Domain.Entities.WorkItem", b =>
                 {
+                    b.HasOne("SprintManager.Domain.Entities.User", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId");
+
+                    b.HasOne("SprintManager.Domain.Entities.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
                     b.HasOne("SprintManager.Domain.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
@@ -395,15 +408,13 @@ namespace SprintManager.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SprintId");
 
-                    b.HasOne("SprintManager.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("AssignedUser");
+
+                    b.Navigation("CreatorUser");
 
                     b.Navigation("Project");
 
                     b.Navigation("Sprint");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
