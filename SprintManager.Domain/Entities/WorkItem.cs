@@ -9,7 +9,7 @@ namespace SprintManager.Domain.Entities
         public Guid ProjectId { get; private set; }
         public Guid? SprintId { get; private set; }
         public Guid? AssignedUserId { get; private set; }
-        public Guid CreatorUserId { get; private set; }
+        public Guid? CreatorUserId { get; private set; }
         public string WorkItemTitle { get; private set; }
         public WorkItemType WorkItemType { get; private set; }
         public string? Description { get; private set; }
@@ -21,16 +21,16 @@ namespace SprintManager.Domain.Entities
         public int? HoursEstimate { get; private set; }
         public Project? Project { get; private set; }
         public Sprint? Sprint { get; private set; }
-        public User? User { get; private set; }
+        public User? AssignedUser { get; private set; }
+        public User? CreatorUser { get; private set; }
 
         public WorkItem()
         {
         }
 
-        public WorkItem(Guid projectId, Guid creatorUserId, string workItemTitle, WorkItemType workItemType)
+        public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType, Guid? creatorUserId)
         {
             if (projectId == Guid.Empty) throw new ArgumentNullException(nameof(projectId), "Project ID can't be null or empty.");
-            if (creatorUserId == Guid.Empty) throw new ArgumentNullException(nameof(creatorUserId), "Creator user ID can't be null or empty.");
             if (string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentNullException(nameof(workItemTitle), "Work item's title can't be null or empty.");
             if (workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
 
@@ -43,10 +43,9 @@ namespace SprintManager.Domain.Entities
             CreationDate = DateTime.UtcNow;
         }
 
-        public WorkItem(Guid projectId, Guid creatorUserId, string workItemTitle, WorkItemType workItemType, Guid? sprintId, Guid? assignedUserId, string? description, WorkItemPriorityLevel? priorityLevel, DateTime? completionDate, int? hoursEstimate)
+        public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType, Guid? sprintId, Guid? assignedUserId, Guid? creatorUserId, string? description, WorkItemPriorityLevel? priorityLevel, DateTime? completionDate, int? hoursEstimate)
         {
             if (projectId == Guid.Empty) throw new ArgumentNullException(nameof(projectId), "Project ID can't be null or empty.");
-            if (creatorUserId == Guid.Empty) throw new ArgumentNullException(nameof(creatorUserId), "Creator user ID can't be null or empty.");
             if (string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentNullException(nameof(workItemTitle), "Work item's title can't be null or empty.");
             if (workItemTitle.Length > 255) throw new SprintManagerTooLongException("Work item's title is too long.", 255, workItemTitle.Length, nameof(workItemTitle));
             if (description?.Length > 500) throw new SprintManagerTooLongException("Description is too long.", 500, description.Length, nameof(description));
