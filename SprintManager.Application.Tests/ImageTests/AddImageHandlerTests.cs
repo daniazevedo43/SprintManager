@@ -10,11 +10,13 @@ using SprintManager.Application.Handlers.Images;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
+using System.Security.Claims;
 
 namespace SprintManager.Application.Tests.ImageTests
 {
     public class AddImageHandlerTests
     {
+        private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<IWorkItemRepository> _mockWorkItemRepository;
         private readonly Mock<UserManager<User>> _mockUserManager;
@@ -43,6 +45,7 @@ namespace SprintManager.Application.Tests.ImageTests
             var mockLogger = new Mock<ILogger<UserManager<User>>>();
 
             // Initialize mocks for each test
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockImageRepository = new Mock<IImageRepository>();
             _mockWorkItemRepository = new Mock<IWorkItemRepository>();
             _mockUserManager = new Mock<UserManager<User>>(
@@ -62,6 +65,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
             // Initialize handler injecting the mocks
             _handler = new AddImageHandler(
+                _mockHttpContextAccessor.Object,
                 _mockImageRepository.Object, 
                 _mockWorkItemRepository.Object,
                 _mockUserManager.Object,
@@ -80,13 +84,14 @@ namespace SprintManager.Application.Tests.ImageTests
             var command = new AddImageCommand
             {
                 WorkItemId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),   
                 Image = _mockFile.Object,
             };
 
+            var userId = Guid.NewGuid();
+
             var image = new Image(
-                command.WorkItemId, 
-                command.UserId, 
+                command.WorkItemId,
+                userId, 
                 command.Image.ContentType,
                 command.Image.FileName,
                 Path.Combine("test_path", "test_path_2.jpg")
@@ -103,8 +108,13 @@ namespace SprintManager.Application.Tests.ImageTests
                 AttachmentDate = image.AttachmentDate
             };
 
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, userId.ToString()));
+
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString())).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(userId.ToString())).ReturnsAsync(new User());
             _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
 
@@ -121,12 +131,51 @@ namespace SprintManager.Application.Tests.ImageTests
             Assert.Equal(imageDTO.FilePath, result.FilePath);
             Assert.Equal(imageDTO.AttachmentDate, result.AttachmentDate);
 
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+
+            // Ensure GetByIdAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
+
+            // Ensure FindByIdAsync was called exactly once.
+            _mockUserManager.Verify(m => m.FindByIdAsync(userId.ToString()), Times.Once);
+
+            // Ensure SaveFileAsync was called exactly once.
             _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
+
+            // Ensure AddAsync was called exactly once.
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
 
+            // Ensure the mapper's Map was called exactly once with the created comment.
             _mockMapper.Verify(m => m.Map<ImageDTO>(It.IsAny<Image>()), Times.Once);
+        }
+
+        // Test exception throwing when user is not authenticated
+        [Fact]
+        public async Task VerifyUser_ThrowException_WhenAuthenticatedUserIsNotFound()
+        {
+            var command = new AddImageCommand
+            {
+                WorkItemId = Guid.NewGuid(),
+                Image = _mockFile.Object,
+            };
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier));
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User not authenticated.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
         }
 
         // Test exception throwing when file extension is not allowed
@@ -138,15 +187,26 @@ namespace SprintManager.Application.Tests.ImageTests
             var command = new AddImageCommand
             {
                 WorkItemId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
                 Image = _mockFile.Object,
             };
+
+            var userId = Guid.NewGuid();
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, userId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerFileNotAllowedException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
             Assert.Contains("File extension not allowed.", exception.Message);
+        
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
         }
 
         // Test exception throwing when work item is not found
@@ -158,11 +218,16 @@ namespace SprintManager.Application.Tests.ImageTests
             var command = new AddImageCommand
             {
                 WorkItemId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
                 Image = _mockFile.Object,
             };
 
-            // Repository's mock configuration
+            var userId = Guid.NewGuid();
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, userId.ToString()));
+
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
@@ -170,6 +235,11 @@ namespace SprintManager.Application.Tests.ImageTests
             );
 
             Assert.Equal($"Work item with ID {command.WorkItemId} not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
 
             // Ensure GetByIdAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
@@ -184,24 +254,34 @@ namespace SprintManager.Application.Tests.ImageTests
             var command = new AddImageCommand
             {
                 WorkItemId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
                 Image = _mockFile.Object,
             };
 
+            var userId = Guid.NewGuid();
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, userId.ToString()));
+
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()));
+            _mockUserManager.Setup(m => m.FindByIdAsync(userId.ToString()));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"User with ID {command.UserId} not found.", exception.Message);
+            Assert.Equal($"User with ID {userId} not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier), Times.Once);
 
             // Ensure GetByIdAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.WorkItemId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(userId.ToString()), Times.Once);
         }
     }
 }
