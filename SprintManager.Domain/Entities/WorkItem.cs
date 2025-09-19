@@ -8,8 +8,8 @@ namespace SprintManager.Domain.Entities
         public Guid Id { get; private set; }
         public Guid ProjectId { get; private set; }
         public Guid? SprintId { get; private set; }
-        public Guid CreatorUserId { get; private set; }
         public Guid? AssignedUserId { get; private set; }
+        public Guid CreatorUserId { get; private set; }
         public string WorkItemTitle { get; private set; }
         public WorkItemType WorkItemType { get; private set; }
         public string? Description { get; private set; }
@@ -54,8 +54,8 @@ namespace SprintManager.Domain.Entities
             Id = Guid.NewGuid();
             ProjectId = projectId;
             SprintId = sprintId;
-            CreatorUserId = creatorUserId;
             AssignedUserId = assignedUserId;
+            CreatorUserId = creatorUserId;
             WorkItemTitle = workItemTitle;
             WorkItemType = workItemType;
             Description = description;

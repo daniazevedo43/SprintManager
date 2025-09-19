@@ -20,8 +20,8 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Null(workItem.SprintId);
-            Assert.Equal(creatorUserId, workItem.CreatorUserId);
             Assert.Null(workItem.AssignedUserId);
+            Assert.Equal(creatorUserId, workItem.CreatorUserId);
             Assert.Equal("Test title", workItem.WorkItemTitle);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Null(workItem.Description);
@@ -52,8 +52,8 @@ namespace SprintManager.Domain.Tests
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Equal(sprintId, workItem.SprintId);
-            Assert.Equal(creatorUserId, workItem.CreatorUserId);
             Assert.Equal(assignedUserId, workItem.AssignedUserId);
+            Assert.Equal(creatorUserId, workItem.CreatorUserId);
             Assert.Equal("Test title", workItem.WorkItemTitle);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Test Description", workItem.Description);
