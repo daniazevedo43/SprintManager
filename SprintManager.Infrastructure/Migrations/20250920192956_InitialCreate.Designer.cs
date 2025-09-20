@@ -12,7 +12,7 @@ using SprintManager.Infrastructure.Data;
 namespace SprintManager.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250919170237_InitialCreate")]
+    [Migration("20250920192956_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
