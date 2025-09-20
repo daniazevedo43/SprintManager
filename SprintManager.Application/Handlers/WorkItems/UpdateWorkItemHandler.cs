@@ -32,20 +32,20 @@ namespace SprintManager.Application.Handlers.WorkItems
         public async Task<WorkItemDTO> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var user = await _userManager.FindByIdAsync(request.UserId.ToString()!);
+            var user = await _userManager.FindByIdAsync(request.AssignedUserId.ToString()!);
 
             if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprint == null)
                 throw new SprintManagerNotFoundException($"Sprint with ID {request.SprintId} not found.");
 
-            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && user == null)
-                throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");
+            if (!string.IsNullOrWhiteSpace(request.AssignedUserId.ToString()) && user == null)
+                throw new SprintManagerNotFoundException($"User with ID {request.AssignedUserId} not found.");
 
             var workItem = await _workItemRepository.GetByIdAsync(request.Id);
 
             if (workItem == null) throw new SprintManagerNotFoundException($"Work item with ID {request?.Id} not found.");
 
             workItem.SetSprintId(request.SprintId);
-            workItem.SetAssignedUserId(request.UserId);
+            workItem.SetAssignedUserId(request.AssignedUserId);
             workItem.SetWorkItemTitle(request.WorkItemTitle);
             workItem.SetWorkItemType(request.WorkItemType);
             workItem.SetDescription(request.Description);
