@@ -20,7 +20,6 @@ namespace SprintManager.Infrastructure.Repositories
                 .Include(w => w.Project)
                 .Include(w => w.Sprint)
                 .Include(w => w.AssignedUser)
-                .Include(w => w.CreatorUser)
                 .OrderBy(w => w.Project)
                 .ToListAsync();
         }
@@ -38,7 +37,6 @@ namespace SprintManager.Infrastructure.Repositories
                 .Include(w => w.Project)
                 .Include(w => w.Sprint)
                 .Include(w => w.AssignedUser)
-                .Include(w => w.CreatorUser)
                 .FirstOrDefaultAsync(w => w.Id == id);
         }
 
