@@ -45,7 +45,7 @@ namespace SprintManager.Application.Handlers.Auth
 
             if (!passwordIsValid) throw new UnauthorizedAccessException("Invalid password.");
 
-            var workItems = await _workItemRepository.GetAllByUserIdAsync(userId);
+            var workItems = await _workItemRepository.GetAllByAssignedUserIdAsync(userId);
 
             foreach (var workItem in workItems)
             {
