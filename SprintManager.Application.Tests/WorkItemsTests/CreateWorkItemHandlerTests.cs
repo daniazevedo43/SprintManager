@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,11 +11,13 @@ using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
 using SprintManager.Exceptions.ExceptionsBase;
+using System.Security.Claims;
 
 namespace SprintManager.Application.Tests.WorkItemsTests
 {
     public class CreateWorkItemHandlerTests
     {
+        private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private readonly Mock<IWorkItemRepository> _mockWorkItemRepository;
         private readonly Mock<IProjectRepository> _mockProjectRepository;
         private readonly Mock<ISprintRepository> _mockSprintRepository;
@@ -42,6 +45,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             var mockLogger = new Mock<ILogger<UserManager<User>>>();
 
             // Initialize mocks for each test
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockWorkItemRepository = new Mock<IWorkItemRepository>();
             _mockProjectRepository = new Mock<IProjectRepository>();
             _mockSprintRepository = new Mock<ISprintRepository>();
@@ -60,6 +64,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
             // Initialize handler injecting the mocks
             _handler = new CreateWorkItemHandler(
+                _mockHttpContextAccessor.Object,
                 _mockWorkItemRepository.Object, 
                 _mockProjectRepository.Object,
                 _mockSprintRepository.Object,
@@ -79,7 +84,15 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 WorkItemType = WorkItemType.Task
             };
 
-            var workItem = new WorkItem(command.ProjectId, command.WorkItemTitle, command.WorkItemType);
+            var creatorUserId = Guid.NewGuid();
+
+            var workItem = new WorkItem(
+                command.ProjectId, 
+                command.WorkItemTitle, 
+                command.WorkItemType,
+                creatorUserId
+            );
+
             var workItemDTO = new WorkItemDTO
             {
                 Id = workItem.Id,
@@ -91,9 +104,14 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 CreationDate = workItem.CreationDate,
             };
 
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, creatorUserId.ToString()));
+
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
@@ -109,12 +127,17 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.PriorityLevel, result.PriorityLevel);
             Assert.Equal(workItemDTO.CreationDate, result.CreationDate);
 
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.ToString()!), Times.Once);
            
             // Ensure AddAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.AddAsync(It.IsAny<WorkItem>()), Times.Once);
@@ -131,7 +154,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             {
                 ProjectId = Guid.NewGuid(),
                 SprintId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
+                AssignedUserId = Guid.NewGuid(),
                 WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task,
                 Description = "Test description",
@@ -140,12 +163,15 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = 6
             };
 
+            var creatorUserId = Guid.NewGuid();
+
             var workItem = new WorkItem(
                 command.ProjectId,
-                command.WorkItemTitle, 
+                command.WorkItemTitle,
                 command.WorkItemType,
                 command.SprintId,
-                command.UserId,
+                command.AssignedUserId,
+                creatorUserId,
                 command.Description,
                 command.PriorityLevel,
                 command.CompletionDate,
@@ -157,7 +183,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Id = workItem.Id,
                 ProjectId = workItem.ProjectId,
                 SprintId = workItem.SprintId,
-                UserId = workItem.UserId,
+                AssignedUserId = workItem.AssignedUserId,
+                CreatorUserId = workItem.CreatorUserId,
                 WorkItemTitle = workItem.WorkItemTitle,
                 WorkItemType = workItem.WorkItemType,
                 Description = workItem.Description,
@@ -168,9 +195,14 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 HoursEstimate = workItem.HoursEstimate,
             };
 
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, creatorUserId.ToString()));
+
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
@@ -181,7 +213,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.Id, result.Id);
             Assert.Equal(workItemDTO.ProjectId, result.ProjectId);
             Assert.Equal(workItemDTO.SprintId, result.SprintId);
-            Assert.Equal(workItemDTO.UserId, result.UserId);
+            Assert.Equal(workItemDTO.AssignedUserId, result.AssignedUserId);
+            Assert.Equal(workItemDTO.CreatorUserId, result.CreatorUserId);
             Assert.Equal(workItemDTO.WorkItemTitle, result.WorkItemTitle);
             Assert.Equal(workItemDTO.WorkItemType, result.WorkItemType);
             Assert.Equal(workItemDTO.Description, result.Description);
@@ -191,18 +224,44 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.CompletionDate, result.CompletionDate);
             Assert.Equal(workItemDTO.HoursEstimate, result.HoursEstimate);
 
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
+
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.ToString()!), Times.Once);
 
             // Ensure AddAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.AddAsync(workItem), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created work item.
             _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
+        }
+
+        // Test exception throwing when user is not authenticated
+        [Fact]
+        public async Task VerifyUser_ThrowException_WhenAuthenticatedUserIsNotFound()
+        {
+            var command = new CreateWorkItemCommand();
+
+            _mockHttpContextAccessor
+                .Setup(r => r.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier));
+
+            var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"User not authenticated.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(r => r.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier), Times.Once);
         }
 
         // Test exception throwing when project is not found
@@ -216,6 +275,13 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 WorkItemType = WorkItemType.Task
             };
 
+            var creatorUserId = Guid.NewGuid();
+
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, creatorUserId.ToString()));
+
             // Repository's mock configuration
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId));
 
@@ -224,6 +290,11 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             );
 
             Assert.Equal($"Project with ID {command.ProjectId} not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
 
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
@@ -241,6 +312,13 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 WorkItemType = WorkItemType.Task
             };
 
+            var creatorUserId = Guid.NewGuid();
+
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, creatorUserId.ToString()));
+
             // Repositories mock configuration
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId));
@@ -250,6 +328,11 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             );
 
             Assert.Equal($"Sprint with ID {command.SprintId} not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
 
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
@@ -264,27 +347,39 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             {
                 ProjectId = Guid.NewGuid(),
                 SprintId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
+                AssignedUserId = Guid.NewGuid(),
                 WorkItemTitle = "Test title",
                 WorkItemType = WorkItemType.Task
             };
 
+            var creatorUserId = Guid.NewGuid();
+
+            _mockHttpContextAccessor
+                .Setup(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier))
+                .Returns(new Claim(ClaimTypes.NameIdentifier, creatorUserId.ToString()));
+
             _mockProjectRepository.Setup(r => r.GetByIdAsync(command.ProjectId)).ReturnsAsync(new Project());
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.UserId.ToString()!));
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.ToString()!));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
             );
 
-            Assert.Equal($"User with ID {command.UserId} not found.", exception.Message);
+            Assert.Equal($"User with ID {command.AssignedUserId} not found.", exception.Message);
+
+            // Ensure HttpContextAccesor was used exactly once.
+            _mockHttpContextAccessor
+                .Verify(a => a.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier), Times.Once);
 
             // Ensure GetByIdAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.UserId.ToString()!), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.ToString()!), Times.Once);
         }
     }
 }

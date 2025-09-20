@@ -19,15 +19,8 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.WorkItems
                 .Include(w => w.Project)
                 .Include(w => w.Sprint)
-                .Include(w => w.User)
+                .Include(w => w.AssignedUser)
                 .OrderBy(w => w.Project)
-                .ToListAsync();
-        }
-
-        public async Task<List<WorkItem>> GetAllByUserIdAsync(Guid userId)
-        {
-            return await _context.WorkItems
-                .Where(w => w.UserId == userId)
                 .ToListAsync();
         }
 
@@ -36,7 +29,7 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.WorkItems
                 .Include(w => w.Project)
                 .Include(w => w.Sprint)
-                .Include(w => w.User)
+                .Include(w => w.AssignedUser)
                 .FirstOrDefaultAsync(w => w.Id == id);
         }
 

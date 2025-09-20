@@ -31,20 +31,22 @@ namespace SprintManager.Application.Tests.WorkItemsTests
         {
             var query = new GetAllWorkItemsQuery();
 
+            var creatorUserId = Guid.NewGuid();
+
             var workItems = new List<WorkItem>()
             {
                 new WorkItem(
                     Guid.NewGuid(),
                     "Test title", WorkItemType.Task,
-                    Guid.NewGuid(), Guid.NewGuid(),
+                    Guid.NewGuid(), Guid.NewGuid(), creatorUserId,
                     "Test description",
-                    WorkItemPriorityLevel.Low, 
+                    WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 ),
                 new WorkItem(
-                    Guid.NewGuid(), "Test title 2", 
+                    Guid.NewGuid(), "Test title 2",
                     WorkItemType.Bug, Guid.NewGuid(), Guid.NewGuid(),
-                    "Test description 2",
+                    creatorUserId, "Test description 2",
                     WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 )
@@ -57,7 +59,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                     Id = workItems[0].Id,
                     ProjectId = workItems[0].ProjectId,
                     SprintId = workItems[0].SprintId,
-                    UserId = workItems[0].UserId,
+                    AssignedUserId = workItems[0].AssignedUserId,
+                    CreatorUserId = workItems[0].CreatorUserId,
                     WorkItemTitle = workItems[0].WorkItemTitle,
                     WorkItemType = workItems[0].WorkItemType,
                     Description = workItems[0].Description,
@@ -72,7 +75,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                     Id = workItems[1].Id,
                     ProjectId = workItems[1].ProjectId,
                     SprintId = workItems[1].SprintId,
-                    UserId = workItems[1].UserId,
+                    AssignedUserId = workItems[1].AssignedUserId,
+                    CreatorUserId = workItems[0].CreatorUserId,
                     WorkItemTitle = workItems[1].WorkItemTitle,
                     WorkItemType = workItems[1].WorkItemType,
                     Description = workItems[1].Description,
@@ -97,7 +101,8 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Assert.Equal(workItems[i].Id, result[i].Id);
                 Assert.Equal(workItems[i].ProjectId, result[i].ProjectId);
                 Assert.Equal(workItems[i].SprintId, result[i].SprintId);
-                Assert.Equal(workItems[i].UserId, result[i].UserId);
+                Assert.Equal(workItems[i].AssignedUserId, result[i].AssignedUserId);
+                Assert.Equal(workItems[i].CreatorUserId, result[i].CreatorUserId);
                 Assert.Equal(workItems[i].WorkItemTitle, result[i].WorkItemTitle);
                 Assert.Equal(workItems[i].WorkItemType, result[i].WorkItemType);
                 Assert.Equal(workItems[i].Description, result[i].Description);

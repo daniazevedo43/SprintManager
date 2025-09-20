@@ -9,8 +9,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void ProjectMember_Constructor_WithValidData_CreatesProjectSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid userId = Guid.NewGuid();
+            var projectId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var projectMember = new ProjectMember(projectId, userId, ProjectMemberRole.Developer);
 
             Assert.NotEqual(Guid.Empty, projectMember.Id);

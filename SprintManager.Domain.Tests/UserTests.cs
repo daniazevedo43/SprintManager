@@ -34,7 +34,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyName_ThrowsException_WhenNameIsTooLong()
         {
-            string name = new string('T', 256);
+            var name = new string('T', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() => 
                 new User(name, "test", "test@gmail.com", "Test123test123!")
@@ -74,7 +74,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyUsername_ThrowsException_WhenUsernameIsTooLong()
         {
-            string username = new string('t', 256);
+            var username = new string('t', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new User("Test", username, "test@gmail.com", "Test123test123!")
@@ -101,7 +101,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyEmail_ThrowsException_WhenEmailIsTooLong()
         {
-            string email = new string('t', 256);
+            var email = new string('t', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new User("Test", "test", email, "Test123test123!")
@@ -176,7 +176,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyPassword_ThrowsException_WhenPasswordIsTooLong()
         {
-            string password = "";
+            var password = "";
 
             for (int i = 0; i < 65; i++)
             {

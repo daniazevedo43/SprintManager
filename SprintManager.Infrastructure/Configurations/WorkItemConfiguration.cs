@@ -15,7 +15,9 @@ namespace SprintManager.Infrastructure.Configurations
 
             builder.Property(w => w.SprintId);
 
-            builder.Property(w => w.UserId);
+            builder.Property(w => w.AssignedUserId);
+
+            builder.Property(w => w.CreatorUserId);
 
             builder.Property(w => w.WorkItemTitle)
                 .HasMaxLength(255)

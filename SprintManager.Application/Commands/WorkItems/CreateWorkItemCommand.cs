@@ -8,7 +8,7 @@ namespace SprintManager.Application.Commands.WorkItems
     {
         public Guid ProjectId { get; set; }
         public Guid? SprintId { get; set; }
-        public Guid? UserId { get; set; }
+        public Guid? AssignedUserId { get; set; }
         public string WorkItemTitle { get; set; }
         public WorkItemType WorkItemType { get; set; }
         public string? Description { get; set; }

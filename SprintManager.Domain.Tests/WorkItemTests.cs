@@ -10,13 +10,18 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void WorkItem_Constructor_Basic_CreatesWorkItemSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            var workItem = new WorkItem(projectId, "Test title", WorkItemType.Task);
+            var projectId = Guid.NewGuid();
+            var creatorUserId = Guid.NewGuid();
+
+            var workItem = new WorkItem(
+                projectId, "Test title", WorkItemType.Task, creatorUserId
+            );
 
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Null(workItem.SprintId);
-            Assert.Null(workItem.UserId);
+            Assert.Null(workItem.AssignedUserId);
+            Assert.Equal(creatorUserId, workItem.CreatorUserId);
             Assert.Equal("Test title", workItem.WorkItemTitle);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Null(workItem.Description);
@@ -32,21 +37,23 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void WorkItem_Constructor_Full_CreatesWorkItemSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid sprintId = Guid.NewGuid();
-            Guid userId = Guid.NewGuid();
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var projectId = Guid.NewGuid();
+            var sprintId = Guid.NewGuid();
+            var assignedUserId = Guid.NewGuid();
+            var creatorUserId = Guid.NewGuid();
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                projectId, "Test title",
-                WorkItemType.Task, sprintId, userId, "Test Description", 
+                projectId, "Test title", WorkItemType.Task, sprintId,
+                assignedUserId, creatorUserId, "Test Description", 
                 WorkItemPriorityLevel.Low, nextDate, 5
             );
 
             Assert.NotEqual(Guid.Empty, workItem.Id);
             Assert.Equal(projectId, workItem.ProjectId);
             Assert.Equal(sprintId, workItem.SprintId);
-            Assert.Equal(userId, workItem.UserId);
+            Assert.Equal(assignedUserId, workItem.AssignedUserId);
+            Assert.Equal(creatorUserId, workItem.CreatorUserId);
             Assert.Equal("Test title", workItem.WorkItemTitle);
             Assert.Equal(WorkItemType.Task, workItem.WorkItemType);
             Assert.Equal("Test Description", workItem.Description);
@@ -62,15 +69,15 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetSprintId_UpdatesSprintIdSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                Guid.NewGuid(), "Test title",
-                WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(),
+                Guid.NewGuid(), "Test title", WorkItemType.Task, 
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                 "Test Description", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
-            Guid newSprintId = Guid.NewGuid();
+            var newSprintId = Guid.NewGuid();
 
             workItem.SetSprintId(newSprintId);
 
@@ -82,19 +89,19 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetAssignedUserId_UpdatesAssignedUserIdSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                Guid.NewGuid(), "Test title", 
-                WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(),
+                Guid.NewGuid(), "Test title", WorkItemType.Task, 
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                 "Test Description", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
-            Guid userId = Guid.NewGuid();
+            var assignedUserId = Guid.NewGuid();
 
-            workItem.SetAssignedUserId(userId);
+            workItem.SetAssignedUserId(assignedUserId);
 
-            Assert.Equal(userId, workItem.UserId);
+            Assert.Equal(assignedUserId, workItem.AssignedUserId);
             Assert.Equal(DateTime.UtcNow.Date, workItem.UpdateDate?.Date);
         }
 
@@ -102,7 +109,9 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetWorkItemTitle_UpdatesWorkItemTitleSuccessfully()
         {
-            var workItem = new WorkItem(Guid.NewGuid(), "Test title", WorkItemType.Task);
+            var workItem = new WorkItem(
+                Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid()
+            );
 
             workItem.SetWorkItemTitle("Test title 2");
 
@@ -114,7 +123,9 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetWorkItemType_UpdatesWorkItemTypeSuccessfully()
         {
-            var workItem = new WorkItem(Guid.NewGuid(), "Test title", WorkItemType.Task);
+            var workItem = new WorkItem(
+                Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid()
+            );
 
             workItem.SetWorkItemType(WorkItemType.Bug);
 
@@ -129,8 +140,8 @@ namespace SprintManager.Domain.Tests
             DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                Guid.NewGuid(), "Test title", 
-                WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(),
+                Guid.NewGuid(), "Test title", WorkItemType.Task, 
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                 "Test Description 1", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
@@ -144,7 +155,9 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetStatus_UpdatesStatusSuccessfully()
         {
-            var workItem = new WorkItem(Guid.NewGuid(), "Test title", WorkItemType.Task);
+            var workItem = new WorkItem(
+                Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid()
+            );
 
             workItem.SetStatus(WorkItemStatus.Closed);
 
@@ -156,7 +169,9 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetPriorityLevel_UpdatesPriorityLevelSuccessfully()
         {
-            var workItem = new WorkItem(Guid.NewGuid(), "Test title", WorkItemType.Task);
+            var workItem = new WorkItem(
+                Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid()
+            );
 
             workItem.SetPriorityLevel(WorkItemPriorityLevel.Medium);
 
@@ -168,11 +183,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetCompletionDate_UpdatesCompletionDateSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                Guid.NewGuid(), "Test title",
-                WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(),
+                Guid.NewGuid(), "Test title", WorkItemType.Task, 
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                 "Test Description", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
@@ -186,11 +201,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetHoursEstimate_UpdatesHoursEstimateSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                Guid.NewGuid(), "Test title",
-                WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(),
+                Guid.NewGuid(), "Test title", WorkItemType.Task, 
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
                 "Test Description", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
@@ -205,7 +220,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyProjectId_ThrowsException_WhenProjectIdIsNullOrEmpty()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new WorkItem(Guid.Empty, "Test title", WorkItemType.Task)
+                new WorkItem(Guid.Empty, "Test title", WorkItemType.Task, Guid.NewGuid())
             );
 
             Assert.Equal("Project ID can't be null or empty. (Parameter 'projectId')", exception.Message);
@@ -219,7 +234,7 @@ namespace SprintManager.Domain.Tests
         public void VerifyWorkItemTitle_ThrowsException_WhenWorkItemTitleIsNullOrEmpty(string title)
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new WorkItem(Guid.NewGuid(), title, WorkItemType.Task)
+                new WorkItem(Guid.NewGuid(), title, WorkItemType.Task, Guid.NewGuid())
             );
 
             Assert.Equal("Work item's title can't be null or empty. (Parameter 'workItemTitle')", exception.Message);
@@ -229,10 +244,10 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyWorkItemTitle_ThrowsException_WhenWorkItemTitleIsTooLong()
         {
-            string title = new string('T', 256);
+            var title = new string('T', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
-                new WorkItem(Guid.NewGuid(), title, WorkItemType.Task)
+                new WorkItem(Guid.NewGuid(), title, WorkItemType.Task, Guid.NewGuid())
             );
 
             Assert.Equal($"Work item's title is too long. (Max length '255') (Actual length '{title.Length}') (Parameter 'workItemTitle')", exception.Message);
@@ -242,15 +257,15 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
-            
-            string description = new string('T', 501);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+
+            var description = new string('T', 501);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new WorkItem(
-                    Guid.NewGuid(), "Test title", 
-                    WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(), 
-                    description, WorkItemPriorityLevel.Low, nextDate, 5
+                    Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid(), 
+                    Guid.NewGuid(), Guid.NewGuid(), description, 
+                    WorkItemPriorityLevel.Low, nextDate, 5
                 )
             );
 
@@ -261,14 +276,13 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCreationDate()
         {
-            DateTime previousDate = DateTime.UtcNow - new TimeSpan(1, 0, 0, 0);
+            var previousDate = DateTime.UtcNow - new TimeSpan(1, 0, 0, 0);
 
             var exception = Assert.Throws<SprintManagerDateNotAllowedException>(() =>
                 new WorkItem(
-                    Guid.NewGuid(), "Test title", 
-                    WorkItemType.Task, Guid.NewGuid(), Guid.NewGuid(),
-                    "Test Description", WorkItemPriorityLevel.Low, previousDate, 
-                    5
+                    Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid(), 
+                    Guid.NewGuid(), Guid.NewGuid(), "Test Description", 
+                    WorkItemPriorityLevel.Low, previousDate, 5
                 )
             );
 
