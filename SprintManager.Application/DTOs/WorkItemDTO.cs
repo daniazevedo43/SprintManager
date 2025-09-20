@@ -9,8 +9,10 @@ namespace SprintManager.Application.DTOs
         public string ProjectName { get; set; }
         public Guid? SprintId { get; set; }
         public string? SprintName { get; set; }
-        public Guid? UserId { get; set; }
-        public string? UserName { get; set; }
+        public Guid? AssignedUserId { get; set; }
+        public string? AssignedUserName { get; set; }
+        public Guid? CreatorUserId { get; set; }
+        public string? CreatorUserName { get; set; }
         public string WorkItemTitle { get; set; }
         public WorkItemType WorkItemType { get; set; }
         public string? Description { get; set; }
