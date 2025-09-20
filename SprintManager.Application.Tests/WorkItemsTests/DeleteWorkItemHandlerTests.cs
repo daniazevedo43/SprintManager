@@ -31,7 +31,12 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Id = Guid.NewGuid(),
             };
 
-            var workItem = new WorkItem(Guid.NewGuid(), "Adjust feed page for mobile devices", WorkItemType.Task);
+            var workItem = new WorkItem(
+                Guid.NewGuid(), 
+                "Adjust feed page for mobile devices", 
+                WorkItemType.Task,
+                Guid.NewGuid()
+            );
 
             // Repository's mock configuration
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(workItem);
