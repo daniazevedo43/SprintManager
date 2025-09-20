@@ -9,8 +9,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Comment_Constructor_WithValidData_CreatesCommentSuccessfully()
         {
-            Guid workItemId = Guid.NewGuid();
-            Guid userId = Guid.NewGuid();
+            var workItemId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var comment = new Comment(workItemId, userId, "Test comment");
 
             Assert.NotEqual(Guid.Empty, comment.Id);

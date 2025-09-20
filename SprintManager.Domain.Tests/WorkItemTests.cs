@@ -10,8 +10,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void WorkItem_Constructor_Basic_CreatesWorkItemSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid creatorUserId = Guid.NewGuid();
+            var projectId = Guid.NewGuid();
+            var creatorUserId = Guid.NewGuid();
 
             var workItem = new WorkItem(
                 projectId, "Test title", WorkItemType.Task, creatorUserId
@@ -37,11 +37,11 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void WorkItem_Constructor_Full_CreatesWorkItemSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
-            Guid sprintId = Guid.NewGuid();
-            Guid assignedUserId = Guid.NewGuid();
-            Guid creatorUserId = Guid.NewGuid();
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var projectId = Guid.NewGuid();
+            var sprintId = Guid.NewGuid();
+            var assignedUserId = Guid.NewGuid();
+            var creatorUserId = Guid.NewGuid();
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
                 projectId, "Test title", WorkItemType.Task, sprintId,
@@ -69,7 +69,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetSprintId_UpdatesSprintIdSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
                 Guid.NewGuid(), "Test title", WorkItemType.Task, 
@@ -77,7 +77,7 @@ namespace SprintManager.Domain.Tests
                 "Test Description", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
-            Guid newSprintId = Guid.NewGuid();
+            var newSprintId = Guid.NewGuid();
 
             workItem.SetSprintId(newSprintId);
 
@@ -89,7 +89,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetAssignedUserId_UpdatesAssignedUserIdSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
                 Guid.NewGuid(), "Test title", WorkItemType.Task, 
@@ -97,7 +97,7 @@ namespace SprintManager.Domain.Tests
                 "Test Description", WorkItemPriorityLevel.Low, nextDate, 5
             );
 
-            Guid assignedUserId = Guid.NewGuid();
+            var assignedUserId = Guid.NewGuid();
 
             workItem.SetAssignedUserId(assignedUserId);
 
@@ -183,7 +183,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetCompletionDate_UpdatesCompletionDateSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
                 Guid.NewGuid(), "Test title", WorkItemType.Task, 
@@ -201,7 +201,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void SetHoursEstimate_UpdatesHoursEstimateSuccessfully()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
                 Guid.NewGuid(), "Test title", WorkItemType.Task, 
@@ -244,7 +244,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyWorkItemTitle_ThrowsException_WhenWorkItemTitleIsTooLong()
         {
-            string title = new string('T', 256);
+            var title = new string('T', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new WorkItem(Guid.NewGuid(), title, WorkItemType.Task, Guid.NewGuid())
@@ -257,9 +257,9 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
-            DateTime nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
-            
-            string description = new string('T', 501);
+            var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
+
+            var description = new string('T', 501);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new WorkItem(
@@ -276,7 +276,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyCompletionDate_ThrowsException_WhenCompletionDateIsLowerThanCreationDate()
         {
-            DateTime previousDate = DateTime.UtcNow - new TimeSpan(1, 0, 0, 0);
+            var previousDate = DateTime.UtcNow - new TimeSpan(1, 0, 0, 0);
 
             var exception = Assert.Throws<SprintManagerDateNotAllowedException>(() =>
                 new WorkItem(

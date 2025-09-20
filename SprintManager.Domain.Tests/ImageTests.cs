@@ -8,8 +8,8 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Image_Constructor_WithValidData_CreatesImageSuccessfully()
         {
-            Guid workItemId = Guid.NewGuid();
-            Guid attachedByUserId = Guid.NewGuid();
+            var workItemId = Guid.NewGuid();
+            var attachedByUserId = Guid.NewGuid();
             var image = new Image(workItemId, attachedByUserId, "image/jpeg", "image.jpeg", "path");
 
             Assert.NotEqual(Guid.Empty, image.Id);

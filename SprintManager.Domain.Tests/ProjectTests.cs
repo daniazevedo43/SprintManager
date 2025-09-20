@@ -81,7 +81,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyName_ThrowsException_WhenNameIsTooLong()
         {
-            string name = new string('p', 256);
+            var name = new string('p', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new Project(name)
@@ -94,7 +94,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
-            string description = new string('d', 501);
+            var description = new string('d', 501);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new Project("Project 1", description)

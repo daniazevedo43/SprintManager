@@ -10,7 +10,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Sprint_Constructor_WithoutDescription_CreatesSprintSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
+            var projectId = Guid.NewGuid();
             var sprint = new Sprint(projectId, "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21));
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
@@ -26,7 +26,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void Sprint_Constructor_WithDescription_CreatesSprintSuccessfully()
         {
-            Guid projectId = Guid.NewGuid();
+            var projectId = Guid.NewGuid();
             var sprint = new Sprint(projectId, "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), "Test description");
 
             Assert.NotEqual(Guid.Empty, sprint.Id);
@@ -112,7 +112,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyName_ThrowsException_WhenNameIsTooLong()
         {
-            string name = new string('P', 256);
+            var name = new string('P', 256);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new Sprint(Guid.NewGuid(), name, new DateTime(2025, 7, 7), new DateTime(2025, 7, 21))
@@ -136,7 +136,7 @@ namespace SprintManager.Domain.Tests
         [Fact]
         public void VerifyDescription_ThrowsException_WhenDescriptionIsTooLong()
         {
-            string description = new string('D', 501);
+            var description = new string('D', 501);
 
             var exception = Assert.Throws<SprintManagerTooLongException>(() =>
                 new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 7, 7), new DateTime(2025, 7, 21), description)
