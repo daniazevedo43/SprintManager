@@ -137,5 +137,10 @@ namespace SprintManager.Domain.Entities
             HoursEstimate = hoursEstimate;
             UpdateDate = DateTime.UtcNow;
         }
+
+        public void RemoveCreatorUserId()
+        {
+            CreatorUserId = null;
+        }
     }
 }

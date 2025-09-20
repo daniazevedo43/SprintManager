@@ -102,7 +102,7 @@ namespace SprintManager.Application.Tests.AuthTests
 
             _mockUserManager.Setup(m => m.FindByIdAsync(user.Id.ToString())).ReturnsAsync(user);
             _mockUserManager.Setup(m => m.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
-            _mockWorkItemRepository.Setup(r => r.GetAllByAssignedUserIdAsync(user.Id)).ReturnsAsync(workItems);
+            _mockWorkItemRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(workItems);
             _mockWorkItemRepository.Setup(r => r.UpdateAsync(It.IsAny<WorkItem>()));
             _mockRefreshTokenRepository.Setup(r => r.DeleteAllByUserIdAsync(user.Id));
             _mockUserManager.Setup(m => m.DeleteAsync(user));
@@ -121,7 +121,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Verify(m => m.CheckPasswordAsync(user, command.Password), Times.Once);
 
             // Ensure GetAllByUserIdAsync was called exactly once.
-            _mockWorkItemRepository.Verify(r => r.GetAllByAssignedUserIdAsync(user.Id), Times.Once);
+            _mockWorkItemRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure UpdateAsync was called exactly once.
             _mockWorkItemRepository.Verify(r => r.UpdateAsync(It.IsAny<WorkItem>()), Times.Exactly(workItems.Count));
