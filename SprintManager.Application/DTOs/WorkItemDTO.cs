@@ -12,7 +12,6 @@ namespace SprintManager.Application.DTOs
         public Guid? AssignedUserId { get; set; }
         public string? AssignedUserName { get; set; }
         public Guid? CreatorUserId { get; set; }
-        public string? CreatorUserName { get; set; }
         public string WorkItemTitle { get; set; }
         public WorkItemType WorkItemType { get; set; }
         public string? Description { get; set; }
