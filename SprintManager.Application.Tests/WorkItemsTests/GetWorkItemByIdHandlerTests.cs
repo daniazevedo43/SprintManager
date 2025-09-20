@@ -35,7 +35,9 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Id = Guid.NewGuid()
             };
 
-            var workItem = new WorkItem(Guid.NewGuid(), "Test title", WorkItemType.Task);
+            var workItem = new WorkItem(
+                Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid()
+            );
 
             var workItemDTO = new WorkItemDTO
             {
