@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using SprintManager.Application.Commands.WorkItems;
 using SprintManager.Application.DTOs;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Exceptions.ExceptionsBase;
+using System.Security.Claims;
 
 namespace SprintManager.Application.Handlers.WorkItems
 {
     public class CreateWorkItemHandler : IRequestHandler<CreateWorkItemCommand, WorkItemDTO>
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWorkItemRepository _workItemRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly ISprintRepository _sprintRepository;
@@ -18,6 +21,7 @@ namespace SprintManager.Application.Handlers.WorkItems
         private readonly IMapper _mapper;
 
         public CreateWorkItemHandler(
+            IHttpContextAccessor httpContextAccessor,
             IWorkItemRepository workItemRepository,
             IProjectRepository projectRepository,
             ISprintRepository sprintRepository,
@@ -25,6 +29,7 @@ namespace SprintManager.Application.Handlers.WorkItems
             IMapper mapper
         )
         {
+            _httpContextAccessor = httpContextAccessor;
             _workItemRepository = workItemRepository;
             _projectRepository = projectRepository;
             _sprintRepository = sprintRepository;
@@ -34,9 +39,15 @@ namespace SprintManager.Application.Handlers.WorkItems
 
         public async Task<WorkItemDTO> Handle(CreateWorkItemCommand request, CancellationToken cancellationToken)
         {
+            var creatorUserIdClaim = _httpContextAccessor.HttpContext.User
+                .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(creatorUserIdClaim) || !Guid.TryParse(creatorUserIdClaim, out var creatorUserId))
+                throw new UnauthorizedAccessException("User not authenticated.");
+
             var projectId = await _projectRepository.GetByIdAsync(request.ProjectId);
             var sprintId = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var userId = await _userManager.FindByIdAsync(request.UserId.ToString()!);
+            var assignedUserId = await _userManager.FindByIdAsync(request.AssignedUserId.ToString()!);
 
             if (!string.IsNullOrWhiteSpace(request.ProjectId.ToString()) && projectId == null)
                 throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found.");
@@ -44,24 +55,24 @@ namespace SprintManager.Application.Handlers.WorkItems
             if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprintId == null)
                 throw new SprintManagerNotFoundException($"Sprint with ID {request.SprintId} not found.");
 
-            if (!string.IsNullOrWhiteSpace(request.UserId.ToString()) && userId == null)
-                throw new SprintManagerNotFoundException($"User with ID {request.UserId} not found.");
+            if (!string.IsNullOrWhiteSpace(request.AssignedUserId.ToString()) && assignedUserId == null)
+                throw new SprintManagerNotFoundException($"User with ID {request.AssignedUserId} not found.");
 
             var workItem = new WorkItem(
-                request.ProjectId, 
-                request.WorkItemTitle, 
+                request.ProjectId,
+                request.WorkItemTitle,
                 request.WorkItemType,
                 request.SprintId,
-                request.UserId,
+                request.AssignedUserId,
+                creatorUserId,
                 request.Description,
                 request.PriorityLevel,
                 request.CompletionDate,
                 request.HoursEstimate
             );
-                
+
             await _workItemRepository.AddAsync(workItem);
             return _mapper.Map<WorkItemDTO>(workItem);
-            
         }
     }
 } 
