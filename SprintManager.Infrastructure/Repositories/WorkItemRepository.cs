@@ -20,7 +20,10 @@ namespace SprintManager.Infrastructure.Repositories
                 .Include(w => w.Project)
                 .Include(w => w.Sprint)
                 .Include(w => w.AssignedUser)
-                .OrderBy(w => w.Project)
+                .OrderBy(w => w.Project.Name)
+                .ThenBy(w => w.Sprint.SprintName)
+                .ThenBy(w => w.AssignedUser.UserName)
+                .ThenBy(w => w.WorkItemTitle)
                 .ToListAsync();
         }
 

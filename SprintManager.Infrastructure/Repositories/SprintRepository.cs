@@ -19,7 +19,8 @@ namespace SprintManager.Infrastructure.Repositories
         {
             return await _context.Sprints
                 .Include(s => s.Project)
-                .OrderBy(s => s.Project)
+                .OrderBy(s => s.Project.Name)
+                .ThenBy(s => s.SprintName)
                 .ToListAsync();
         }
         
