@@ -19,7 +19,7 @@ namespace SprintManager.Infrastructure.Repositories
             return await _context.ProjectMembers
                 .Include(pm => pm.Project)
                 .Include(pm => pm.User)
-                .OrderBy(pm => pm.Project)
+                .OrderBy(pm => pm.Project.Name)
                 .ThenBy(pm => pm.User.UserName)
                 .ToListAsync();
         }
