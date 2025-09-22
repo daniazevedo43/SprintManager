@@ -21,7 +21,9 @@ namespace SprintManager.Application.Handlers.Users
 
         public async Task<List<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userManager.Users.ToListAsync(cancellationToken);
+            var users = await _userManager.Users
+                .OrderBy(u => u.UserName)
+                .ToListAsync(cancellationToken);
 
             return _mapper.Map<List<UserDTO>>(users);
         }
