@@ -46,8 +46,8 @@ namespace SprintManager.API.Controllers
         public async Task<IActionResult> GenerateSprintReportPdf(Guid id)
         {
             var result = await _mediator.Send(new GenerateSprintReportPdfCommand { SprintId = id });
-        
-            return Ok(result);
+
+            return File(result, "application/pdf", $"sprint_report_{id}");
         }
 
         [HttpPost]
