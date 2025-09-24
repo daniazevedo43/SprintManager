@@ -41,13 +41,13 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{id}/report")]
-        [ProducesResponseType(typeof(byte[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PdfFileDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GenerateSprintReportPdf(Guid id)
         {
             var result = await _mediator.Send(new GenerateSprintReportPdfCommand { SprintId = id });
 
-            return File(result, "application/pdf", $"sprint_report_{id}");
+            return File(result.FileBytes, "application/pdf", result.FileName);
         }
 
         [HttpPost]
