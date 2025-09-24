@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using QuestPDF.Infrastructure;
 using SprintManager.API.Middleware;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Mappers;
@@ -68,6 +69,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     // Ignore omitted parameters to enable optional params
     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -40,6 +40,16 @@ namespace SprintManager.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}/report")]
+        [ProducesResponseType(typeof(byte[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GenerateSprintReportPdf(Guid id)
+        {
+            var result = await _mediator.Send(new GenerateSprintReportPdfCommand { SprintId = id });
+        
+            return Ok(result);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(SprintDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
