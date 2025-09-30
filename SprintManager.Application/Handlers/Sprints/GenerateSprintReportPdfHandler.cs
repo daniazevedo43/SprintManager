@@ -36,8 +36,8 @@ namespace SprintManager.Application.Handlers.Sprints
                 sprint.SprintName, 
                 sprint.StartDate, 
                 sprint.EndDate,
-                sprint.Description,
-                sprint.Status
+                sprint.Status,
+                sprint.Description
             );
 
             var fileName = $"{project?.Name.Replace(" ", "_")}_{sprint.SprintName.Replace(" ", "_")}_report".ToLower();

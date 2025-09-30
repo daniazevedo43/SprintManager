@@ -13,7 +13,7 @@ namespace SprintManager.Infrastructure.Services
         { 
         }
 
-        public IDocument Compose(string sprintName, DateTime startDate, DateTime endDate, string description, SprintStatus status)
+        public IDocument Compose(string sprintName, DateTime startDate, DateTime endDate, SprintStatus status, string? description)
         {
             var document = Document.Create(container =>
             {
@@ -30,8 +30,8 @@ namespace SprintManager.Infrastructure.Services
                             sprintName,
                             startDate, 
                             endDate,
-                            description,
-                            status
+                            status,
+                            description
                         ));
                 });
             });
@@ -39,7 +39,7 @@ namespace SprintManager.Infrastructure.Services
             return document;
         }
 
-        private void ComposeHeader(IContainer container, string sprintName, DateTime startDate, DateTime endDate, string description, SprintStatus status)
+        private void ComposeHeader(IContainer container, string sprintName, DateTime startDate, DateTime endDate, SprintStatus status, string? description)
         {
             container.Column(column =>
             {
@@ -73,15 +73,18 @@ namespace SprintManager.Infrastructure.Services
                             .FontSize(15);
                     });
 
-                column.Item()
-                    .Text(text =>
-                    {
-                        text.Span("Description: ")
-                            .FontSize(15)
-                            .Bold();
-                        text.Span(description)
-                            .FontSize(15);
-                    });
+                if(!string.IsNullOrWhiteSpace(description))
+                {
+                    column.Item()
+                        .Text(text =>
+                        {
+                            text.Span("Description: ")
+                                .FontSize(15)
+                                .Bold();
+                            text.Span(description)
+                                .FontSize(15);
+                        });
+                }
 
                 column.Item()
                     .Text(text =>
@@ -93,6 +96,11 @@ namespace SprintManager.Infrastructure.Services
                             .FontSize(15);
                     });
             });
+        }
+
+        private void ComposeContent(IContainer container)
+        {
+            
         }
     }
 }

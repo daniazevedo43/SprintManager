@@ -5,6 +5,6 @@ namespace SprintManager.Application.Interfaces
 {
     public interface ISprintReportPdf
     {
-        IDocument Compose(string sprintName, DateTime startDate, DateTime endDate, string description, SprintStatus status);
+        IDocument Compose(string sprintName, DateTime startDate, DateTime endDate, SprintStatus status, string? description);
     }
 }
