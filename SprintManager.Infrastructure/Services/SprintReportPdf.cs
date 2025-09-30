@@ -24,7 +24,9 @@ namespace SprintManager.Infrastructure.Services
                     page.PageColor(Colors.White);
                     page.DefaultTextStyle(x => x.FontSize(20));
 
-                    page.Header().Element(c => 
+                    page.Header()
+                        .PaddingBottom(40)
+                        .Element(c => 
                         ComposeHeader(
                             c,
                             sprintName,
@@ -33,6 +35,8 @@ namespace SprintManager.Infrastructure.Services
                             status,
                             description
                         ));
+
+                    page.Content().Element(ComposeContent);
                 });
             });
 
@@ -46,12 +50,10 @@ namespace SprintManager.Infrastructure.Services
                 column.Spacing(15);
 
                 column.Item()
-                    .Text(sprintName)
+                    .PaddingBottom(10)
+                    .Text(sprintName) 
                     .FontSize(21)
                     .Bold();
-
-                column.Item()
-                    .Height(10);
 
                 column.Item()
                     .Text(text =>
@@ -100,7 +102,54 @@ namespace SprintManager.Infrastructure.Services
 
         private void ComposeContent(IContainer container)
         {
-            
+            container.Table(table =>
+             {
+                 table.ColumnsDefinition(columns =>
+                 {
+                     columns.RelativeColumn(10);
+                     columns.RelativeColumn(10);
+                     columns.RelativeColumn(10);
+                     columns.RelativeColumn(10);
+                     columns.RelativeColumn(10);
+                 });
+
+                 table.Cell()
+                    .Background(Colors.Grey.Lighten2)
+                    .Element(CellStyle)
+                    .Text("Title")
+                    .FontSize(12);
+                
+                 table.Cell()
+                    .Background(Colors.Grey.Lighten2)
+                    .Element(CellStyle)
+                    .Text("Type")
+                    .FontSize(12);
+                 
+                 table.Cell()
+                    .Background(Colors.Grey.Lighten2)
+                    .Element(CellStyle)
+                    .Text("Assigned user")
+                    .FontSize(12);
+                 
+                 table.Cell()
+                    .Background(Colors.Grey.Lighten2)
+                    .Element(CellStyle)
+                    .Text("Priority level")
+                    .FontSize(12);
+                 
+                 table.Cell()
+                    .Background(Colors.Grey.Lighten2)
+                    .Element(CellStyle)
+                    .Text("Finish date")
+                    .FontSize(12);
+
+                 //table.Cell().Element(CellStyle).Text("150px");
+                 //table.Cell().Element(CellStyle).Text("120px");
+                 //table.Cell().Element(CellStyle).Text("180px");
+
+                 static IContainer CellStyle(IContainer container)
+                     => container.Border(1).Padding(9).AlignCenter().AlignMiddle();
+             });
         }
     }
 }
