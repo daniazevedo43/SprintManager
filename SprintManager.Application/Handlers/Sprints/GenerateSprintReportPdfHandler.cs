@@ -32,7 +32,13 @@ namespace SprintManager.Application.Handlers.Sprints
 
             var project = await _projectRepository.GetByIdAsync(sprint.ProjectId);
 
-            var document = _sprintReportPdf.Compose();
+            var document = _sprintReportPdf.Compose(
+                sprint.SprintName, 
+                sprint.StartDate, 
+                sprint.EndDate,
+                sprint.Description,
+                sprint.Status
+            );
 
             var fileName = $"{project?.Name.Replace(" ", "_")}_{sprint.SprintName.Replace(" ", "_")}_report".ToLower();
             var fileBytes = document.GeneratePdf();
