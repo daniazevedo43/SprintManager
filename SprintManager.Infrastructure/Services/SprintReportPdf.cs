@@ -117,31 +117,36 @@ namespace SprintManager.Infrastructure.Services
                     .Background(Colors.Grey.Lighten2)
                     .Element(CellStyle)
                     .Text("Title")
-                    .FontSize(12);
+                    .FontSize(12)
+                    .Bold();
                 
                  table.Cell()
                     .Background(Colors.Grey.Lighten2)
                     .Element(CellStyle)
                     .Text("Type")
-                    .FontSize(12);
-                 
+                    .FontSize(12)
+                    .Bold();
+
                  table.Cell()
                     .Background(Colors.Grey.Lighten2)
                     .Element(CellStyle)
                     .Text("Assigned user")
-                    .FontSize(12);
-                 
+                    .FontSize(12)
+                    .Bold();
+
                  table.Cell()
                     .Background(Colors.Grey.Lighten2)
                     .Element(CellStyle)
                     .Text("Priority level")
-                    .FontSize(12);
-                 
+                    .FontSize(12)
+                    .Bold();
+
                  table.Cell()
                     .Background(Colors.Grey.Lighten2)
                     .Element(CellStyle)
                     .Text("Finish date")
-                    .FontSize(12);
+                    .FontSize(12)
+                    .Bold();
 
                  //table.Cell().Element(CellStyle).Text("150px");
                  //table.Cell().Element(CellStyle).Text("120px");
