@@ -11,16 +11,19 @@ namespace SprintManager.Application.Handlers.Sprints
     {
         private readonly ISprintRepository _sprintRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly IWorkItemRepository _workItemRepository;
         private readonly ISprintReportPdf _sprintReportPdf;
 
         public GenerateSprintReportPdfHandler(
             ISprintRepository sprintRepository,
             IProjectRepository projectRepository,
+            IWorkItemRepository workItemRepository,
             ISprintReportPdf sprintReportPdf
         )
         {
             _sprintRepository = sprintRepository;
             _projectRepository = projectRepository;
+            _workItemRepository = workItemRepository;
             _sprintReportPdf = sprintReportPdf;
         }
 
@@ -32,13 +35,9 @@ namespace SprintManager.Application.Handlers.Sprints
 
             var project = await _projectRepository.GetByIdAsync(sprint.ProjectId);
 
-            var document = _sprintReportPdf.Compose(
-                sprint.SprintName, 
-                sprint.StartDate, 
-                sprint.EndDate,
-                sprint.Status,
-                sprint.Description
-            );
+            var workItems = await _workItemRepository.GetWorkItemsBySprintIdAsync(request.SprintId);
+
+            var document = _sprintReportPdf.Compose(sprint, workItems);
 
             var fileName = $"{project?.Name.Replace(" ", "_")}_{sprint.SprintName.Replace(" ", "_")}_report".ToLower();
             var fileBytes = document.GeneratePdf();

@@ -2,18 +2,18 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SprintManager.Application.Interfaces;
-using SprintManager.Domain.Enums;
+using SprintManager.Domain.Entities;
 
 namespace SprintManager.Infrastructure.Services
 {
     public class SprintReportPdf : ISprintReportPdf
     {
 
-        public SprintReportPdf() 
-        { 
+        public SprintReportPdf(IWorkItemRepository workItemRepository)
+        {
         }
-
-        public IDocument Compose(string sprintName, DateTime startDate, DateTime endDate, SprintStatus status, string? description)
+        
+        public IDocument Compose(Sprint sprint, ICollection<WorkItem> workItems)
         {
             var document = Document.Create(container =>
             {
@@ -24,26 +24,22 @@ namespace SprintManager.Infrastructure.Services
                     page.PageColor(Colors.White);
                     page.DefaultTextStyle(x => x.FontSize(20));
 
-                    page.Header()
-                        .PaddingBottom(40)
-                        .Element(c => 
-                        ComposeHeader(
-                            c,
-                            sprintName,
-                            startDate, 
-                            endDate,
-                            status,
-                            description
-                        ));
+                    page.Content().Column(column =>
+                    {
+                        column.Item()
+                            .PaddingBottom(42)
+                            .Element(c => ComposeHeader(c, sprint));
 
-                    page.Content().Element(ComposeContent);
+                        column.Item()
+                            .Element(c => ComposeContent(c, workItems));
+                    });
                 });
             });
 
             return document;
         }
 
-        private void ComposeHeader(IContainer container, string sprintName, DateTime startDate, DateTime endDate, SprintStatus status, string? description)
+        private void ComposeHeader(IContainer container, Sprint sprint)
         {
             container.Column(column =>
             {
@@ -51,8 +47,8 @@ namespace SprintManager.Infrastructure.Services
 
                 column.Item()
                     .PaddingBottom(10)
-                    .Text(sprintName) 
-                    .FontSize(21)
+                    .Text(sprint.SprintName) 
+                    .FontSize(23)
                     .Bold();
 
                 column.Item()
@@ -61,7 +57,7 @@ namespace SprintManager.Infrastructure.Services
                         text.Span("Start date: ")
                             .FontSize(15)
                             .Bold();
-                        text.Span($"{startDate.ToShortDateString()}")
+                        text.Span($"{sprint.StartDate.ToShortDateString()}")
                             .FontSize(15);
                     });
 
@@ -71,11 +67,11 @@ namespace SprintManager.Infrastructure.Services
                         text.Span("End date: ")
                             .FontSize(15)
                             .Bold();
-                        text.Span($"{endDate.ToShortDateString()}")
+                        text.Span($"{sprint.EndDate.ToShortDateString()}")
                             .FontSize(15);
                     });
 
-                if(!string.IsNullOrWhiteSpace(description))
+                if(!string.IsNullOrWhiteSpace(sprint.Description))
                 {
                     column.Item()
                         .Text(text =>
@@ -83,7 +79,7 @@ namespace SprintManager.Infrastructure.Services
                             text.Span("Description: ")
                                 .FontSize(15)
                                 .Bold();
-                            text.Span(description)
+                            text.Span(sprint.Description)
                                 .FontSize(15);
                         });
                 }
@@ -94,67 +90,81 @@ namespace SprintManager.Infrastructure.Services
                         text.Span("Status: ")
                             .FontSize(15)
                             .Bold();
-                        text.Span($"{status}")
+                        text.Span($"{sprint.Status}")
                             .FontSize(15);
                     });
             });
         }
 
-        private void ComposeContent(IContainer container)
+        private void ComposeContent(IContainer container, ICollection<WorkItem> workItems)
         {
-            container.Table(table =>
-             {
-                 table.ColumnsDefinition(columns =>
-                 {
-                     columns.RelativeColumn(10);
-                     columns.RelativeColumn(10);
-                     columns.RelativeColumn(10);
-                     columns.RelativeColumn(10);
-                     columns.RelativeColumn(10);
-                 });
-
-                 table.Cell()
-                    .Background(Colors.Grey.Lighten2)
-                    .Element(CellStyle)
-                    .Text("Title")
-                    .FontSize(12)
-                    .Bold();
-                
-                 table.Cell()
-                    .Background(Colors.Grey.Lighten2)
-                    .Element(CellStyle)
-                    .Text("Type")
-                    .FontSize(12)
+            container.Column(column =>
+            {
+                column.Item()
+                    .PaddingBottom(10)
+                    .Text("Work items list")
+                    .FontSize(18)
                     .Bold();
 
-                 table.Cell()
-                    .Background(Colors.Grey.Lighten2)
-                    .Element(CellStyle)
-                    .Text("Assigned user")
-                    .FontSize(12)
-                    .Bold();
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.RelativeColumn(10);
+                        columns.RelativeColumn(10);
+                        columns.RelativeColumn(10);
+                        columns.RelativeColumn(10);
+                        columns.RelativeColumn(10);
+                    });
 
-                 table.Cell()
-                    .Background(Colors.Grey.Lighten2)
-                    .Element(CellStyle)
-                    .Text("Priority level")
-                    .FontSize(12)
-                    .Bold();
+                    table.Cell()
+                        .Background(Colors.Grey.Lighten2)
+                        .Element(CellStyle)
+                        .Text("Title")
+                        .FontSize(12)
+                        .Bold();
 
-                 table.Cell()
-                    .Background(Colors.Grey.Lighten2)
-                    .Element(CellStyle)
-                    .Text("Finish date")
-                    .FontSize(12)
-                    .Bold();
+                    table.Cell()
+                        .Background(Colors.Grey.Lighten2)
+                        .Element(CellStyle)
+                        .Text("Type")
+                        .FontSize(12)
+                        .Bold();
 
-                 //table.Cell().Element(CellStyle).Text("150px");
-                 //table.Cell().Element(CellStyle).Text("120px");
-                 //table.Cell().Element(CellStyle).Text("180px");
+                    table.Cell()
+                        .Background(Colors.Grey.Lighten2)
+                        .Element(CellStyle)
+                        .Text("Assigned user")
+                        .FontSize(12)
+                        .Bold();
 
-                 static IContainer CellStyle(IContainer container)
-                     => container.Border(1).Padding(9).AlignCenter().AlignMiddle();
-             });
+                    table.Cell()
+                        .Background(Colors.Grey.Lighten2)
+                        .Element(CellStyle)
+                        .Text("Priority level")
+                        .FontSize(12)
+                        .Bold();
+
+                    table.Cell()
+                        .Background(Colors.Grey.Lighten2)
+                        .Element(CellStyle)
+                        .Text("Finish date")
+                        .FontSize(12)
+                        .Bold();
+
+                    foreach (var workItem in workItems)
+                    {
+                        table.Cell().Element(CellStyle).Text(workItem.WorkItemTitle);
+                        table.Cell().Element(CellStyle).Text(workItem.WorkItemType.ToString());
+                        table.Cell().Element(CellStyle).Text(workItem.AssignedUserId.ToString());
+                        table.Cell().Element(CellStyle).Text(workItem.PriorityLevel.ToString());
+                        table.Cell().Element(CellStyle).Text(workItem.CompletionDate.ToString());
+                    }
+                });
+
+                static IContainer CellStyle(IContainer container)
+                    => container.Border(1).Padding(9).AlignCenter().AlignMiddle();
+            });
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using QuestPDF.Infrastructure;
-using SprintManager.Domain.Enums;
+using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Interfaces
 {
     public interface ISprintReportPdf
     {
-        IDocument Compose(string sprintName, DateTime startDate, DateTime endDate, SprintStatus status, string? description);
+        IDocument Compose(Sprint sprint, ICollection<WorkItem> workItems);
     }
 }
