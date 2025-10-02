@@ -154,11 +154,27 @@ namespace SprintManager.Infrastructure.Services
 
                     foreach (var workItem in workItems)
                     {
-                        table.Cell().Element(CellStyle).Text(workItem.WorkItemTitle);
-                        table.Cell().Element(CellStyle).Text(workItem.WorkItemType.ToString());
-                        table.Cell().Element(CellStyle).Text(workItem.AssignedUser?.UserName);
-                        table.Cell().Element(CellStyle).Text(workItem.PriorityLevel.ToString());
-                        table.Cell().Element(CellStyle).Text(workItem.CompletionDate.ToString());
+                        table.Cell()
+                            .Element(CellStyle)
+                            .Text(workItem.WorkItemTitle);
+
+                        table.Cell()
+                            .Element(CellStyle)
+                            .Text(workItem.WorkItemType.ToString());
+
+                        table.Cell()
+                            .Element(CellStyle)
+                            .Text(workItem.AssignedUser?.UserName);
+                        
+                        table.Cell()
+                            .Element(CellStyle)
+                            .Text(workItem.PriorityLevel.ToString());
+                        
+                        table.Cell()
+                            .Element(CellStyle)
+                            .Text(workItem.CompletionDate.HasValue
+                                ? workItem.CompletionDate.Value.ToShortDateString()
+                                : string.Empty);
                     }
                 });
 
