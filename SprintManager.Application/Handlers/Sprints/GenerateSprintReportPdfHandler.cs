@@ -35,9 +35,11 @@ namespace SprintManager.Application.Handlers.Sprints
 
             var project = await _projectRepository.GetByIdAsync(sprint.ProjectId);
 
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {project?.Id} not found.");
+
             var workItems = await _workItemRepository.GetWorkItemsBySprintIdAsync(request.SprintId);
 
-            var document = _sprintReportPdf.Compose(sprint, workItems);
+            var document = _sprintReportPdf.Compose(sprint, project, workItems);
 
             var fileName = $"{project?.Name.Replace(" ", "_")}_{sprint.SprintName.Replace(" ", "_")}_report".ToLower();
             var fileBytes = document.GeneratePdf();

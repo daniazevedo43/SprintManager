@@ -9,11 +9,11 @@ namespace SprintManager.Infrastructure.Services
     public class SprintReportPdf : ISprintReportPdf
     {
 
-        public SprintReportPdf(IWorkItemRepository workItemRepository)
+        public SprintReportPdf()
         {
         }
         
-        public IDocument Compose(Sprint sprint, ICollection<WorkItem> workItems)
+        public IDocument Compose(Sprint sprint, Project project, ICollection<WorkItem> workItems)
         {
             var document = Document.Create(container =>
             {
@@ -28,7 +28,7 @@ namespace SprintManager.Infrastructure.Services
                     {
                         column.Item()
                             .PaddingBottom(42)
-                            .Element(c => ComposeHeader(c, sprint));
+                            .Element(c => ComposeHeader(c, sprint, project));
 
                         column.Item()
                             .Element(c => ComposeContent(c, workItems));
@@ -39,7 +39,7 @@ namespace SprintManager.Infrastructure.Services
             return document;
         }
 
-        private void ComposeHeader(IContainer container, Sprint sprint)
+        private void ComposeHeader(IContainer container, Sprint sprint, Project project)
         {
             container.Column(column =>
             {
@@ -47,7 +47,7 @@ namespace SprintManager.Infrastructure.Services
 
                 column.Item()
                     .PaddingBottom(10)
-                    .Text(sprint.SprintName) 
+                    .Text($"{sprint.SprintName} - {project.Name}") 
                     .FontSize(23)
                     .Bold();
 
@@ -156,7 +156,7 @@ namespace SprintManager.Infrastructure.Services
                     {
                         table.Cell().Element(CellStyle).Text(workItem.WorkItemTitle);
                         table.Cell().Element(CellStyle).Text(workItem.WorkItemType.ToString());
-                        table.Cell().Element(CellStyle).Text(workItem.AssignedUserId.ToString());
+                        table.Cell().Element(CellStyle).Text(workItem.AssignedUser?.UserName);
                         table.Cell().Element(CellStyle).Text(workItem.PriorityLevel.ToString());
                         table.Cell().Element(CellStyle).Text(workItem.CompletionDate.ToString());
                     }

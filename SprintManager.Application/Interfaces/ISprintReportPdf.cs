@@ -5,6 +5,6 @@ namespace SprintManager.Application.Interfaces
 {
     public interface ISprintReportPdf
     {
-        IDocument Compose(Sprint sprint, ICollection<WorkItem> workItems);
+        IDocument Compose(Sprint sprint, Project project, ICollection<WorkItem> workItems);
     }
 }
