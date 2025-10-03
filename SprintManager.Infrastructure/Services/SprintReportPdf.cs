@@ -100,83 +100,86 @@ namespace SprintManager.Infrastructure.Services
         {
             container.Column(column =>
             {
-                column.Item()
-                    .PaddingBottom(10)
-                    .Text("Work items list")
-                    .FontSize(18)
-                    .Bold();
-
-                column.Item().Table(table =>
+                if (workItems.Count > 0)
                 {
-                    table.ColumnsDefinition(columns =>
+                    column.Item()
+                        .PaddingBottom(10)
+                        .Text("Work items list")
+                        .FontSize(18)
+                        .Bold();
+
+                    column.Item().Table(table =>
                     {
-                        columns.RelativeColumn(10);
-                        columns.RelativeColumn(10);
-                        columns.RelativeColumn(10);
-                        columns.RelativeColumn(10);
-                        columns.RelativeColumn(10);
+                        table.ColumnsDefinition(columns =>
+                        {
+                            columns.RelativeColumn(10);
+                            columns.RelativeColumn(10);
+                            columns.RelativeColumn(10);
+                            columns.RelativeColumn(10);
+                            columns.RelativeColumn(10);
+                        });
+
+                        table.Cell()
+                            .Background(Colors.Grey.Lighten2)
+                            .Element(CellStyle)
+                            .Text("Title")
+                            .FontSize(12)
+                            .Bold();
+
+                        table.Cell()
+                            .Background(Colors.Grey.Lighten2)
+                            .Element(CellStyle)
+                            .Text("Type")
+                            .FontSize(12)
+                            .Bold();
+
+                        table.Cell()
+                            .Background(Colors.Grey.Lighten2)
+                            .Element(CellStyle)
+                            .Text("Assigned user")
+                            .FontSize(12)
+                            .Bold();
+
+                        table.Cell()
+                            .Background(Colors.Grey.Lighten2)
+                            .Element(CellStyle)
+                            .Text("Priority level")
+                            .FontSize(12)
+                            .Bold();
+
+                        table.Cell()
+                            .Background(Colors.Grey.Lighten2)
+                            .Element(CellStyle)
+                            .Text("Finish date")
+                            .FontSize(12)
+                            .Bold();
+
+                        foreach (var workItem in workItems)
+                        {
+                            table.Cell()
+                                .Element(CellStyle)
+                                .Text(workItem.WorkItemTitle);
+
+                            table.Cell()
+                                .Element(CellStyle)
+                                .Text(workItem.WorkItemType.ToString());
+
+                            table.Cell()
+                                .Element(CellStyle)
+                                .Text(workItem.AssignedUser?.UserName);
+
+                            table.Cell()
+                                .Element(CellStyle)
+                                .Text(workItem.PriorityLevel.ToString());
+
+                            table.Cell()
+                                .Element(CellStyle)
+                                .Text(workItem.CompletionDate.HasValue
+                                    ? workItem.CompletionDate.Value.ToShortDateString()
+                                    : string.Empty);
+                        }
                     });
-
-                    table.Cell()
-                        .Background(Colors.Grey.Lighten2)
-                        .Element(CellStyle)
-                        .Text("Title")
-                        .FontSize(12)
-                        .Bold();
-
-                    table.Cell()
-                        .Background(Colors.Grey.Lighten2)
-                        .Element(CellStyle)
-                        .Text("Type")
-                        .FontSize(12)
-                        .Bold();
-
-                    table.Cell()
-                        .Background(Colors.Grey.Lighten2)
-                        .Element(CellStyle)
-                        .Text("Assigned user")
-                        .FontSize(12)
-                        .Bold();
-
-                    table.Cell()
-                        .Background(Colors.Grey.Lighten2)
-                        .Element(CellStyle)
-                        .Text("Priority level")
-                        .FontSize(12)
-                        .Bold();
-
-                    table.Cell()
-                        .Background(Colors.Grey.Lighten2)
-                        .Element(CellStyle)
-                        .Text("Finish date")
-                        .FontSize(12)
-                        .Bold();
-
-                    foreach (var workItem in workItems)
-                    {
-                        table.Cell()
-                            .Element(CellStyle)
-                            .Text(workItem.WorkItemTitle);
-
-                        table.Cell()
-                            .Element(CellStyle)
-                            .Text(workItem.WorkItemType.ToString());
-
-                        table.Cell()
-                            .Element(CellStyle)
-                            .Text(workItem.AssignedUser?.UserName);
-                        
-                        table.Cell()
-                            .Element(CellStyle)
-                            .Text(workItem.PriorityLevel.ToString());
-                        
-                        table.Cell()
-                            .Element(CellStyle)
-                            .Text(workItem.CompletionDate.HasValue
-                                ? workItem.CompletionDate.Value.ToShortDateString()
-                                : string.Empty);
-                    }
-                });
+                }
 
                 static IContainer CellStyle(IContainer container)
                     => container.Border(1).Padding(9).AlignCenter().AlignMiddle();
