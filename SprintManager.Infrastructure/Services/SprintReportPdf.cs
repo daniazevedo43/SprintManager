@@ -124,7 +124,7 @@ namespace SprintManager.Infrastructure.Services
                             table.Cell()
                                 .Background(Colors.Grey.Lighten2)
                                 .Element(HeaderCellStyle)
-                                .Text("Title")
+                                .Text("Work item")
                                 .FontSize(14)
                                 .Bold();
 
