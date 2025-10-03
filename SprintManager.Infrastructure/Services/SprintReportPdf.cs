@@ -3,6 +3,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
+using SprintManager.Domain.Enums;
 
 namespace SprintManager.Infrastructure.Services
 {
@@ -115,8 +116,8 @@ namespace SprintManager.Infrastructure.Services
                             columns.RelativeColumn(35);
                             columns.RelativeColumn(8);
                             columns.RelativeColumn(18);
+                            columns.RelativeColumn(13);
                             columns.RelativeColumn(10);
-                            columns.RelativeColumn(12);
                         });
 
                         table.Cell()
@@ -150,11 +151,11 @@ namespace SprintManager.Infrastructure.Services
                         table.Cell()
                             .Background(Colors.Grey.Lighten2)
                             .Element(CellStyle)
-                            .Text("Finish date")
+                            .Text("Closed")
                             .FontSize(14)
                             .Bold();
 
-                        foreach (var workItem in workItems)
+                        foreach (var workItem in workItems.OrderBy(w => w.CreationDate))
                         {
                             table.Cell()
                                 .Element(CellStyle)
@@ -178,9 +179,9 @@ namespace SprintManager.Infrastructure.Services
 
                             table.Cell()
                                 .Element(CellStyle)
-                                .Text(workItem.CompletionDate.HasValue
-                                    ? workItem.CompletionDate.Value.ToShortDateString()
-                                    : string.Empty)
+                                .Text(workItem.Status == WorkItemStatus.Closed
+                                    ? "Yes" 
+                                    : "No")
                                 .FontSize(14);
                         }
                     });
