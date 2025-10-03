@@ -32,7 +32,11 @@ namespace SprintManager.Application.Handlers.WorkItems
         public async Task<WorkItemDTO> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var user = await _userManager.FindByIdAsync(request.AssignedUserId.ToString()!);
+
+            User? user = null;
+
+            if (request.AssignedUserId.HasValue)
+                user = await _userManager.FindByIdAsync(request.AssignedUserId.ToString()!);
 
             if (!string.IsNullOrWhiteSpace(request.SprintId.ToString()) && sprint == null)
                 throw new SprintManagerNotFoundException($"Sprint with ID {request.SprintId} not found.");
