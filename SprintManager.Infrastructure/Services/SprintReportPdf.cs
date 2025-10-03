@@ -19,7 +19,7 @@ namespace SprintManager.Infrastructure.Services
             {
                 container.Page(page =>
                 {
-                    page.Size(PageSizes.A4);
+                    page.Size(PageSizes.A3);
                     page.Margin(2, Unit.Centimetre);
                     page.PageColor(Colors.White);
                     page.DefaultTextStyle(x => x.FontSize(20));
@@ -112,71 +112,76 @@ namespace SprintManager.Infrastructure.Services
                     {
                         table.ColumnsDefinition(columns =>
                         {
+                            columns.RelativeColumn(35);
+                            columns.RelativeColumn(8);
+                            columns.RelativeColumn(18);
                             columns.RelativeColumn(10);
-                            columns.RelativeColumn(10);
-                            columns.RelativeColumn(10);
-                            columns.RelativeColumn(10);
-                            columns.RelativeColumn(10);
+                            columns.RelativeColumn(12);
                         });
 
                         table.Cell()
                             .Background(Colors.Grey.Lighten2)
                             .Element(CellStyle)
                             .Text("Title")
-                            .FontSize(12)
+                            .FontSize(14)
                             .Bold();
 
                         table.Cell()
                             .Background(Colors.Grey.Lighten2)
                             .Element(CellStyle)
                             .Text("Type")
-                            .FontSize(12)
+                            .FontSize(14)
                             .Bold();
 
                         table.Cell()
                             .Background(Colors.Grey.Lighten2)
                             .Element(CellStyle)
                             .Text("Assigned user")
-                            .FontSize(12)
+                            .FontSize(14)
                             .Bold();
 
                         table.Cell()
                             .Background(Colors.Grey.Lighten2)
                             .Element(CellStyle)
                             .Text("Priority level")
-                            .FontSize(12)
+                            .FontSize(14)
                             .Bold();
 
                         table.Cell()
                             .Background(Colors.Grey.Lighten2)
                             .Element(CellStyle)
                             .Text("Finish date")
-                            .FontSize(12)
+                            .FontSize(14)
                             .Bold();
 
                         foreach (var workItem in workItems)
                         {
                             table.Cell()
                                 .Element(CellStyle)
-                                .Text(workItem.WorkItemTitle);
+                                .Text(workItem.WorkItemTitle)
+                                .FontSize(14);
 
                             table.Cell()
                                 .Element(CellStyle)
-                                .Text(workItem.WorkItemType.ToString());
+                                .Text(workItem.WorkItemType.ToString())
+                                .FontSize(14);
 
                             table.Cell()
                                 .Element(CellStyle)
-                                .Text(workItem.AssignedUser?.UserName);
+                                .Text(workItem.AssignedUser?.UserName)
+                                .FontSize(14);
 
                             table.Cell()
                                 .Element(CellStyle)
-                                .Text(workItem.PriorityLevel.ToString());
+                                .Text(workItem.PriorityLevel.ToString())
+                                .FontSize(14);
 
                             table.Cell()
                                 .Element(CellStyle)
                                 .Text(workItem.CompletionDate.HasValue
                                     ? workItem.CompletionDate.Value.ToShortDateString()
-                                    : string.Empty);
+                                    : string.Empty)
+                                .FontSize(14);
                         }
                     });
                 }
