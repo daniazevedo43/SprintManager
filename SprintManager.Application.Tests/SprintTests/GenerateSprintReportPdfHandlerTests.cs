@@ -2,7 +2,6 @@
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using SprintManager.Application.DTOs;
-using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Sprints;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Sprints;
