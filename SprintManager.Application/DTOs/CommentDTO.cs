@@ -1,6 +1,6 @@
 ﻿namespace SprintManager.Application.DTOs
 {
-    public class CommentDTO
+    public class CommentDto
     {
         public Guid Id { get; set; }
         public Guid WorkItemId { get; set; }

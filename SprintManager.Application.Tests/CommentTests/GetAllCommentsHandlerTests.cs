@@ -40,9 +40,9 @@ namespace SprintManager.Application.Tests.CommentTests
                 )
             };
 
-            var commentsDTOs = new List<CommentDTO>()
+            var commentsDtos = new List<CommentDto>()
             {
-                new CommentDTO
+                new CommentDto
                 {
                     Id = comments[0].Id,
                     WorkItemId = comments[0].WorkItemId,
@@ -50,7 +50,7 @@ namespace SprintManager.Application.Tests.CommentTests
                     Text = comments[0].Text,
                     CreationDate = comments[0].CreationDate
                 },
-                new CommentDTO
+                new CommentDto
                 {
                     Id = comments[1].Id,
                     WorkItemId = comments[1].WorkItemId,
@@ -64,11 +64,11 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(comments);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<CommentDTO>>(comments)).Returns(commentsDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<CommentDto>>(comments)).Returns(commentsDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for (int i = 0; i < commentsDTOs.Count; i++)
+            for (int i = 0; i < commentsDtos.Count; i++)
             {
                 Assert.Equal(comments[i].Id, result[i].Id);
                 Assert.Equal(comments[i].WorkItemId, result[i].WorkItemId);
@@ -81,7 +81,7 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<CommentDTO>>(comments), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<CommentDto>>(comments), Times.Once);
         }
     }
 }

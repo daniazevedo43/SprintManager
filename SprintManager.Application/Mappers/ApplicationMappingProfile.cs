@@ -18,7 +18,7 @@ namespace SprintManager.Application.Mappers
             CreateMap<WorkItem, WorkItemDTO>()
                 .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null))
                 .ForMember(dest => dest.AssignedUserName, opt => opt.MapFrom(src => src.AssignedUser != null ? src.AssignedUser.UserName : null));
-            CreateMap<Comment, CommentDTO>()
+            CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
             CreateMap<Image, ImageDTO>()

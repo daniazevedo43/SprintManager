@@ -35,7 +35,7 @@ namespace SprintManager.Application.Tests.CommentTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_UpdatesComment_ReturnsCommentDTO()
+        public async Task Handle_GivenValidId_UpdatesComment_ReturnsCommentDto()
         {
             var command = new UpdateCommentCommand
             {
@@ -46,7 +46,7 @@ namespace SprintManager.Application.Tests.CommentTests
             var userId = Guid.NewGuid();
 
             var comment = new Comment(Guid.NewGuid(), userId, command.Text);
-            var commentDTO = new CommentDTO
+            var commentDto = new CommentDto
             {
                 Id = comment.Id,
                 WorkItemId = comment.WorkItemId,
@@ -64,15 +64,15 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Setup(r => r.UpdateAsync(comment));
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<CommentDTO>(comment)).Returns(commentDTO);
+            _mockMapper.Setup(mapper => mapper.Map<CommentDto>(comment)).Returns(commentDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(commentDTO.Id, result.Id);
-            Assert.Equal(commentDTO.WorkItemId, result.WorkItemId);
-            Assert.Equal(commentDTO.UserId, result.UserId);
-            Assert.Equal(commentDTO.Text, result.Text);
-            Assert.Equal(commentDTO.CreationDate, result.CreationDate);
+            Assert.Equal(commentDto.Id, result.Id);
+            Assert.Equal(commentDto.WorkItemId, result.WorkItemId);
+            Assert.Equal(commentDto.UserId, result.UserId);
+            Assert.Equal(commentDto.Text, result.Text);
+            Assert.Equal(commentDto.CreationDate, result.CreationDate);
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
@@ -86,7 +86,7 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Verify(r => r.UpdateAsync(comment), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the modified comment.
-            _mockMapper.Verify(m => m.Map<CommentDTO>(comment), Times.Once);
+            _mockMapper.Verify(m => m.Map<CommentDto>(comment), Times.Once);
         }
 
         // Test exception throwing when user is not authenticated
