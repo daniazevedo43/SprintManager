@@ -44,8 +44,8 @@ namespace SprintManager.Domain.Tests
             var nextDate = DateTime.UtcNow + new TimeSpan(1, 0, 0, 0);
 
             var workItem = new WorkItem(
-                projectId, "Test title", WorkItemType.Task, sprintId,
-                assignedUserId, creatorUserId, "Test Description", 
+                projectId, "Test title", WorkItemType.Task, creatorUserId,
+                sprintId, assignedUserId, "Test Description", 
                 WorkItemPriorityLevel.Low, nextDate, 5
             );
 

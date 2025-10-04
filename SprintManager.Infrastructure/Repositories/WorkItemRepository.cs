@@ -36,6 +36,14 @@ namespace SprintManager.Infrastructure.Repositories
                 .FirstOrDefaultAsync(w => w.Id == id);
         }
 
+        public async Task<List<WorkItem>> GetWorkItemsBySprintIdAsync(Guid sprintId)
+        {
+            return await _context.WorkItems
+                .Include(w => w.AssignedUser)
+                .Where(w => w.SprintId == sprintId)
+                .ToListAsync();
+        }
+
         public async Task<WorkItem?> GetBySprintIdAsync(Guid sprintId)
         {
             return await _context.WorkItems.FirstOrDefaultAsync(w => w.SprintId == sprintId);

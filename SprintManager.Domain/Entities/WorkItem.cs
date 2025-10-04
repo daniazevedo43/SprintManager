@@ -43,7 +43,7 @@ namespace SprintManager.Domain.Entities
             CreationDate = DateTime.UtcNow;
         }
 
-        public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType, Guid? sprintId, Guid? assignedUserId, Guid? creatorUserId, string? description, WorkItemPriorityLevel? priorityLevel, DateTime? completionDate, int? hoursEstimate)
+        public WorkItem(Guid projectId, string workItemTitle, WorkItemType workItemType, Guid? creatorUserId, Guid? sprintId, Guid? assignedUserId, string? description, WorkItemPriorityLevel? priorityLevel, DateTime? completionDate, int? hoursEstimate)
         {
             if (projectId == Guid.Empty) throw new ArgumentNullException(nameof(projectId), "Project ID can't be null or empty.");
             if (string.IsNullOrWhiteSpace(workItemTitle)) throw new ArgumentNullException(nameof(workItemTitle), "Work item's title can't be null or empty.");

@@ -38,15 +38,15 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 new WorkItem(
                     Guid.NewGuid(),
                     "Test title", WorkItemType.Task,
-                    Guid.NewGuid(), Guid.NewGuid(), creatorUserId,
+                    creatorUserId, Guid.NewGuid(), Guid.NewGuid(),
                     "Test description",
                     WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 ),
                 new WorkItem(
                     Guid.NewGuid(), "Test title 2",
-                    WorkItemType.Bug, Guid.NewGuid(), Guid.NewGuid(),
-                    creatorUserId, "Test description 2",
+                    WorkItemType.Bug, creatorUserId, Guid.NewGuid(),
+                    Guid.NewGuid(), "Test description 2",
                     WorkItemPriorityLevel.Low,
                     DateTime.UtcNow.ToUniversalTime().AddDays(1), 8
                 )

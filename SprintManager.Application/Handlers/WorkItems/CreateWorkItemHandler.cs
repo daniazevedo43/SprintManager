@@ -47,7 +47,11 @@ namespace SprintManager.Application.Handlers.WorkItems
 
             var projectId = await _projectRepository.GetByIdAsync(request.ProjectId);
             var sprintId = await _sprintRepository.GetByIdAsync(request.SprintId);
-            var assignedUserId = await _userManager.FindByIdAsync(request.AssignedUserId.ToString()!);
+            
+            User? assignedUserId = null;
+
+            if(request.AssignedUserId.HasValue)
+                assignedUserId = await _userManager.FindByIdAsync(request.AssignedUserId.Value.ToString());
 
             if (!string.IsNullOrWhiteSpace(request.ProjectId.ToString()) && projectId == null)
                 throw new SprintManagerNotFoundException($"Project with ID {request.ProjectId} not found.");

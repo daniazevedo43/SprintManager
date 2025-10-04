@@ -1,0 +1,226 @@
+﻿using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using SprintManager.Application.Interfaces;
+using SprintManager.Domain.Entities;
+using SprintManager.Domain.Enums;
+
+namespace SprintManager.Infrastructure.Services
+{
+    public class SprintReportPdf : ISprintReportPdf
+    {
+
+        public SprintReportPdf()
+        {
+        }
+        
+        public IDocument Compose(Sprint sprint, Project project, ICollection<WorkItem> workItems)
+        {
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A3);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(20));
+
+                    page.Content().Column(column =>
+                    {
+                        column.Item()
+                            .PaddingBottom(42)
+                            .Element(c => ComposeHeader(c, sprint, project));
+
+                        column.Item()
+                            .Element(c => ComposeContent(c, workItems));
+                    });
+                });
+            });
+
+            return document;
+        }
+
+        private void ComposeHeader(IContainer container, Sprint sprint, Project project)
+        {
+            container.Column(column =>
+            {
+                column.Spacing(15);
+
+                column.Item()
+                    .PaddingBottom(10)
+                    .Text($"{sprint.SprintName} - {project.Name}") 
+                    .FontSize(23)
+                    .Bold();
+
+                column.Item()
+                    .Text(text =>
+                    {
+                        text.Span("Start date: ")
+                            .FontSize(15)
+                            .Bold();
+                        text.Span($"{sprint.StartDate.ToShortDateString()}")
+                            .FontSize(15);
+                    });
+
+                column.Item()
+                    .Text(text =>
+                    {
+                        text.Span("End date: ")
+                            .FontSize(15)
+                            .Bold();
+                        text.Span($"{sprint.EndDate.ToShortDateString()}")
+                            .FontSize(15);
+                    });
+
+                if(!string.IsNullOrWhiteSpace(sprint.Description))
+                {
+                    column.Item()
+                        .Text(text =>
+                        {
+                            text.Span("Description: ")
+                                .FontSize(15)
+                                .Bold();
+                            text.Span(sprint.Description)
+                                .FontSize(15);
+                        });
+                }
+
+                column.Item()
+                    .Text(text =>
+                    {
+                        text.Span("Status: ")
+                            .FontSize(15)
+                            .Bold();
+                        text.Span($"{sprint.Status}")
+                            .FontSize(15);
+                    });
+            });
+        }
+
+        private void ComposeContent(IContainer container, ICollection<WorkItem> workItems)
+        {
+            container.Column(column =>
+            {
+                if (workItems.Count > 0)
+                {
+                    column.Item()
+                        .PaddingBottom(10)
+                        .Text("Work items list")
+                        .FontSize(18)
+                        .Bold();
+
+                    column.Item()
+                        .Table(table =>
+                        {
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn(35);
+                                columns.RelativeColumn(8);
+                                columns.RelativeColumn(18);
+                                columns.RelativeColumn(13);
+                                columns.RelativeColumn(10);
+                            });
+
+                            table.Cell()
+                                .Background(Colors.Grey.Lighten2)
+                                .Element(HeaderCellStyle)
+                                .Text("Work item")
+                                .FontSize(14)
+                                .Bold();
+
+                            table.Cell()
+                                .Background(Colors.Grey.Lighten2)
+                                .Element(HeaderCellStyle)
+                                .Text("Type")
+                                .FontSize(14)
+                                .Bold();
+
+                            table.Cell()
+                                .Background(Colors.Grey.Lighten2)
+                                .Element(HeaderCellStyle)
+                                .Text("Assigned user")
+                                .FontSize(14)
+                                .Bold();
+
+                            table.Cell()
+                                .Background(Colors.Grey.Lighten2)
+                                .Element(HeaderCellStyle)
+                                .Text("Priority level")
+                                .FontSize(14)
+                                .Bold();
+
+                            table.Cell()
+                                .Background(Colors.Grey.Lighten2)
+                                .Element(HeaderCellStyle)
+                                .Text("Closed")
+                                .FontSize(14)
+                                .Bold();
+
+                            foreach (var workItem in workItems.OrderBy(w => w.CreationDate))
+                            {
+                                table.Cell()
+                                    .Element(workItem.Status == WorkItemStatus.Closed 
+                                        ? ClosedWorkItemCellStyle 
+                                        : OnGoingWorkItemCellStyle)
+                                    .Text(workItem.WorkItemTitle)
+                                    .FontSize(14);
+
+                                table.Cell()
+                                    .Element(workItem.Status == WorkItemStatus.Closed
+                                        ? ClosedWorkItemCellStyle
+                                        : OnGoingWorkItemCellStyle)
+                                    .Text(workItem.WorkItemType.ToString())
+                                    .FontSize(14);
+
+                                table.Cell()
+                                    .Element(workItem.Status == WorkItemStatus.Closed 
+                                        ? ClosedWorkItemCellStyle 
+                                        : OnGoingWorkItemCellStyle)
+                                    .Text(workItem.AssignedUser?.UserName)
+                                    .FontSize(14);
+
+                                table.Cell()
+                                    .Element(workItem.Status == WorkItemStatus.Closed 
+                                        ? ClosedWorkItemCellStyle 
+                                        : OnGoingWorkItemCellStyle)
+                                    .Text(workItem.PriorityLevel.ToString())
+                                    .FontSize(14);
+
+                                table.Cell()
+                                    .Element(workItem.Status == WorkItemStatus.Closed 
+                                        ? ClosedWorkItemCellStyle 
+                                        : OnGoingWorkItemCellStyle)
+                                    .Text(workItem.Status == WorkItemStatus.Closed
+                                        ? "Yes" 
+                                        : "No")
+                                    .FontSize(14);
+                            }
+                        });
+                }
+
+                static IContainer HeaderCellStyle(IContainer container)
+                    => container
+                        .Border(1)
+                        .Padding(9)
+                        .AlignCenter()
+                        .AlignMiddle();
+
+                static IContainer ClosedWorkItemCellStyle(IContainer container)
+                    => container
+                        .Background(Colors.Green.Lighten4)
+                        .Border(1)
+                        .Padding(9)
+                        .AlignCenter()
+                        .AlignMiddle();
+
+                static IContainer OnGoingWorkItemCellStyle(IContainer container)
+                    => container
+                        .Background(Colors.Red.Lighten4)
+                        .Border(1)
+                        .Padding(9)
+                        .AlignCenter()
+                        .AlignMiddle();
+            });
+        }
+    }
+}
