@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Images
 {
-    public class GetImageByIdHandler : IRequestHandler<GetImageByIdQuery, ImageDTO>
+    public class GetImageByIdHandler : IRequestHandler<GetImageByIdQuery, ImageDto>
     {
         private readonly IImageRepository _imageRepository;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace SprintManager.Application.Handlers.Images
             _mapper = mapper;
         }
 
-        public async Task<ImageDTO> Handle(GetImageByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ImageDto> Handle(GetImageByIdQuery request, CancellationToken cancellationToken)
         {
             var image = await _imageRepository.GetByIdAsync(request.Id);
 
             if (image == null) throw new SprintManagerNotFoundException($"Image with ID {request?.Id} not found.");
 
-            return _mapper.Map<ImageDTO>(image);    
+            return _mapper.Map<ImageDto>(image);    
         }
     }
 }

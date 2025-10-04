@@ -1,6 +1,6 @@
 ﻿namespace SprintManager.Application.DTOs
 {
-    public class ImageDTO
+    public class ImageDto
     {
         public Guid Id { get; set; }
         public Guid WorkItemId { get; set; }
