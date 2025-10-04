@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.Application.Handlers.Auth
 {
-    public class RefreshHandler : IRequestHandler<RefreshCommand, LoginDTO>
+    public class RefreshHandler : IRequestHandler<RefreshCommand, LoginDto>
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenService _tokenService;
@@ -25,7 +25,7 @@ namespace SprintManager.Application.Handlers.Auth
             _userManager = userManager;
         }
 
-        public async Task<LoginDTO> Handle(RefreshCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDto> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
             var refreshToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken);
        
@@ -47,7 +47,7 @@ namespace SprintManager.Application.Handlers.Auth
 
             await _refreshTokenRepository.AddAsync(newRefreshToken);
 
-            return new LoginDTO
+            return new LoginDto
             {
                 AccessToken = jwtToken,
                 RefreshToken = newRefreshToken.Token
