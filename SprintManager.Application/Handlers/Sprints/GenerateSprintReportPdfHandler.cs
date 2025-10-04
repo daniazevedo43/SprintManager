@@ -35,7 +35,7 @@ namespace SprintManager.Application.Handlers.Sprints
 
             var project = await _projectRepository.GetByIdAsync(sprint.ProjectId);
 
-            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {project?.Id} not found.");
+            if (project == null) throw new SprintManagerNotFoundException($"Project with ID {sprint.ProjectId} not found.");
 
             var workItems = await _workItemRepository.GetWorkItemsBySprintIdAsync(request.SprintId);
 

@@ -2,11 +2,13 @@
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using SprintManager.Application.DTOs;
+using SprintManager.Application.Exceptions;
 using SprintManager.Application.Handlers.Sprints;
 using SprintManager.Application.Interfaces;
 using SprintManager.Application.Queries.Sprints;
 using SprintManager.Domain.Entities;
 using SprintManager.Domain.Enums;
+using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Tests.SprintTests
 {
@@ -130,6 +132,62 @@ namespace SprintManager.Application.Tests.SprintTests
 
             // Ensure Compose was called exactly once.
             _mockSprintReportPdf.Verify(r => r.Compose(mockSprint, mockProject, workItems), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifySprint_ThrowsException_WhenSprintWasNotFound()
+        {
+            var command = new GenerateSprintReportPdfCommand
+            {
+                SprintId = Guid.NewGuid(),
+            };
+
+            // Repository's mock configuration
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Sprint with ID {command.SprintId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
+        }
+
+        [Fact]
+        public async Task VerifyProject_ThrowsException_WhenProjectWasNotFound()
+        {
+            var command = new GenerateSprintReportPdfCommand
+            {
+                SprintId = Guid.NewGuid(),
+            };
+
+            var projectId = Guid.NewGuid();
+
+            var mockSprint = Mock.Of<Sprint>(s =>
+                s.Id == command.SprintId &&
+                s.ProjectId == projectId &&
+                s.SprintName == "Test sprint" &&
+                s.StartDate == new DateTime(2025, 12, 01) &&
+                s.EndDate == new DateTime(2025, 12, 29) &&
+                s.Description == "Test Description" &&
+                s.Status == SprintStatus.Planned
+            );
+
+            // Repository's mock configuration
+            _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(mockSprint);
+            _mockProjectRepository.Setup(r => r.GetByIdAsync(mockSprint.ProjectId));
+
+            var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
+                () => _handler.Handle(command, CancellationToken.None)
+            );
+
+            Assert.Equal($"Project with ID {mockSprint.ProjectId} not found.", exception.Message);
+
+            // Ensure GetByIdAsync was called exactly once.
+            _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
+            _mockProjectRepository.Verify(r => r.GetByIdAsync(mockSprint.ProjectId), Times.Once);
         }
     }
 }
