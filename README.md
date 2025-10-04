@@ -65,6 +65,7 @@ The following API functionalities are already live:
 
 * `GET /api/Sprints`: Returns a list of all sprints from all projects.
 * `GET /api/Sprints/{id}`: Returns a sprint.
+* `GET /api/Sprints/{id}/report`: Generates a PDF file with a sprint's report.
 * `POST /api/Sprints`: Create a new sprint for a project.
 * `PUT /api/Sprints/{id}`: Updates a sprint.
 * `DELETE /api/Sprints/{id}`: Removes a sprint from a project.
