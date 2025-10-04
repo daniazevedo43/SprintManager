@@ -108,7 +108,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             };
 
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.ToString()!)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(workItem);
             _mockWorkItemRepository.Setup(r => r.UpdateAsync(workItem));
 
@@ -132,7 +132,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal(workItemDTO.HoursEstimate, result.HoursEstimate);
 
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.ToString()!), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!), Times.Once);
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
             _mockWorkItemRepository.Verify(r => r.UpdateAsync(workItem), Times.Once);
             _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
@@ -188,7 +188,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             };
 
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.ToString()!));
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
                 () => _handler.Handle(command, CancellationToken.None)
@@ -200,7 +200,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
 
             // Ensure FindByIdAsync was called exactly once.
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.ToString()!), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!), Times.Once);
         }
 
         // Test exception throwing when work item is not found
@@ -222,7 +222,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             };
 
             _mockSprintRepository.Setup(r => r.GetByIdAsync(command.SprintId)).ReturnsAsync(new Sprint());
-            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.ToString()!)).ReturnsAsync(new User());
+            _mockUserManager.Setup(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!)).ReturnsAsync(new User());
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.Id));
 
             var exception = await Assert.ThrowsAsync<SprintManagerNotFoundException>(
@@ -232,7 +232,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             Assert.Equal($"Work item with ID {command.Id} not found.", exception.Message);
 
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
-            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.ToString()!), Times.Once);
+            _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!), Times.Once);
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
         }
     }
