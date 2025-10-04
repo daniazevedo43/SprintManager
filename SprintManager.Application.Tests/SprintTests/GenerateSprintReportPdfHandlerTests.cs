@@ -41,7 +41,7 @@ namespace SprintManager.Application.Tests.SprintTests
         }
 
         [Fact]
-        public async Task Handle_GeneratesSprintReportPdfFile_ReturnsPdfFileDTO()
+        public async Task Handle_GeneratesSprintReportPdfFile_ReturnsPdfFileDto()
         {
             var command = new GenerateSprintReportPdfCommand
             {
@@ -105,7 +105,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             var fileName = "test_project_test_sprint_report";
 
-            var pdfFileDTO = new PdfFileDTO
+            var pdfFileDto = new PdfFileDto
             {
                 FileName = fileName,
             };
@@ -117,7 +117,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(pdfFileDTO.FileName, result.FileName);
+            Assert.Equal(pdfFileDto.FileName, result.FileName);
             Assert.NotNull(result.FileBytes);
 
             // Ensure GetByIdAsync was called exactly once.

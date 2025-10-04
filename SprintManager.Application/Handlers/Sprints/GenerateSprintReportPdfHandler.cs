@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Sprints
 {
-    public class GenerateSprintReportPdfHandler : IRequestHandler<GenerateSprintReportPdfCommand, PdfFileDTO>
+    public class GenerateSprintReportPdfHandler : IRequestHandler<GenerateSprintReportPdfCommand, PdfFileDto>
     {
         private readonly ISprintRepository _sprintRepository;
         private readonly IProjectRepository _projectRepository;
@@ -27,7 +27,7 @@ namespace SprintManager.Application.Handlers.Sprints
             _sprintReportPdf = sprintReportPdf;
         }
 
-        public async Task<PdfFileDTO> Handle(GenerateSprintReportPdfCommand request, CancellationToken cancellationToken)
+        public async Task<PdfFileDto> Handle(GenerateSprintReportPdfCommand request, CancellationToken cancellationToken)
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
 
@@ -44,7 +44,7 @@ namespace SprintManager.Application.Handlers.Sprints
             var fileName = $"{project?.Name.Replace(" ", "_")}_{sprint.SprintName.Replace(" ", "_")}_report".ToLower();
             var fileBytes = document.GeneratePdf();
 
-            return new PdfFileDTO
+            return new PdfFileDto
             { 
                 FileName = fileName,
                 FileBytes = fileBytes

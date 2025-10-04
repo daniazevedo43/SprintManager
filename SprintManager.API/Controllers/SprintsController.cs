@@ -41,7 +41,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{id}/report")]
-        [ProducesResponseType(typeof(PdfFileDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PdfFileDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GenerateSprintReportPdf(Guid id)
         {
