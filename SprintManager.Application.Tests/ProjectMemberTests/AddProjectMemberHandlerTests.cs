@@ -68,7 +68,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
 
         // Test handler
         [Fact]
-        public async Task Handle_AddsProjectMember_ReturnsProjectMemberDTO()
+        public async Task Handle_AddsProjectMember_ReturnsProjectMemberDto()
         {
             var command = new AddProjectMemberCommand
             {
@@ -78,7 +78,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             };
 
             var projectMember = new ProjectMember(command.ProjectId, command.UserId, command.Role);
-            var projectMemberDTO = new ProjectMemberDTO
+            var projectMemberDto = new ProjectMemberDto
             {
                 Id = projectMember.Id,
                 ProjectId = projectMember.ProjectId,
@@ -92,14 +92,14 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockProjectMemberRepository.Setup(r => r.AddAsync(It.IsAny<ProjectMember>())).Callback<ProjectMember>(pm => projectMember = pm);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(m => m.Map<ProjectMemberDTO>(It.IsAny<ProjectMember>())).Returns(projectMemberDTO);
+            _mockMapper.Setup(m => m.Map<ProjectMemberDto>(It.IsAny<ProjectMember>())).Returns(projectMemberDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(projectMemberDTO.Id, result.Id);
-            Assert.Equal(projectMemberDTO.ProjectId, result.ProjectId);
-            Assert.Equal(projectMemberDTO.UserId, result.UserId);
-            Assert.Equal(projectMemberDTO.Role, result.Role);
+            Assert.Equal(projectMemberDto.Id, result.Id);
+            Assert.Equal(projectMemberDto.ProjectId, result.ProjectId);
+            Assert.Equal(projectMemberDto.UserId, result.UserId);
+            Assert.Equal(projectMemberDto.Role, result.Role);
            
             _mockProjectMemberRepository.Verify(r => r.GetByUserAndProjectIdAsync(command.UserId, command.ProjectId), Times.Once);
             _mockProjectRepository.Verify(r => r.GetByIdAsync(command.ProjectId), Times.Once);
@@ -107,7 +107,7 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockProjectMemberRepository.Verify(r => r.AddAsync(projectMember), Times.Once);
 
             // Ensure the mapper's Map was called exactly once.
-            _mockMapper.Verify(m => m.Map<ProjectMemberDTO>(It.IsAny<ProjectMember>()), Times.Once);
+            _mockMapper.Verify(m => m.Map<ProjectMemberDto>(It.IsAny<ProjectMember>()), Times.Once);
         }
 
         // Test exception throwing when a user is already in a project

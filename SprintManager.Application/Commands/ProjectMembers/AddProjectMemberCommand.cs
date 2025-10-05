@@ -4,7 +4,7 @@ using SprintManager.Domain.Enums;
 
 namespace SprintManager.Application.Commands.ProjectMembers
 {
-    public class AddProjectMemberCommand : IRequest<ProjectMemberDTO>
+    public class AddProjectMemberCommand : IRequest<ProjectMemberDto>
     {
         public Guid ProjectId { get; set; }
         public Guid UserId { get; set; }

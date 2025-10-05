@@ -37,16 +37,16 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
                 new ProjectMember(Guid.NewGuid(), Guid.NewGuid(), ProjectMemberRole.Client)
             };
 
-            var projectMembersDTOs = new List<ProjectMemberDTO>()
+            var projectMembersDtos = new List<ProjectMemberDto>()
             {
-                new ProjectMemberDTO
+                new ProjectMemberDto
                 {
                     Id = projectMembers[0].Id,
                     ProjectId = projectMembers[0].ProjectId,
                     UserId = projectMembers[0].UserId,
                     Role = projectMembers[0].Role,
                 },
-                new ProjectMemberDTO
+                new ProjectMemberDto
                 {
                     Id = projectMembers[1].Id,
                     ProjectId = projectMembers[1].ProjectId,
@@ -59,23 +59,23 @@ namespace SprintManager.Application.Tests.ProjectMemberTests
             _mockProjectMemberRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(projectMembers);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<ProjectMemberDTO>>(projectMembers)).Returns(projectMembersDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<ProjectMemberDto>>(projectMembers)).Returns(projectMembersDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for (int i = 0; i < projectMembersDTOs.Count; i++)
+            for (int i = 0; i < projectMembersDtos.Count; i++)
             {
-                Assert.Equal(projectMembersDTOs[i].Id, result[i].Id);
-                Assert.Equal(projectMembersDTOs[i].ProjectId, result[i].ProjectId);
-                Assert.Equal(projectMembersDTOs[i].UserId, result[i].UserId);
-                Assert.Equal(projectMembersDTOs[i].Role, result[i].Role);
+                Assert.Equal(projectMembersDtos[i].Id, result[i].Id);
+                Assert.Equal(projectMembersDtos[i].ProjectId, result[i].ProjectId);
+                Assert.Equal(projectMembersDtos[i].UserId, result[i].UserId);
+                Assert.Equal(projectMembersDtos[i].Role, result[i].Role);
             }
 
             // Ensure GetAllAsync was called exactly once.
             _mockProjectMemberRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<ProjectMemberDTO>>(projectMembers), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<ProjectMemberDto>>(projectMembers), Times.Once);
         }
     }
 }
