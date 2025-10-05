@@ -2,7 +2,7 @@
 
 namespace SprintManager.Application.DTOs
 {
-    public class ProjectDTO
+    public class ProjectDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

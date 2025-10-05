@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.ProjectTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsProjectDTO()
+        public async Task Handle_GivenValidId_ReturnsProjectDto()
         {
             var query = new GetProjectByIdQuery
             {
@@ -36,7 +36,7 @@ namespace SprintManager.Application.Tests.ProjectTests
 
             var project = new Project("Test", "Test Description");
 
-            var projectDTO = new ProjectDTO 
+            var projectDto = new ProjectDto
             { 
                 Id = project.Id, 
                 Name = project.Name, 
@@ -49,21 +49,21 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(project);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<ProjectDTO>(project)).Returns(projectDTO);
+            _mockMapper.Setup(m => m.Map<ProjectDto>(project)).Returns(projectDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(projectDTO.Id, result.Id);
-            Assert.Equal(projectDTO.Name, result.Name);
-            Assert.Equal(projectDTO.Description, result.Description);
-            Assert.Equal(projectDTO.CreationDate, result.CreationDate);
-            Assert.Equal(projectDTO.Status, result.Status);
+            Assert.Equal(projectDto.Id, result.Id);
+            Assert.Equal(projectDto.Name, result.Name);
+            Assert.Equal(projectDto.Description, result.Description);
+            Assert.Equal(projectDto.CreationDate, result.CreationDate);
+            Assert.Equal(projectDto.Status, result.Status);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockProjectRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
+            _mockMapper.Verify(m => m.Map<ProjectDto>(project), Times.Once);
         }
 
         // Test exception throwing when project is not found
