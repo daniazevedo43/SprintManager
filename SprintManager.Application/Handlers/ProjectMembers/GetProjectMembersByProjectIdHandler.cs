@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.ProjectMembers
 {
-    public class GetProjectMembersByProjectIdHandler : IRequestHandler<GetProjectMembersByProjectIdQuery, List<ProjectMemberBasicDTO>>
+    public class GetProjectMembersByProjectIdHandler : IRequestHandler<GetProjectMembersByProjectIdQuery, List<ProjectMemberBasicDto>>
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IProjectRepository _projectRepository;
@@ -23,7 +23,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             _mapper = mapper;
         }
 
-        public async Task<List<ProjectMemberBasicDTO>> Handle(GetProjectMembersByProjectIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProjectMemberBasicDto>> Handle(GetProjectMembersByProjectIdQuery request, CancellationToken cancellationToken)
         {
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
 
@@ -31,7 +31,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
 
             var projectMembers = await _projectMemberRepository.GetMembersByProjectIdAsync(request.ProjectId);
 
-            return _mapper.Map<List<ProjectMemberBasicDTO>>(projectMembers);
+            return _mapper.Map<List<ProjectMemberBasicDto>>(projectMembers);
         }
     }
 }
