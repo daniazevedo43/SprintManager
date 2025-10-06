@@ -1,5 +1,6 @@
 ﻿namespace SprintManager.Application.DTOs
 {
+    // Commit test
     public class CommentDto
     {
         public Guid Id { get; set; }
