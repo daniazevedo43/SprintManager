@@ -14,7 +14,7 @@ namespace SprintManager.Application.Mappers
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
             CreateMap<ProjectMember, ProjectMemberBasicDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
-            CreateMap<Sprint, SprintDTO>();
+            CreateMap<Sprint, SprintDto>();
             CreateMap<WorkItem, WorkItemDTO>()
                 .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null))
                 .ForMember(dest => dest.AssignedUserName, opt => opt.MapFrom(src => src.AssignedUser != null ? src.AssignedUser.UserName : null));

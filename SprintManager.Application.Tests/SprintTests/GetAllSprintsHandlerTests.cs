@@ -36,9 +36,9 @@ namespace SprintManager.Application.Tests.SprintTests
                 new Sprint(Guid.NewGuid(), "Test sprint 2", new DateTime(2025, 6, 5), new DateTime(2025, 6, 6)),
             };
 
-            var sprintsDTOs = new List<SprintDTO>()
+            var sprintDtos = new List<SprintDto>()
             {
-                new SprintDTO
+                new SprintDto
                 {
                     Id = sprints[0].Id,
                     ProjectId = sprints[0].ProjectId,
@@ -47,7 +47,7 @@ namespace SprintManager.Application.Tests.SprintTests
                     EndDate = sprints[0].EndDate,
                     Status = sprints[0].Status,
                 },
-                new SprintDTO
+                new SprintDto
                 {
                     Id = sprints[1].Id,
                     ProjectId = sprints[1].ProjectId,
@@ -62,26 +62,26 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockSprintRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(sprints);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<SprintDTO>>(sprints)).Returns(sprintsDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<SprintDto>>(sprints)).Returns(sprintDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for (int i = 0; i < sprintsDTOs.Count; i++)
+            for (int i = 0; i < sprintDtos.Count; i++)
             {
-                Assert.Equal(sprintsDTOs[i].Id, result[i].Id);
-                Assert.Equal(sprintsDTOs[i].ProjectId, result[i].ProjectId);
-                Assert.Equal(sprintsDTOs[i].SprintName, result[i].SprintName);
-                Assert.Equal(sprintsDTOs[i].StartDate, result[i].StartDate);
-                Assert.Equal(sprintsDTOs[i].EndDate, result[i].EndDate);
-                Assert.Equal(sprintsDTOs[i].Description, result[i].Description);
-                Assert.Equal(sprintsDTOs[i].Status, result[i].Status);
+                Assert.Equal(sprintDtos[i].Id, result[i].Id);
+                Assert.Equal(sprintDtos[i].ProjectId, result[i].ProjectId);
+                Assert.Equal(sprintDtos[i].SprintName, result[i].SprintName);
+                Assert.Equal(sprintDtos[i].StartDate, result[i].StartDate);
+                Assert.Equal(sprintDtos[i].EndDate, result[i].EndDate);
+                Assert.Equal(sprintDtos[i].Description, result[i].Description);
+                Assert.Equal(sprintDtos[i].Status, result[i].Status);
             }
 
             // Ensure GetAllAsync was called exactly once.
             _mockSprintRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<SprintDTO>>(sprints), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<SprintDto>>(sprints), Times.Once);
         }
     }
 }

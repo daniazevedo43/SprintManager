@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsSprintDTO()
+        public async Task Handle_GivenValidId_ReturnsSprintDto()
         {
             var query = new GetSprintByIdQuery
             {
@@ -36,7 +36,7 @@ namespace SprintManager.Application.Tests.SprintTests
 
             var sprint = new Sprint(Guid.NewGuid(), "Test sprint", new DateTime(2025, 6, 3), new DateTime(2025, 6, 4));
 
-            var sprintDTO = new SprintDTO
+            var sprintDto = new SprintDto
             {
                 Id = sprint.Id,
                 ProjectId = sprint.ProjectId,
@@ -50,22 +50,22 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockSprintRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(sprint);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<SprintDTO>(sprint)).Returns(sprintDTO);
+            _mockMapper.Setup(m => m.Map<SprintDto>(sprint)).Returns(sprintDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(sprintDTO.Id, result.Id);
-            Assert.Equal(sprintDTO.ProjectId, result.ProjectId);
-            Assert.Equal(sprintDTO.SprintName, result.SprintName);
-            Assert.Equal(sprintDTO.StartDate, result.StartDate);
-            Assert.Equal(sprintDTO.EndDate, result.EndDate);
-            Assert.Equal(sprintDTO.Status, result.Status);
+            Assert.Equal(sprintDto.Id, result.Id);
+            Assert.Equal(sprintDto.ProjectId, result.ProjectId);
+            Assert.Equal(sprintDto.SprintName, result.SprintName);
+            Assert.Equal(sprintDto.StartDate, result.StartDate);
+            Assert.Equal(sprintDto.EndDate, result.EndDate);
+            Assert.Equal(sprintDto.Status, result.Status);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockSprintRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<SprintDTO>(sprint), Times.Once);
+            _mockMapper.Verify(m => m.Map<SprintDto>(sprint), Times.Once);
         }
 
         // Test exception throwing when sprint is not found
