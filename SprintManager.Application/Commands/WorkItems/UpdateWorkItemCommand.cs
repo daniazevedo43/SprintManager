@@ -4,7 +4,7 @@ using SprintManager.Domain.Enums;
 
 namespace SprintManager.Application.Commands.WorkItems
 {
-    public class UpdateWorkItemCommand : IRequest<WorkItemDTO>
+    public class UpdateWorkItemCommand : IRequest<WorkItemDto>
     {
         public Guid Id { get; set; }
         public Guid? SprintId { get; set; }

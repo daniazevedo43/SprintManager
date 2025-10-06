@@ -28,7 +28,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsWorkItemDTO()
+        public async Task Handle_GivenValidId_ReturnsWorkItemDto()
         {
             var query = new GetWorkItemByIdQuery
             {
@@ -39,7 +39,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 Guid.NewGuid(), "Test title", WorkItemType.Task, Guid.NewGuid()
             );
 
-            var workItemDTO = new WorkItemDTO
+            var workItemDto = new WorkItemDto
             {
                 Id = workItem.Id,
                 ProjectId = workItem.ProjectId,
@@ -54,23 +54,23 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(workItem);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<WorkItemDTO>(workItem)).Returns(workItemDTO);
+            _mockMapper.Setup(m => m.Map<WorkItemDto>(workItem)).Returns(workItemDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(workItemDTO.Id, result.Id);
-            Assert.Equal(workItemDTO.ProjectId, result.ProjectId);
-            Assert.Equal(workItemDTO.WorkItemTitle, result.WorkItemTitle);
-            Assert.Equal(workItemDTO.WorkItemType, result.WorkItemType);
-            Assert.Equal(workItemDTO.Status, result.Status);
-            Assert.Equal(workItemDTO.PriorityLevel, result.PriorityLevel);
-            Assert.Equal(workItemDTO.CreationDate, result.CreationDate);
+            Assert.Equal(workItemDto.Id, result.Id);
+            Assert.Equal(workItemDto.ProjectId, result.ProjectId);
+            Assert.Equal(workItemDto.WorkItemTitle, result.WorkItemTitle);
+            Assert.Equal(workItemDto.WorkItemType, result.WorkItemType);
+            Assert.Equal(workItemDto.Status, result.Status);
+            Assert.Equal(workItemDto.PriorityLevel, result.PriorityLevel);
+            Assert.Equal(workItemDto.CreationDate, result.CreationDate);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockWorkItemRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
+            _mockMapper.Verify(m => m.Map<WorkItemDto>(workItem), Times.Once);
         }
 
         // Test exception throwing when sprint is not found

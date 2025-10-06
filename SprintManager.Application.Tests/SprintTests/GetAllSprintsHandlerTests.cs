@@ -36,7 +36,7 @@ namespace SprintManager.Application.Tests.SprintTests
                 new Sprint(Guid.NewGuid(), "Test sprint 2", new DateTime(2025, 6, 5), new DateTime(2025, 6, 6)),
             };
 
-            var sprintDtos = new List<SprintDto>()
+            var sprintsDtos = new List<SprintDto>()
             {
                 new SprintDto
                 {
@@ -62,19 +62,19 @@ namespace SprintManager.Application.Tests.SprintTests
             _mockSprintRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(sprints);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<SprintDto>>(sprints)).Returns(sprintDtos);
+            _mockMapper.Setup(mapper => mapper.Map<List<SprintDto>>(sprints)).Returns(sprintsDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for (int i = 0; i < sprintDtos.Count; i++)
+            for (int i = 0; i < sprintsDtos.Count; i++)
             {
-                Assert.Equal(sprintDtos[i].Id, result[i].Id);
-                Assert.Equal(sprintDtos[i].ProjectId, result[i].ProjectId);
-                Assert.Equal(sprintDtos[i].SprintName, result[i].SprintName);
-                Assert.Equal(sprintDtos[i].StartDate, result[i].StartDate);
-                Assert.Equal(sprintDtos[i].EndDate, result[i].EndDate);
-                Assert.Equal(sprintDtos[i].Description, result[i].Description);
-                Assert.Equal(sprintDtos[i].Status, result[i].Status);
+                Assert.Equal(sprintsDtos[i].Id, result[i].Id);
+                Assert.Equal(sprintsDtos[i].ProjectId, result[i].ProjectId);
+                Assert.Equal(sprintsDtos[i].SprintName, result[i].SprintName);
+                Assert.Equal(sprintsDtos[i].StartDate, result[i].StartDate);
+                Assert.Equal(sprintsDtos[i].EndDate, result[i].EndDate);
+                Assert.Equal(sprintsDtos[i].Description, result[i].Description);
+                Assert.Equal(sprintsDtos[i].Status, result[i].Status);
             }
 
             // Ensure GetAllAsync was called exactly once.

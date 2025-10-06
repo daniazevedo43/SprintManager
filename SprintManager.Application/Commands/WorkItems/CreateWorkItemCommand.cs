@@ -4,7 +4,7 @@ using SprintManager.Domain.Enums;
 
 namespace SprintManager.Application.Commands.WorkItems
 {
-    public class CreateWorkItemCommand : IRequest<WorkItemDTO>
+    public class CreateWorkItemCommand : IRequest<WorkItemDto>
     {
         public Guid ProjectId { get; set; }
         public Guid? SprintId { get; set; }

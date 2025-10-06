@@ -67,7 +67,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_UpdatesWorkItem_ReturnsWorkItemDTO()
+        public async Task Handle_GivenValidId_UpdatesWorkItem_ReturnsWorkItemDto()
         {
             var command = new UpdateWorkItemCommand
             {
@@ -90,7 +90,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 command.CompletionDate, command.HoursEstimate
             );
 
-            var workItemDTO = new WorkItemDTO
+            var workItemDto = new WorkItemDto
             {
                 Id = workItem.Id,
                 ProjectId = workItem.ProjectId,
@@ -113,29 +113,29 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Setup(r => r.UpdateAsync(workItem));
 
             // Mapper's mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<WorkItemDTO>(workItem)).Returns(workItemDTO);
+            _mockMapper.Setup(mapper => mapper.Map<WorkItemDto>(workItem)).Returns(workItemDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(workItemDTO.Id, result.Id);
-            Assert.Equal(workItemDTO.ProjectId, result.ProjectId);
-            Assert.Equal(workItemDTO.SprintId, result.SprintId);
-            Assert.Equal(workItemDTO.AssignedUserId, result.AssignedUserId);
-            Assert.Equal(workItemDTO.CreatorUserId, result.CreatorUserId);
-            Assert.Equal(workItemDTO.WorkItemTitle, result.WorkItemTitle);
-            Assert.Equal(workItemDTO.WorkItemType, result.WorkItemType);
-            Assert.Equal(workItemDTO.Description, result.Description);
-            Assert.Equal(workItemDTO.Status, result.Status);
-            Assert.Equal(workItemDTO.PriorityLevel, result.PriorityLevel);
-            Assert.Equal(workItemDTO.CreationDate, result.CreationDate);
-            Assert.Equal(workItemDTO.CompletionDate, result.CompletionDate);
-            Assert.Equal(workItemDTO.HoursEstimate, result.HoursEstimate);
+            Assert.Equal(workItemDto.Id, result.Id);
+            Assert.Equal(workItemDto.ProjectId, result.ProjectId);
+            Assert.Equal(workItemDto.SprintId, result.SprintId);
+            Assert.Equal(workItemDto.AssignedUserId, result.AssignedUserId);
+            Assert.Equal(workItemDto.CreatorUserId, result.CreatorUserId);
+            Assert.Equal(workItemDto.WorkItemTitle, result.WorkItemTitle);
+            Assert.Equal(workItemDto.WorkItemType, result.WorkItemType);
+            Assert.Equal(workItemDto.Description, result.Description);
+            Assert.Equal(workItemDto.Status, result.Status);
+            Assert.Equal(workItemDto.PriorityLevel, result.PriorityLevel);
+            Assert.Equal(workItemDto.CreationDate, result.CreationDate);
+            Assert.Equal(workItemDto.CompletionDate, result.CompletionDate);
+            Assert.Equal(workItemDto.HoursEstimate, result.HoursEstimate);
 
             _mockSprintRepository.Verify(r => r.GetByIdAsync(command.SprintId), Times.Once);
             _mockUserManager.Verify(m => m.FindByIdAsync(command.AssignedUserId.Value.ToString()!), Times.Once);
             _mockWorkItemRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
             _mockWorkItemRepository.Verify(r => r.UpdateAsync(workItem), Times.Once);
-            _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
+            _mockMapper.Verify(m => m.Map<WorkItemDto>(workItem), Times.Once);
         }
 
         // Test exception throwing when sprint is not found

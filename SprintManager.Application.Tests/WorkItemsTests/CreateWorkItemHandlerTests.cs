@@ -75,7 +75,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
 
         // Test handler - basic work item creation
         [Fact]
-        public async Task Handle_CreatesBasicWorkItem_ReturnsWorkItemDTO()
+        public async Task Handle_CreatesBasicWorkItem_ReturnsWorkItemDto()
         {
             var command = new CreateWorkItemCommand
             {
@@ -93,7 +93,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 creatorUserId
             );
 
-            var workItemDTO = new WorkItemDTO
+            var workItemDto = new WorkItemDto
             {
                 Id = workItem.Id,
                 ProjectId = workItem.ProjectId,
@@ -114,17 +114,17 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<WorkItemDTO>(It.IsAny<WorkItem>())).Returns(workItemDTO);
+            _mockMapper.Setup(m => m.Map<WorkItemDto>(It.IsAny<WorkItem>())).Returns(workItemDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(workItemDTO.Id, result.Id);
-            Assert.Equal(workItemDTO.ProjectId, result.ProjectId);
-            Assert.Equal(workItemDTO.WorkItemTitle, result.WorkItemTitle);
-            Assert.Equal(workItemDTO.WorkItemType, result.WorkItemType);
-            Assert.Equal(workItemDTO.Status, result.Status);
-            Assert.Equal(workItemDTO.PriorityLevel, result.PriorityLevel);
-            Assert.Equal(workItemDTO.CreationDate, result.CreationDate);
+            Assert.Equal(workItemDto.Id, result.Id);
+            Assert.Equal(workItemDto.ProjectId, result.ProjectId);
+            Assert.Equal(workItemDto.WorkItemTitle, result.WorkItemTitle);
+            Assert.Equal(workItemDto.WorkItemType, result.WorkItemType);
+            Assert.Equal(workItemDto.Status, result.Status);
+            Assert.Equal(workItemDto.PriorityLevel, result.PriorityLevel);
+            Assert.Equal(workItemDto.CreationDate, result.CreationDate);
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
@@ -139,12 +139,12 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Verify(r => r.AddAsync(It.IsAny<WorkItem>()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created work item.
-            _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
+            _mockMapper.Verify(m => m.Map<WorkItemDto>(workItem), Times.Once);
         }
 
         // Test handler - full work item creation
         [Fact]
-        public async Task Handle_CreatesFullWorkItem_ReturnsWorkItemDTO()
+        public async Task Handle_CreatesFullWorkItem_ReturnsWorkItemDto()
         {
             var command = new CreateWorkItemCommand
             {
@@ -174,7 +174,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 command.HoursEstimate
             );
 
-            var workItemDTO = new WorkItemDTO
+            var workItemDto = new WorkItemDto
             {
                 Id = workItem.Id,
                 ProjectId = workItem.ProjectId,
@@ -202,23 +202,23 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Setup(r => r.AddAsync(It.IsAny<WorkItem>())).Callback<WorkItem>(w => workItem = w);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<WorkItemDTO>(It.IsAny<WorkItem>())).Returns(workItemDTO);
+            _mockMapper.Setup(m => m.Map<WorkItemDto>(It.IsAny<WorkItem>())).Returns(workItemDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(workItemDTO.Id, result.Id);
-            Assert.Equal(workItemDTO.ProjectId, result.ProjectId);
-            Assert.Equal(workItemDTO.SprintId, result.SprintId);
-            Assert.Equal(workItemDTO.AssignedUserId, result.AssignedUserId);
-            Assert.Equal(workItemDTO.CreatorUserId, result.CreatorUserId);
-            Assert.Equal(workItemDTO.WorkItemTitle, result.WorkItemTitle);
-            Assert.Equal(workItemDTO.WorkItemType, result.WorkItemType);
-            Assert.Equal(workItemDTO.Description, result.Description);
-            Assert.Equal(workItemDTO.Status, result.Status);
-            Assert.Equal(workItemDTO.PriorityLevel, result.PriorityLevel);
-            Assert.Equal(workItemDTO.CreationDate, result.CreationDate);
-            Assert.Equal(workItemDTO.CompletionDate, result.CompletionDate);
-            Assert.Equal(workItemDTO.HoursEstimate, result.HoursEstimate);
+            Assert.Equal(workItemDto.Id, result.Id);
+            Assert.Equal(workItemDto.ProjectId, result.ProjectId);
+            Assert.Equal(workItemDto.SprintId, result.SprintId);
+            Assert.Equal(workItemDto.AssignedUserId, result.AssignedUserId);
+            Assert.Equal(workItemDto.CreatorUserId, result.CreatorUserId);
+            Assert.Equal(workItemDto.WorkItemTitle, result.WorkItemTitle);
+            Assert.Equal(workItemDto.WorkItemType, result.WorkItemType);
+            Assert.Equal(workItemDto.Description, result.Description);
+            Assert.Equal(workItemDto.Status, result.Status);
+            Assert.Equal(workItemDto.PriorityLevel, result.PriorityLevel);
+            Assert.Equal(workItemDto.CreationDate, result.CreationDate);
+            Assert.Equal(workItemDto.CompletionDate, result.CompletionDate);
+            Assert.Equal(workItemDto.HoursEstimate, result.HoursEstimate);
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
@@ -236,7 +236,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Verify(r => r.AddAsync(workItem), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created work item.
-            _mockMapper.Verify(m => m.Map<WorkItemDTO>(workItem), Times.Once);
+            _mockMapper.Verify(m => m.Map<WorkItemDto>(workItem), Times.Once);
         }
 
         // Test exception throwing when user is not authenticated
