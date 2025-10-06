@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SprintManager.Application.Commands.Images
 {
-    public class AddImageCommand : IRequest<ImageDTO>
+    public class AddImageCommand : IRequest<ImageDto>
     {
         [Required]
         public Guid WorkItemId { get; set; }

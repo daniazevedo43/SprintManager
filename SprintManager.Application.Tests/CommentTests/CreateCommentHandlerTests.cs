@@ -71,7 +71,7 @@ namespace SprintManager.Application.Tests.CommentTests
 
         // Test handler - comment creation
         [Fact]
-        public async Task Handle_CreatesComment_ReturnsCommentDTO()
+        public async Task Handle_CreatesComment_ReturnsCommentDto()
         {
             var command = new CreateCommentCommand
             {
@@ -82,7 +82,7 @@ namespace SprintManager.Application.Tests.CommentTests
             var userId = Guid.NewGuid();
 
             var comment = new Comment(command.WorkItemId, userId, command.Text);
-            var commentDTO = new CommentDTO
+            var commentDto = new CommentDto
             {
                 Id = comment.Id,
                 WorkItemId = comment.WorkItemId,
@@ -101,15 +101,15 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Setup(r => r.AddAsync(It.IsAny<Comment>())).Callback<Comment>(c => comment = c);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<CommentDTO>(It.IsAny<Comment>())).Returns(commentDTO);
+            _mockMapper.Setup(m => m.Map<CommentDto>(It.IsAny<Comment>())).Returns(commentDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(commentDTO.Id, result.Id);
-            Assert.Equal(commentDTO.WorkItemId, result.WorkItemId);
-            Assert.Equal(commentDTO.UserId, result.UserId);
-            Assert.Equal(commentDTO.Text, result.Text);
-            Assert.Equal(commentDTO.CreationDate, result.CreationDate);
+            Assert.Equal(commentDto.Id, result.Id);
+            Assert.Equal(commentDto.WorkItemId, result.WorkItemId);
+            Assert.Equal(commentDto.UserId, result.UserId);
+            Assert.Equal(commentDto.Text, result.Text);
+            Assert.Equal(commentDto.CreationDate, result.CreationDate);
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
@@ -126,7 +126,7 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Verify(r => r.AddAsync(comment), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created comment.
-            _mockMapper.Verify(m => m.Map<CommentDTO>(It.IsAny<Comment>()), Times.Once);
+            _mockMapper.Verify(m => m.Map<CommentDto>(It.IsAny<Comment>()), Times.Once);
         }
 
         // Test exception throwing when user is not authenticated

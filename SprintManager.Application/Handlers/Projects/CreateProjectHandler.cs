@@ -8,7 +8,7 @@ using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Handlers.Projects
 {
-    public class CreateProjectHandler : IRequestHandler<CreateProjectCommand, ProjectDTO>
+    public class CreateProjectHandler : IRequestHandler<CreateProjectCommand, ProjectDto>
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace SprintManager.Application.Handlers.Projects
             _mapper = mapper;
         }
 
-        public async Task<ProjectDTO> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<ProjectDto> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
             var existingProject = await _projectRepository.GetByNameAsync(request.Name);
 
@@ -29,7 +29,7 @@ namespace SprintManager.Application.Handlers.Projects
             
             await _projectRepository.AddAsync(project);
             
-            return _mapper.Map<ProjectDTO>(project);
+            return _mapper.Map<ProjectDto>(project);
         }
     }
 }

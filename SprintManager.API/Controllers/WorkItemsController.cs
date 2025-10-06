@@ -20,7 +20,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<WorkItemDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<WorkItemDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllWorkItems()
         {
@@ -30,7 +30,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(WorkItemDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WorkItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetWorkItemById(Guid id)
@@ -41,7 +41,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(WorkItemDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(WorkItemDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -53,7 +53,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(WorkItemDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WorkItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsImageDTO()
+        public async Task Handle_GivenValidId_ReturnsImageDto()
         {
             var query = new GetImageByIdQuery
             {
@@ -40,7 +40,7 @@ namespace SprintManager.Application.Tests.ImageTests
                 Path.Combine("test_path", "test_path_2.jpg")
             );
 
-            var imageDTO = new ImageDTO
+            var imageDto = new ImageDto
             {
                 Id = image.Id,
                 WorkItemId = image.WorkItemId,
@@ -55,23 +55,23 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockImageRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(image);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<ImageDTO>(image)).Returns(imageDTO);
+            _mockMapper.Setup(m => m.Map<ImageDto>(image)).Returns(imageDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(imageDTO.Id, result.Id);
-            Assert.Equal(imageDTO.WorkItemId, result.WorkItemId);
-            Assert.Equal(imageDTO.UserId, result.UserId);
-            Assert.Equal(imageDTO.ContentType, result.ContentType);
-            Assert.Equal(imageDTO.FileName, result.FileName);
-            Assert.Equal(imageDTO.FilePath, result.FilePath);
-            Assert.Equal(imageDTO.AttachmentDate, result.AttachmentDate);
+            Assert.Equal(imageDto.Id, result.Id);
+            Assert.Equal(imageDto.WorkItemId, result.WorkItemId);
+            Assert.Equal(imageDto.UserId, result.UserId);
+            Assert.Equal(imageDto.ContentType, result.ContentType);
+            Assert.Equal(imageDto.FileName, result.FileName);
+            Assert.Equal(imageDto.FilePath, result.FilePath);
+            Assert.Equal(imageDto.AttachmentDate, result.AttachmentDate);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockImageRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
 
             // Ensure the mapper's Map was called exactly once.
-            _mockMapper.Verify(m => m.Map<ImageDTO>(image), Times.Once);
+            _mockMapper.Verify(m => m.Map<ImageDto>(image), Times.Once);
         }
 
         // Test exception throwing when image is not found

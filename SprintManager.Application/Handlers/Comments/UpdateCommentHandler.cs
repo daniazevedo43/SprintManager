@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace SprintManager.Application.Handlers.Comments
 {
-    public class UpdateCommentHandler : IRequestHandler<UpdateCommentCommand, CommentDTO>
+    public class UpdateCommentHandler : IRequestHandler<UpdateCommentCommand, CommentDto>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICommentRepository _commentRepository;
@@ -26,7 +26,7 @@ namespace SprintManager.Application.Handlers.Comments
             _mapper = mapper;
         }
 
-        public async Task<CommentDTO> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
+        public async Task<CommentDto> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
             var userIdClaim = _httpContextAccessor.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,7 +43,7 @@ namespace SprintManager.Application.Handlers.Comments
 
             await _commentRepository.UpdateAsync(comment);
 
-            return _mapper.Map<CommentDTO>(comment);
+            return _mapper.Map<CommentDto>(comment);
         }
     }
 }

@@ -10,7 +10,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.ProjectMembers
 {
-    public class AddProjectMemberHandler : IRequestHandler<AddProjectMemberCommand, ProjectMemberDTO>
+    public class AddProjectMemberHandler : IRequestHandler<AddProjectMemberCommand, ProjectMemberDto>
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IProjectRepository _projectRepository;
@@ -30,7 +30,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             _mapper = mapper;
         }
 
-        public async Task<ProjectMemberDTO> Handle(AddProjectMemberCommand request, CancellationToken cancellationToken)
+        public async Task<ProjectMemberDto> Handle(AddProjectMemberCommand request, CancellationToken cancellationToken)
         {
             var existingProjectMember = await _projectMemberRepository.GetByUserAndProjectIdAsync(request.UserId, request.ProjectId);
             
@@ -46,7 +46,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             
             await _projectMemberRepository.AddAsync(projectMember);
             
-            return _mapper.Map<ProjectMemberDTO>(projectMember);
+            return _mapper.Map<ProjectMemberDto>(projectMember);
         }
     }
 }

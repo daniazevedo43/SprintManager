@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.CommentTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsCommentDTO()
+        public async Task Handle_GivenValidId_ReturnsCommentDto()
         {
             var query = new GetCommentByIdQuery
             {
@@ -36,7 +36,7 @@ namespace SprintManager.Application.Tests.CommentTests
 
             var comment = new Comment(Guid.NewGuid(), Guid.NewGuid(), "Test comment");
 
-            var commentDTO = new CommentDTO
+            var commentDto = new CommentDto
             {
                 Id = comment.Id,
                 WorkItemId = comment.WorkItemId,
@@ -49,21 +49,21 @@ namespace SprintManager.Application.Tests.CommentTests
             _mockCommentRepository.Setup(r => r.GetByIdAsync(query.Id)).ReturnsAsync(comment);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(m => m.Map<CommentDTO>(comment)).Returns(commentDTO);
+            _mockMapper.Setup(m => m.Map<CommentDto>(comment)).Returns(commentDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(commentDTO.Id, result.Id);
-            Assert.Equal(commentDTO.WorkItemId, result.WorkItemId);
-            Assert.Equal(commentDTO.UserId, result.UserId);
-            Assert.Equal(commentDTO.Text, result.Text);
-            Assert.Equal(commentDTO.CreationDate, result.CreationDate);
+            Assert.Equal(commentDto.Id, result.Id);
+            Assert.Equal(commentDto.WorkItemId, result.WorkItemId);
+            Assert.Equal(commentDto.UserId, result.UserId);
+            Assert.Equal(commentDto.Text, result.Text);
+            Assert.Equal(commentDto.CreationDate, result.CreationDate);
 
             // Ensure GetByIdAsync was called exactly once with the correct ID.
             _mockCommentRepository.Verify(p => p.GetByIdAsync(query.Id), Times.Once);
 
             // Ensure the mapper's Map was called exactly once.
-            _mockMapper.Verify(m => m.Map<CommentDTO>(comment), Times.Once);
+            _mockMapper.Verify(m => m.Map<CommentDto>(comment), Times.Once);
         }
 
         // Test exception throwing when comment is not found

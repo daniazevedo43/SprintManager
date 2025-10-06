@@ -8,7 +8,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Projects
 {
-    public class UpdateProjectHandler : IRequestHandler<UpdateProjectCommand, ProjectDTO>
+    public class UpdateProjectHandler : IRequestHandler<UpdateProjectCommand, ProjectDto>
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace SprintManager.Application.Handlers.Projects
             _mapper = mapper;
         }
 
-        public async Task<ProjectDTO> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<ProjectDto> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
             var project = await _projectRepository.GetByIdAsync(request.Id);
             var existingProject = await _projectRepository.GetByNameAsync(request.Name);
@@ -34,7 +34,7 @@ namespace SprintManager.Application.Handlers.Projects
 
             await _projectRepository.UpdateAsync(project);
 
-            return _mapper.Map<ProjectDTO>(project);
+            return _mapper.Map<ProjectDto>(project);
         }
     }
 }

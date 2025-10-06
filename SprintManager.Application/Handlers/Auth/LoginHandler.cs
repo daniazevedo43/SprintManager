@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace SprintManager.Application.Handlers.Auth
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
+    public class LoginHandler : IRequestHandler<LoginCommand, LoginDto>
     {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
@@ -26,7 +26,7 @@ namespace SprintManager.Application.Handlers.Auth
             _refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<LoginDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -49,7 +49,7 @@ namespace SprintManager.Application.Handlers.Auth
 
             await _refreshTokenRepository.AddAsync(refreshToken);
 
-            return new LoginDTO
+            return new LoginDto
             {
                 AccessToken = jwtToken,
                 RefreshToken = refreshToken.Token

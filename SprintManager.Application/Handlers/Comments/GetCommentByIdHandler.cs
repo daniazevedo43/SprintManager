@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Comments
 {
-    public class GetCommentByIdHandler : IRequestHandler<GetCommentByIdQuery, CommentDTO>
+    public class GetCommentByIdHandler : IRequestHandler<GetCommentByIdQuery, CommentDto>
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace SprintManager.Application.Handlers.Comments
             _mapper = mapper;
         }
 
-        public async Task<CommentDTO> Handle(GetCommentByIdQuery request, CancellationToken cancellationToken)
+        public async Task<CommentDto> Handle(GetCommentByIdQuery request, CancellationToken cancellationToken)
         {
             var comment = await _commentRepository.GetByIdAsync(request.Id);
 
             if (comment == null) throw new SprintManagerNotFoundException($"Comment with ID {request?.Id} not found.");
 
-            return _mapper.Map<CommentDTO>(comment);
+            return _mapper.Map<CommentDto>(comment);
         }
     }
 }

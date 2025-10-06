@@ -3,7 +3,7 @@ using SprintManager.Application.DTOs;
 
 namespace SprintManager.Application.Commands.Auth
 {
-    public class RegisterCommand : IRequest<UserDTO>
+    public class RegisterCommand : IRequest<UserDto>
     {
         public string Name { get; set; }
         public string UserName { get; set; }

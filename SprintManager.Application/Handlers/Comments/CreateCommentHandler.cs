@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace SprintManager.Application.Handlers.Comments
 {
-    public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, CommentDTO>
+    public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, CommentDto>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICommentRepository _commentRepository;
@@ -34,7 +34,7 @@ namespace SprintManager.Application.Handlers.Comments
             _mapper = mapper;
         }
 
-        public async Task<CommentDTO> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+        public async Task<CommentDto> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
             var userIdClaim = _httpContextAccessor.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -52,7 +52,7 @@ namespace SprintManager.Application.Handlers.Comments
 
             await _commentRepository.AddAsync(comment);
 
-            return _mapper.Map<CommentDTO>(comment);
+            return _mapper.Map<CommentDto>(comment);
         }
     }
 }

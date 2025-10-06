@@ -8,20 +8,20 @@ namespace SprintManager.Application.Mappers
     {
         public ApplicationMappingProfile() 
         {
-            CreateMap<User, UserDTO>();
-            CreateMap<Project, ProjectDTO>();
-            CreateMap<ProjectMember, ProjectMemberDTO>()
+            CreateMap<User, UserDto>();
+            CreateMap<Project, ProjectDto>();
+            CreateMap<ProjectMember, ProjectMemberDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
-            CreateMap<ProjectMember, ProjectMemberBasicDTO>()
+            CreateMap<ProjectMember, ProjectMemberBasicDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
-            CreateMap<Sprint, SprintDTO>();
-            CreateMap<WorkItem, WorkItemDTO>()
+            CreateMap<Sprint, SprintDto>();
+            CreateMap<WorkItem, WorkItemDto>()
                 .ForMember(dest => dest.SprintName, opt => opt.MapFrom(src => src.Sprint != null ? src.Sprint.SprintName : null))
                 .ForMember(dest => dest.AssignedUserName, opt => opt.MapFrom(src => src.AssignedUser != null ? src.AssignedUser.UserName : null));
-            CreateMap<Comment, CommentDTO>()
+            CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
-            CreateMap<Image, ImageDTO>()
+            CreateMap<Image, ImageDto>()
                 .ForMember(dest => dest.WorkItemTitle, opt => opt.MapFrom(src => src.WorkItem != null ? src.WorkItem.WorkItemTitle : null))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));
         }

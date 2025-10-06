@@ -6,7 +6,7 @@ using SprintManager.Application.Queries.ProjectMembers;
 
 namespace SprintManager.Application.Handlers.ProjectMembers
 {
-    public class GetAllProjectMembersHandler : IRequestHandler<GetAllProjectMembersQuery, List<ProjectMemberDTO>>
+    public class GetAllProjectMembersHandler : IRequestHandler<GetAllProjectMembersQuery, List<ProjectMemberDto>>
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IMapper _mapper;
@@ -17,11 +17,11 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             _mapper = mapper;
         }
 
-        public async Task<List<ProjectMemberDTO>> Handle(GetAllProjectMembersQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProjectMemberDto>> Handle(GetAllProjectMembersQuery request, CancellationToken cancellationToken)
         {
             var projectMembers = await _projectMemberRepository.GetAllAsync();
 
-            return _mapper.Map<List<ProjectMemberDTO>>(projectMembers);
+            return _mapper.Map<List<ProjectMemberDto>>(projectMembers);
         }
     }
 }

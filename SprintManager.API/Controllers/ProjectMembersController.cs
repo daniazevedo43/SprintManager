@@ -20,7 +20,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<ProjectMemberDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ProjectMemberDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllProjectMembers()
         {
@@ -30,7 +30,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{projectId}")]
-        [ProducesResponseType(typeof(List<ProjectMemberBasicDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ProjectMemberBasicDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMembersByProjectId(Guid projectId)
@@ -41,7 +41,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ProjectMemberDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProjectMemberDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -53,7 +53,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ProjectMemberBasicDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProjectMemberBasicDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

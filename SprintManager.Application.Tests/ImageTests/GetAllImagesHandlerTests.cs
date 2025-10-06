@@ -44,9 +44,9 @@ namespace SprintManager.Application.Tests.ImageTests
                 )
             };
 
-            var imagesDTOs = new List<ImageDTO>()
+            var imagesDtos = new List<ImageDto>()
             {
-                new ImageDTO
+                new ImageDto
                 {
                     Id = images[0].Id,
                     WorkItemId = images[0].WorkItemId,
@@ -56,7 +56,7 @@ namespace SprintManager.Application.Tests.ImageTests
                     FilePath = images[0].FilePath,
                     AttachmentDate = images[0].AttachmentDate
                 },
-                new ImageDTO
+                new ImageDto
                 {
                     Id = images[1].Id,
                     WorkItemId = images[1].WorkItemId,
@@ -72,11 +72,11 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockImageRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(images);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<ImageDTO>>(images)).Returns(imagesDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<ImageDto>>(images)).Returns(imagesDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for (int i = 0; i < imagesDTOs.Count; i++)
+            for (int i = 0; i < imagesDtos.Count; i++)
             {
                 Assert.Equal(images[i].Id, result[i].Id);
                 Assert.Equal(images[i].WorkItemId, result[i].WorkItemId);
@@ -91,7 +91,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockImageRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<ImageDTO>>(images), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<ImageDto>>(images), Times.Once);
         }
     }
 }

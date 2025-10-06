@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace SprintManager.Application.Handlers.WorkItems
 {
-    public class CreateWorkItemHandler : IRequestHandler<CreateWorkItemCommand, WorkItemDTO>
+    public class CreateWorkItemHandler : IRequestHandler<CreateWorkItemCommand, WorkItemDto>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWorkItemRepository _workItemRepository;
@@ -37,7 +37,7 @@ namespace SprintManager.Application.Handlers.WorkItems
             _mapper = mapper;
         }
 
-        public async Task<WorkItemDTO> Handle(CreateWorkItemCommand request, CancellationToken cancellationToken)
+        public async Task<WorkItemDto> Handle(CreateWorkItemCommand request, CancellationToken cancellationToken)
         {
             var creatorUserIdClaim = _httpContextAccessor.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -76,7 +76,7 @@ namespace SprintManager.Application.Handlers.WorkItems
             );
 
             await _workItemRepository.AddAsync(workItem);
-            return _mapper.Map<WorkItemDTO>(workItem);
+            return _mapper.Map<WorkItemDto>(workItem);
         }
     }
 } 

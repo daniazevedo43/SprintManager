@@ -27,7 +27,7 @@ namespace SprintManager.Application.Tests.ProjectTests
 
         // Test handler - project creation without description
         [Fact]
-        public async Task Handle_CreatesProjectWithoutDescription_ReturnsProjectDTO()
+        public async Task Handle_CreatesProjectWithoutDescription_ReturnProjectDto()
         {
             var command = new CreateProjectCommand
             {
@@ -35,7 +35,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             var project = new Project(command.Name);
-            var projectDTO = new ProjectDTO
+            var projectDto = new ProjectDto
             {
                 Id = project.Id,
                 Name = project.Name,
@@ -49,15 +49,15 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(m => m.Map<ProjectDTO>(It.IsAny<Project>())).Returns(projectDTO);
+            _mockMapper.Setup(m => m.Map<ProjectDto>(It.IsAny<Project>())).Returns(projectDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(projectDTO.Id, result.Id);
-            Assert.Equal(projectDTO.Name, result.Name);
+            Assert.Equal(projectDto.Id, result.Id);
+            Assert.Equal(projectDto.Name, result.Name);
             Assert.Null(result.Description);
-            Assert.Equal(projectDTO.CreationDate, result.CreationDate);
-            Assert.Equal(projectDTO.Status, result.Status);
+            Assert.Equal(projectDto.CreationDate, result.CreationDate);
+            Assert.Equal(projectDto.Status, result.Status);
 
             // Ensure GetByNameAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByNameAsync(command.Name), Times.Once);
@@ -66,12 +66,12 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Verify(r => r.AddAsync(project), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<ProjectDTO>(It.IsAny<Project>()), Times.Once);
+            _mockMapper.Verify(m => m.Map<ProjectDto>(It.IsAny<Project>()), Times.Once);
         }
 
         // Test handler - project creation with description
         [Fact]
-        public async Task Handle_CreatesProjectWithDescription_ReturnsProjectDTO()
+        public async Task Handle_CreatesProjectWithDescription_ReturnsProjectDto()
         {
             var command = new CreateProjectCommand
             {
@@ -80,7 +80,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             };
 
             var project = new Project(command.Name, command.Description);
-            var projectDTO = new ProjectDTO
+            var projectDto = new ProjectDto
             {
                 Id = project.Id,
                 Name = project.Name,
@@ -94,15 +94,15 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Setup(r => r.AddAsync(It.IsAny<Project>())).Callback<Project>(p => project = p);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(m => m.Map<ProjectDTO>(It.IsAny<Project>())).Returns(projectDTO);
+            _mockMapper.Setup(m => m.Map<ProjectDto>(It.IsAny<Project>())).Returns(projectDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(projectDTO.Id, result.Id);
-            Assert.Equal(projectDTO.Name, result.Name);
-            Assert.Equal(projectDTO.Description, result.Description);
-            Assert.Equal(projectDTO.CreationDate, result.CreationDate);
-            Assert.Equal(projectDTO.Status, result.Status);
+            Assert.Equal(projectDto.Id, result.Id);
+            Assert.Equal(projectDto.Name, result.Name);
+            Assert.Equal(projectDto.Description, result.Description);
+            Assert.Equal(projectDto.CreationDate, result.CreationDate);
+            Assert.Equal(projectDto.Status, result.Status);
 
             // Ensure GetByNameAsync was called exactly once.
             _mockProjectRepository.Verify(r => r.GetByNameAsync(command.Name), Times.Once);
@@ -111,7 +111,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Verify(r => r.AddAsync(project), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<ProjectDTO>(project), Times.Once);
+            _mockMapper.Verify(m => m.Map<ProjectDto>(project), Times.Once);
         }
 
         // Test exception throwing when a project already exists

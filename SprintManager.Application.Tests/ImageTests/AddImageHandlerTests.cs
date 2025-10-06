@@ -76,7 +76,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
         // Test handler
         [Fact]
-        public async Task Handle_AddsImage_ReturnsImageDTO()
+        public async Task Handle_AddsImage_ReturnsImageDto()
         {
             _mockFile.Setup(f => f.ContentType).Returns("test_image/jpeg");
             _mockFile.Setup(f => f.FileName).Returns("test_image.jpg");
@@ -97,7 +97,7 @@ namespace SprintManager.Application.Tests.ImageTests
                 Path.Combine("test_path", "test_path_2.jpg")
             );
 
-            var imageDTO = new ImageDTO
+            var imageDto = new ImageDto
             {
                 Id = image.Id,
                 WorkItemId = image.WorkItemId,
@@ -119,17 +119,17 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(m => m.Map<ImageDTO>(It.IsAny<Image>())).Returns(imageDTO);
+            _mockMapper.Setup(m => m.Map<ImageDto>(It.IsAny<Image>())).Returns(imageDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(imageDTO.Id, result.Id);
-            Assert.Equal(imageDTO.WorkItemId, result.WorkItemId);
-            Assert.Equal(imageDTO.UserId, result.UserId);
-            Assert.Equal(imageDTO.ContentType, result.ContentType);
-            Assert.Equal(imageDTO.FileName, result.FileName);
-            Assert.Equal(imageDTO.FilePath, result.FilePath);
-            Assert.Equal(imageDTO.AttachmentDate, result.AttachmentDate);
+            Assert.Equal(imageDto.Id, result.Id);
+            Assert.Equal(imageDto.WorkItemId, result.WorkItemId);
+            Assert.Equal(imageDto.UserId, result.UserId);
+            Assert.Equal(imageDto.ContentType, result.ContentType);
+            Assert.Equal(imageDto.FileName, result.FileName);
+            Assert.Equal(imageDto.FilePath, result.FilePath);
+            Assert.Equal(imageDto.AttachmentDate, result.AttachmentDate);
 
             // Ensure HttpContextAccesor was used exactly once.
             _mockHttpContextAccessor
@@ -149,7 +149,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created comment.
-            _mockMapper.Verify(m => m.Map<ImageDTO>(It.IsAny<Image>()), Times.Once);
+            _mockMapper.Verify(m => m.Map<ImageDto>(It.IsAny<Image>()), Times.Once);
         }
 
         // Test exception throwing when user is not authenticated

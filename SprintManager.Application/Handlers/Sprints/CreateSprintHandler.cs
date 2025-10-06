@@ -9,7 +9,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Sprints
 {
-    public class CreateSprintHandler : IRequestHandler<CreateSprintCommand, SprintDTO>
+    public class CreateSprintHandler : IRequestHandler<CreateSprintCommand, SprintDto>
     {
         private readonly ISprintRepository _sprintRepository;
         private readonly IProjectRepository _projectRepository;
@@ -26,7 +26,7 @@ namespace SprintManager.Application.Handlers.Sprints
             _mapper = mapper;
         }
 
-        public async Task<SprintDTO> Handle(CreateSprintCommand request, CancellationToken cancellationToken)
+        public async Task<SprintDto> Handle(CreateSprintCommand request, CancellationToken cancellationToken)
         {
             var existingSprint = await _sprintRepository.GetByProjectIdAndSprintNameAsync(request.ProjectId, request.SprintName);
 
@@ -40,7 +40,7 @@ namespace SprintManager.Application.Handlers.Sprints
             
             await _sprintRepository.AddAsync(sprint);
             
-            return _mapper.Map<SprintDTO>(sprint);
+            return _mapper.Map<SprintDto>(sprint);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<CommentDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<CommentDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllComments()
         {
@@ -30,7 +30,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCommentById(Guid id)
@@ -41,7 +41,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -53,7 +53,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

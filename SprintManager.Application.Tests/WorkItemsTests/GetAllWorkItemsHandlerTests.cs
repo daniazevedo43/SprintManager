@@ -52,9 +52,9 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                 )
             };
 
-            var workItemsDTOs = new List<WorkItemDTO>()
+            var workItemsDtos = new List<WorkItemDto>()
             {
-                new WorkItemDTO
+                new WorkItemDto
                 {
                     Id = workItems[0].Id,
                     ProjectId = workItems[0].ProjectId,
@@ -70,7 +70,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
                     CompletionDate = workItems[0].CompletionDate,
                     HoursEstimate = workItems[0].HoursEstimate,
                 },
-                new WorkItemDTO
+                new WorkItemDto
                 {
                     Id = workItems[1].Id,
                     ProjectId = workItems[1].ProjectId,
@@ -92,11 +92,11 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(workItems);
 
             // Mapper's mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<WorkItemDTO>>(workItems)).Returns(workItemsDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<WorkItemDto>>(workItems)).Returns(workItemsDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for (int i = 0; i < workItemsDTOs.Count; i++)
+            for (int i = 0; i < workItemsDtos.Count; i++)
             {
                 Assert.Equal(workItems[i].Id, result[i].Id);
                 Assert.Equal(workItems[i].ProjectId, result[i].ProjectId);
@@ -117,7 +117,7 @@ namespace SprintManager.Application.Tests.WorkItemsTests
             _mockWorkItemRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<WorkItemDTO>>(workItems), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<WorkItemDto>>(workItems), Times.Once);
         }
     }
 }

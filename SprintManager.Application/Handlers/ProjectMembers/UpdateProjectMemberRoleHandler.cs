@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.ProjectMembers
 {
-    public class UpdateProjectMemberRoleHandler : IRequestHandler<UpdateProjectMemberRoleCommand, ProjectMemberDTO>
+    public class UpdateProjectMemberRoleHandler : IRequestHandler<UpdateProjectMemberRoleCommand, ProjectMemberDto>
     {
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
             _mapper = mapper;
         }
 
-        public async Task<ProjectMemberDTO> Handle(UpdateProjectMemberRoleCommand request, CancellationToken cancellationToken)
+        public async Task<ProjectMemberDto> Handle(UpdateProjectMemberRoleCommand request, CancellationToken cancellationToken)
         {
             var projectMember = await _projectMemberRepository.GetByIdAsync(request.Id);
 
@@ -28,7 +28,7 @@ namespace SprintManager.Application.Handlers.ProjectMembers
 
             await _projectMemberRepository.UpdateAsync(projectMember);
 
-            return _mapper.Map<ProjectMemberDTO>(projectMember);
+            return _mapper.Map<ProjectMemberDto>(projectMember);
         }
     }
 }

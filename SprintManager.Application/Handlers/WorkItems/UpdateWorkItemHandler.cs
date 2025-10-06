@@ -9,7 +9,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.WorkItems
 {
-    public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, WorkItemDTO>
+    public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, WorkItemDto>
     {
         private readonly IWorkItemRepository _workItemRepository;
         private readonly ISprintRepository _sprintRepository;
@@ -29,7 +29,7 @@ namespace SprintManager.Application.Handlers.WorkItems
             _mapper = mapper;
         }
 
-        public async Task<WorkItemDTO> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
+        public async Task<WorkItemDto> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.SprintId);
 
@@ -60,7 +60,7 @@ namespace SprintManager.Application.Handlers.WorkItems
 
             await _workItemRepository.UpdateAsync(workItem);
 
-            return _mapper.Map<WorkItemDTO>(workItem);
+            return _mapper.Map<WorkItemDto>(workItem);
         }
     }
 }

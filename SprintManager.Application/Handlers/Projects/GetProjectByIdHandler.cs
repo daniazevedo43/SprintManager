@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Projects
 {
-    public class GetProjectByIdHandler : IRequestHandler<GetProjectByIdQuery, ProjectDTO>
+    public class GetProjectByIdHandler : IRequestHandler<GetProjectByIdQuery, ProjectDto>
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace SprintManager.Application.Handlers.Projects
             _mapper = mapper;
         }
 
-        public async Task<ProjectDTO> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ProjectDto> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
         {
             var project = await _projectRepository.GetByIdAsync(request.Id);
 
             if (project == null) throw new SprintManagerNotFoundException($"Project with ID {request.Id} not found.");
 
-            return _mapper.Map<ProjectDTO>(project);
+            return _mapper.Map<ProjectDto>(project);
         }
     }
 }

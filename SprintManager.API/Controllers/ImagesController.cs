@@ -20,7 +20,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<ImageDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ImageDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllImages()
         {
@@ -30,7 +30,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ImageDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ImageDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetImageById(Guid id)
@@ -41,7 +41,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ImageDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ImageDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

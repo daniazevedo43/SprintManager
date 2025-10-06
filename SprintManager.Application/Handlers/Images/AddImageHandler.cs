@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace SprintManager.Application.Handlers.Images
 {
-    public class AddImageHandler : IRequestHandler<AddImageCommand, ImageDTO>
+    public class AddImageHandler : IRequestHandler<AddImageCommand, ImageDto>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IImageRepository _imageRepository;
@@ -38,7 +38,7 @@ namespace SprintManager.Application.Handlers.Images
             _mapper = mapper;
         }
 
-        public async Task<ImageDTO> Handle(AddImageCommand request, CancellationToken cancellationToken)
+        public async Task<ImageDto> Handle(AddImageCommand request, CancellationToken cancellationToken)
         {
             var userIdClaim = _httpContextAccessor.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -70,7 +70,7 @@ namespace SprintManager.Application.Handlers.Images
             await _fileStorageService.SaveFileAsync(request.Image, "Images");
             await _imageRepository.AddAsync(image);
 
-            return _mapper.Map<ImageDTO>(image);
+            return _mapper.Map<ImageDto>(image);
         }
     }
 }

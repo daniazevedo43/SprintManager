@@ -6,7 +6,7 @@ using SprintManager.Application.Queries.Sprints;
 
 namespace SprintManager.Application.Handlers.Sprints
 {
-    public class GetAllSprintsHandler : IRequestHandler<GetAllSprintsQuery, List<SprintDTO>>
+    public class GetAllSprintsHandler : IRequestHandler<GetAllSprintsQuery, List<SprintDto>>
     {
         private readonly ISprintRepository _sprintRepository;
         private readonly IMapper _mapper;
@@ -17,11 +17,11 @@ namespace SprintManager.Application.Handlers.Sprints
             _mapper = mapper;
         }
 
-        public async Task<List<SprintDTO>> Handle(GetAllSprintsQuery request, CancellationToken cancellationToken)
+        public async Task<List<SprintDto>> Handle(GetAllSprintsQuery request, CancellationToken cancellationToken)
         {
             var sprints = await _sprintRepository.GetAllAsync();
 
-            return _mapper.Map<List<SprintDTO>>(sprints);
+            return _mapper.Map<List<SprintDto>>(sprints);
         }
     }
 }

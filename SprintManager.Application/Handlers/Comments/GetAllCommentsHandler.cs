@@ -6,7 +6,7 @@ using SprintManager.Application.Queries.Comments;
 
 namespace SprintManager.Application.Handlers.Comments
 {
-    public class GetAllCommentsHandler : IRequestHandler<GetAllCommentsQuery, List<CommentDTO>>
+    public class GetAllCommentsHandler : IRequestHandler<GetAllCommentsQuery, List<CommentDto>>
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
@@ -17,11 +17,11 @@ namespace SprintManager.Application.Handlers.Comments
             _mapper = mapper;
         }
 
-        public async Task<List<CommentDTO>> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
+        public async Task<List<CommentDto>> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
         {
             var comments = await _commentRepository.GetAllAsync();
 
-            return _mapper.Map<List<CommentDTO>>(comments);
+            return _mapper.Map<List<CommentDto>>(comments);
         }
     }
 }

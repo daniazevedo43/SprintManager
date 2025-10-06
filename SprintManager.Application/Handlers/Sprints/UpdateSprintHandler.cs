@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Sprints
 {
-    public class UpdateSprintHandler : IRequestHandler<UpdateSprintCommand, SprintDTO>
+    public class UpdateSprintHandler : IRequestHandler<UpdateSprintCommand, SprintDto>
     {
         private readonly ISprintRepository _sprintRepository;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace SprintManager.Application.Handlers.Sprints
             _mapper = mapper;
         }
 
-        public async Task<SprintDTO> Handle(UpdateSprintCommand request, CancellationToken cancellationToken)
+        public async Task<SprintDto> Handle(UpdateSprintCommand request, CancellationToken cancellationToken)
         {
             var sprint = await _sprintRepository.GetByIdAsync(request.Id);
 
@@ -31,7 +31,7 @@ namespace SprintManager.Application.Handlers.Sprints
 
             await _sprintRepository.UpdateAsync(sprint);
 
-            return _mapper.Map<SprintDTO>(sprint);
+            return _mapper.Map<SprintDto>(sprint);
         }
     }
 }

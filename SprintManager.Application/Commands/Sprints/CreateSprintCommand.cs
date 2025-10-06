@@ -3,7 +3,7 @@ using SprintManager.Application.DTOs;
 
 namespace SprintManager.Application.Commands.Sprints
 {
-    public class CreateSprintCommand : IRequest<SprintDTO>
+    public class CreateSprintCommand : IRequest<SprintDto>
     {
         public Guid ProjectId { get; set; }
         public string SprintName { get; set; }

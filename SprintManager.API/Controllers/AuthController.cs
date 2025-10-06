@@ -26,7 +26,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register(RegisterCommand command)
@@ -37,7 +37,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(LoginDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Login(LoginCommand command)
@@ -64,7 +64,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("refresh")]
-        [ProducesResponseType(typeof(LoginDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Refresh(RefreshCommand command)
         {

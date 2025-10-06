@@ -8,7 +8,7 @@ using SprintManager.Domain.Entities;
 
 namespace SprintManager.Application.Handlers.Users
 {
-    public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, List<UserDTO>>
+    public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, List<UserDto>>
     {
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
@@ -19,13 +19,13 @@ namespace SprintManager.Application.Handlers.Users
             _mapper = mapper;
         }
 
-        public async Task<List<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
             var users = await _userManager.Users
                 .OrderBy(u => u.UserName)
                 .ToListAsync(cancellationToken);
 
-            return _mapper.Map<List<UserDTO>>(users);
+            return _mapper.Map<List<UserDto>>(users);
         }
     }
 }

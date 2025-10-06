@@ -3,7 +3,7 @@ using SprintManager.Application.DTOs;
 
 namespace SprintManager.Application.Queries.Images
 {
-    public class GetAllImagesQuery : IRequest<List<ImageDTO>>
+    public class GetAllImagesQuery : IRequest<List<ImageDto>>
     {
     }
 }

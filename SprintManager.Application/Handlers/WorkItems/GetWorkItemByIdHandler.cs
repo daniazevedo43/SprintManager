@@ -7,7 +7,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.WorkItems
 {
-    public class GetWorkItemByIdHandler : IRequestHandler<GetWorkItemByIdQuery, WorkItemDTO>
+    public class GetWorkItemByIdHandler : IRequestHandler<GetWorkItemByIdQuery, WorkItemDto>
     {
         public readonly IWorkItemRepository _workItemRepository;
         public readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace SprintManager.Application.Handlers.WorkItems
             _mapper = mapper;
         }
 
-        public async Task<WorkItemDTO> Handle(GetWorkItemByIdQuery request, CancellationToken cancellationToken)
+        public async Task<WorkItemDto> Handle(GetWorkItemByIdQuery request, CancellationToken cancellationToken)
         {
             var workItem = await _workItemRepository.GetByIdAsync(request.Id);
 
             if (workItem == null) throw new SprintManagerNotFoundException($"Work item with ID {request.Id} not found.");
 
-            return _mapper.Map<WorkItemDTO>(workItem);
+            return _mapper.Map<WorkItemDto>(workItem);
         }
     }
 }

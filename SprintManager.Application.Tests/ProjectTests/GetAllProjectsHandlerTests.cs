@@ -36,9 +36,9 @@ namespace SprintManager.Application.Tests.ProjectTests
                 new Project("Test 2", "Test Description 2")
             };
 
-            var projectsDTOs = new List<ProjectDTO>()
+            var projectsDTOs = new List<ProjectDto>()
             {
-                new ProjectDTO
+                new ProjectDto
                 {
                     Id = projects[0].Id,
                     Name = projects[0].Name, 
@@ -46,7 +46,7 @@ namespace SprintManager.Application.Tests.ProjectTests
                     CreationDate = projects[0].CreationDate, 
                     Status = projects[0].Status
                 },
-                new ProjectDTO
+                new ProjectDto
                 {
                     Id = projects[1].Id,
                     Name = projects[1].Name,
@@ -60,7 +60,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(projects);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<ProjectDTO>>(projects)).Returns(projectsDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<ProjectDto>>(projects)).Returns(projectsDTOs);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -77,7 +77,7 @@ namespace SprintManager.Application.Tests.ProjectTests
             _mockProjectRepository.Verify(r => r.GetAllAsync(), Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<ProjectDTO>>(projects), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<ProjectDto>>(projects), Times.Once);
         }
     }
 }
