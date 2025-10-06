@@ -59,7 +59,7 @@ namespace SprintManager.Application.Tests.UserTests
 
         // Test handler
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsUserDTO()
+        public async Task Handle_GivenValidId_ReturnsUserDto()
         {
             var query = new GetUserByIdQuery
             { 
@@ -67,7 +67,7 @@ namespace SprintManager.Application.Tests.UserTests
             };
 
             var user = new User("Test", "test", "test@gmail.com", "Test123test123!");
-            var userDTO = new UserDTO 
+            var userDto = new UserDto
             { 
                 Id = query.Id, 
                 Name = user.Name, 
@@ -78,20 +78,20 @@ namespace SprintManager.Application.Tests.UserTests
             _mockUserManager.Setup(r => r.FindByIdAsync(query.Id.ToString())).ReturnsAsync(user);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(m => m.Map<UserDTO>(user)).Returns(userDTO);
+            _mockMapper.Setup(m => m.Map<UserDto>(user)).Returns(userDto);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            Assert.Equal(userDTO.Id, result.Id);
-            Assert.Equal(userDTO.Name, result.Name);
-            Assert.Equal(userDTO.UserName, result.UserName);
-            Assert.Equal(userDTO.Email, result.Email);
+            Assert.Equal(userDto.Id, result.Id);
+            Assert.Equal(userDto.Name, result.Name);
+            Assert.Equal(userDto.UserName, result.UserName);
+            Assert.Equal(userDto.Email, result.Email);
 
             // Ensure FindByIdAsync was called exactly once with the correct ID.
             _mockUserManager.Verify(m => m.FindByIdAsync(query.Id.ToString()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created user.
-            _mockMapper.Verify(m => m.Map<UserDTO>(user), Times.Once);
+            _mockMapper.Verify(m => m.Map<UserDto>(user), Times.Once);
         }
 
         // Test exception throwing when user is not found

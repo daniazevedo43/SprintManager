@@ -26,7 +26,7 @@ namespace SprintManager.API.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register(RegisterCommand command)

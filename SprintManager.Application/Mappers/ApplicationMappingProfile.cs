@@ -8,7 +8,7 @@ namespace SprintManager.Application.Mappers
     {
         public ApplicationMappingProfile() 
         {
-            CreateMap<User, UserDTO>();
+            CreateMap<User, UserDto>();
             CreateMap<Project, ProjectDto>();
             CreateMap<ProjectMember, ProjectMemberDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? src.User.UserName : null));

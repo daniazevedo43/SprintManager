@@ -10,7 +10,7 @@ using System.Net;
 
 namespace SprintManager.Application.Handlers.Auth
 {
-    public class RegisterHandler : IRequestHandler<RegisterCommand, UserDTO>
+    public class RegisterHandler : IRequestHandler<RegisterCommand, UserDto>
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
@@ -27,7 +27,7 @@ namespace SprintManager.Application.Handlers.Auth
             _mapper = mapper;
         }
 
-        public async Task<UserDTO> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var existingUsername = await _userManager.FindByNameAsync(request.UserName);
             var existingEmail = await _userManager.FindByEmailAsync(request.Email);
@@ -49,7 +49,7 @@ namespace SprintManager.Application.Handlers.Auth
                 await _emailSender.SendEmailAsync(user.Email, "Confirm your email", emailContent);
             }
 
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

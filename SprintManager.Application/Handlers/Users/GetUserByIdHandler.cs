@@ -8,7 +8,7 @@ using SprintManager.Exceptions.ExceptionsBase;
 
 namespace SprintManager.Application.Handlers.Users
 {
-    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDTO>
+    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
@@ -19,13 +19,13 @@ namespace SprintManager.Application.Handlers.Users
             _mapper = mapper;
         }
 
-        public async Task<UserDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.Id.ToString());
 
             if (user == null) throw new SprintManagerNotFoundException($"User with ID {request?.Id} not found");
 
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

@@ -69,16 +69,16 @@ namespace SprintManager.Application.Tests.UserTests
                 new User("Test 2", "test2", "test@gmail.com", "Test456test456!"),
             };
 
-            var usersDTOs = new List<UserDTO>
+            var usersDtos = new List<UserDto>
             {
-                new UserDTO 
+                new UserDto
                 { 
                     Id = users[0].Id,
                     Name = users[0].Name,
                     UserName = users[0].UserName,
                     Email = users[0].Email 
                 },
-                new UserDTO
+                new UserDto
                 {
                     Id = users[1].Id,
                     Name = users[1].Name,
@@ -92,23 +92,23 @@ namespace SprintManager.Application.Tests.UserTests
             _mockUserManager.Setup(m => m.Users).Returns(mockUsers);
 
             // Mapper's Mock configuration
-            _mockMapper.Setup(mapper => mapper.Map<List<UserDTO>>(users)).Returns(usersDTOs);
+            _mockMapper.Setup(mapper => mapper.Map<List<UserDto>>(users)).Returns(usersDtos);
 
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            for(int i = 0; i < usersDTOs.Count; i++)
+            for(int i = 0; i < usersDtos.Count; i++)
             {
-                Assert.Equal(usersDTOs[i].Id, result[i].Id);
-                Assert.Equal(usersDTOs[i].Name, result[i].Name);
-                Assert.Equal(usersDTOs[i].UserName, result[i].UserName);
-                Assert.Equal(usersDTOs[i].Email, result[i].Email);
+                Assert.Equal(usersDtos[i].Id, result[i].Id);
+                Assert.Equal(usersDtos[i].Name, result[i].Name);
+                Assert.Equal(usersDtos[i].UserName, result[i].UserName);
+                Assert.Equal(usersDtos[i].Email, result[i].Email);
             }
 
             // Ensure GetAllAsync was called exactly once.
             _mockUserManager.Verify(m => m.Users, Times.Once);
 
             // Ensure the mapper's Map method was called exactly once.
-            _mockMapper.Verify(m => m.Map<List<UserDTO>>(users), Times.Once);
+            _mockMapper.Verify(m => m.Map<List<UserDto>>(users), Times.Once);
         }
     }
 }

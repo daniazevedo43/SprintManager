@@ -63,7 +63,7 @@ namespace SprintManager.Application.Tests.AuthTests
 
         // Test handler
         [Fact]
-        public async Task Handle_UserRegistration_ReturnsUserDTO()
+        public async Task Handle_UserRegistration_ReturnsUserDto()
         {
             var command = new RegisterCommand
             {
@@ -73,7 +73,7 @@ namespace SprintManager.Application.Tests.AuthTests
                 Password = "Test123test123!"
             };
 
-            var userDTO = new UserDTO
+            var userDto = new UserDto
             {
                 Id = Guid.NewGuid(),
                 Name = command.Name,
@@ -88,13 +88,13 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockUserManager.Setup(r => r.GenerateEmailConfirmationTokenAsync(It.IsAny<User>())).ReturnsAsync("test_token");
             _mockEmailSender.Setup(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()));
 
-            _mockMapper.Setup(m => m.Map<UserDTO>(It.IsAny<User>())).Returns(userDTO);
+            _mockMapper.Setup(m => m.Map<UserDto>(It.IsAny<User>())).Returns(userDto);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(userDTO.Name, result.Name);
-            Assert.Equal(userDTO.UserName, result.UserName);
-            Assert.Equal(userDTO.Email, result.Email);
+            Assert.Equal(userDto.Name, result.Name);
+            Assert.Equal(userDto.UserName, result.UserName);
+            Assert.Equal(userDto.Email, result.Email);
 
             // Ensure FindByNameAsync was called exactly once.
             _mockUserManager.Verify(r => r.FindByNameAsync(command.UserName), Times.Once);
@@ -112,7 +112,7 @@ namespace SprintManager.Application.Tests.AuthTests
             _mockEmailSender.Verify(r => r.SendEmailAsync(command.Email, "Confirm your email", It.IsAny<string>()), Times.Once);
 
             // Ensure the mapper's Map was called exactly once with the created project.
-            _mockMapper.Verify(m => m.Map<UserDTO>(It.IsAny<User>()), Times.Once);
+            _mockMapper.Verify(m => m.Map<UserDto>(It.IsAny<User>()), Times.Once);
         }
 
         // Test exception throwing when a username already exists
