@@ -33,11 +33,6 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task AddAsync(Image image)
         {
-            var images = await _context.Images
-                .Where(i => i.FileName.Contains(image.FileName))
-                .Select(i => i.FileName)
-                .ToListAsync();
-
             await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
         }
