@@ -6,11 +6,11 @@ using SprintManager.Application.Interfaces;
 
 namespace SprintManager.Infrastructure.Services
 {
-    public class CloudinaryFileStorageService : IFileStorageService
+    public class CloudFileStorageService : IFileStorageService
     {
         private readonly IConfiguration _config;
 
-        public CloudinaryFileStorageService(IConfiguration config) 
+        public CloudFileStorageService(IConfiguration config) 
         { 
             _config = config;
         }
@@ -34,7 +34,7 @@ namespace SprintManager.Infrastructure.Services
                 File = new FileDescription(file.FileName, file.OpenReadStream())
             };
 
-            var uploadResult = cloudinary.Upload(uploadParams);
+            var uploadResult = await cloudinary.UploadAsync(uploadParams);
 
             return uploadResult.PublicId;
         }
