@@ -4,11 +4,11 @@ using SprintManager.Application.Interfaces;
 
 namespace SprintManager.Infrastructure.Services
 {
-    public class FileStorageService : IFileStorageService
+    public class LocalFileStorageService : IFileStorageService
     {
         private readonly string _storagePath;
 
-        public FileStorageService(IConfiguration configuration)
+        public LocalFileStorageService(IConfiguration configuration)
         {
             _storagePath = configuration.GetValue<string>("ImageSettings:StoragePath")!;
         }

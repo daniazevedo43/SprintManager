@@ -18,7 +18,6 @@ namespace SprintManager.Application.Handlers.Images
         private readonly IWorkItemRepository _workItemRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileStorageService _fileStorageService;
-        private readonly ICloudinaryStorageService _cloudinaryStorageService;
         private readonly IMapper _mapper;
         private readonly string[] AllowedExtensions = { ".png", ".jpg", ".jpeg" };
 
@@ -28,7 +27,6 @@ namespace SprintManager.Application.Handlers.Images
             IWorkItemRepository workItemRepository,
             UserManager<User> userManager,
             IFileStorageService fileStorageService,
-            ICloudinaryStorageService cloudinaryStorageService,
             IMapper mapper
         ) 
         { 
@@ -37,7 +35,6 @@ namespace SprintManager.Application.Handlers.Images
             _workItemRepository = workItemRepository;
             _userManager = userManager;
             _fileStorageService = fileStorageService;
-            _cloudinaryStorageService = cloudinaryStorageService;
             _mapper = mapper;
         }
 
@@ -71,8 +68,6 @@ namespace SprintManager.Application.Handlers.Images
                 imagePath);
 
             await _fileStorageService.SaveFileAsync(request.Image, "Images");
-
-            _cloudinaryStorageService.Upload(request.Image);
 
             await _imageRepository.AddAsync(image);
 

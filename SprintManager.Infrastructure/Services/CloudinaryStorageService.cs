@@ -6,16 +6,21 @@ using SprintManager.Application.Interfaces;
 
 namespace SprintManager.Infrastructure.Services
 {
-    public class CloudinaryStorageService : ICloudinaryStorageService
+    public class CloudinaryFileStorageService : IFileStorageService
     {
         private readonly IConfiguration _config;
 
-        public CloudinaryStorageService(IConfiguration config) 
+        public CloudinaryFileStorageService(IConfiguration config) 
         { 
             _config = config;
         }
 
-        public ImageUploadResult Upload(IFormFile file)
+        public string GetFilePath(string subfolder, string fileName)
+        {
+            return Path.Combine(subfolder, fileName);
+        }
+
+        public async Task<string> SaveFileAsync(IFormFile file, string subfolder)
         {
             Account account = new Account(
                 _config["Cloudinary:CloudName"],
@@ -31,7 +36,12 @@ namespace SprintManager.Infrastructure.Services
 
             var uploadResult = cloudinary.Upload(uploadParams);
 
-            return uploadResult;
+            return uploadResult.PublicId;
+        }
+
+        public void DeleteFile(string subfolder, string fileNameWithExtension)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -44,9 +44,8 @@ builder.Services.AddScoped<IWorkItemRepository, WorkItemRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<ICloudinaryStorageService, CloudinaryStorageService>();
+builder.Services.AddScoped<IFileStorageService, CloudinaryFileStorageService>();
 
 // Configure API to support email
 builder.Services.AddTransient<IEmailSender, EmailSender>();
@@ -135,6 +134,7 @@ builder.Services.AddAuthentication(options =>
 if(!builder.Environment.IsDevelopment())
 {
     builder.Services.AddTransient<IEmailSender, ConsoleEmailSender>();
+    builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 }
 
 var app = builder.Build();
