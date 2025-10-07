@@ -45,7 +45,7 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IFileStorageService, CloudinaryFileStorageService>();
+builder.Services.AddScoped<IFileStorageService, CloudFileStorageService>();
 
 // Configure API to support email
 builder.Services.AddTransient<IEmailSender, EmailSender>();
