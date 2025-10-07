@@ -46,10 +46,6 @@ namespace SprintManager.Infrastructure.Services
 
             var directoryPath = Path.Combine(_storagePath, folder, fileNameWithExtension);
 
-            if (!File.Exists(directoryPath))
-            {
-                throw new FileNotFoundException($"Invalid file path");
-            }
             File.Delete(directoryPath);
         }
     }
