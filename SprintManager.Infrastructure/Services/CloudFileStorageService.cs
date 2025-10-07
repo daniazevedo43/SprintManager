@@ -15,12 +15,12 @@ namespace SprintManager.Infrastructure.Services
             _config = config;
         }
 
-        public string GetFilePath(string subfolder, string fileName)
+        public string GetFilePath(string folder, string fileName)
         {
-            return Path.Combine(subfolder, fileName);
+            return Path.Combine(folder, fileName);
         }
 
-        public async Task<string> SaveFileAsync(IFormFile file, string subfolder)
+        public async Task<string> SaveFileAsync(IFormFile file, string folder)
         {
             Account account = new Account(
                 _config["Cloudinary:CloudName"],
@@ -31,7 +31,8 @@ namespace SprintManager.Infrastructure.Services
 
             var uploadParams = new ImageUploadParams()
             {
-                File = new FileDescription(file.FileName, file.OpenReadStream())
+                File = new FileDescription(file.FileName, file.OpenReadStream()),
+                Folder = folder
             };
 
             var uploadResult = await cloudinary.UploadAsync(uploadParams);

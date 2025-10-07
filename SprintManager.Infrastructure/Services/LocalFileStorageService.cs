@@ -13,14 +13,14 @@ namespace SprintManager.Infrastructure.Services
             _storagePath = configuration.GetValue<string>("ImageSettings:StoragePath")!;
         }
 
-        public string GetFilePath(string subfolder, string fileName)
+        public string GetFilePath(string folder, string fileName)
         {
-            return Path.Combine(subfolder, fileName);
+            return Path.Combine(folder, fileName);
         }
 
-        public async Task<string> SaveFileAsync(IFormFile file, string subfolder)
+        public async Task<string> SaveFileAsync(IFormFile file, string folder)
         {
-            var directoryPath = Path.Combine(_storagePath, subfolder);
+            var directoryPath = Path.Combine(_storagePath, folder);
 
             if (!Directory.Exists(directoryPath))
             {
@@ -34,17 +34,17 @@ namespace SprintManager.Infrastructure.Services
                 await file.CopyToAsync(stream);
             }
 
-            return Path.Combine(subfolder, $"{file.FileName}");
+            return Path.Combine(folder, $"{file.FileName}");
         }
 
-        public void DeleteFile(string subfolder, string fileNameWithExtension)
+        public void DeleteFile(string folder, string fileNameWithExtension)
         {
             if (string.IsNullOrEmpty(fileNameWithExtension))
             {
                 throw new ArgumentNullException(nameof(fileNameWithExtension));
             }
 
-            var directoryPath = Path.Combine(_storagePath, subfolder, fileNameWithExtension);
+            var directoryPath = Path.Combine(_storagePath, folder, fileNameWithExtension);
 
             if (!File.Exists(directoryPath))
             {
