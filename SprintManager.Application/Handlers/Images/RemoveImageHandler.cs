@@ -22,7 +22,7 @@ namespace SprintManager.Application.Handlers.Images
 
             if (image == null) throw new SprintManagerNotFoundException($"Image with ID {request?.Id} not found.");
 
-            _fileStorageService.DeleteFile("Images", image.FileName);
+            _fileStorageService.DeleteFile(image.FilePath);
 
             await _imageRepository.DeleteAsync(image);
         }
