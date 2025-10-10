@@ -9,10 +9,18 @@ namespace SprintManager.Infrastructure.Services
     public class FileStorageService : IFileStorageService
     {
         private readonly IConfiguration _config;
+        private readonly Cloudinary _cloudinary;
 
         public FileStorageService(IConfiguration config) 
         { 
             _config = config;
+
+            Account account = new Account(
+                _config["CloudinarySettings:CloudName"],
+                _config["CloudinarySettings:ApiKey"],
+                _config["CloudinarySettings:ApiSecret"]);
+
+            _cloudinary = new Cloudinary(account);
         }
 
         public string GetFilePath(string folder, string fileName)
@@ -22,13 +30,6 @@ namespace SprintManager.Infrastructure.Services
 
         public async Task<string> SaveFileAsync(IFormFile file, string folder, string publicId)
         {
-            Account account = new Account(
-                _config["CloudinarySettings:CloudName"],
-                _config["CloudinarySettings:ApiKey"],
-                _config["CloudinarySettings:ApiSecret"]);
-
-            Cloudinary cloudinary = new Cloudinary(account);
-
             var uploadParams = new ImageUploadParams()
             {
                 PublicId = publicId,
@@ -36,23 +37,16 @@ namespace SprintManager.Infrastructure.Services
                 Folder = folder
             };
 
-            var uploadResult = await cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
             return uploadResult.PublicId;
         }
 
         public void DeleteFile(string publicId)
         {
-            Account account = new Account(
-                _config["CloudinarySettings:CloudName"],
-                _config["CloudinarySettings:ApiKey"],
-                _config["CloudinarySettings:ApiSecret"]);
-
-            Cloudinary cloudinary = new Cloudinary(account);
-
             var deletionParams = new DeletionParams(publicId);
 
-            cloudinary.Destroy(deletionParams);
+            _cloudinary.Destroy(deletionParams);
         }
     }
 }
