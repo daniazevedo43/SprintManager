@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SprintManager.Application.Exceptions;
 using SprintManager.Application.Interfaces;
 using SprintManager.Domain.Entities;
 using SprintManager.Infrastructure.Data;
@@ -34,16 +33,6 @@ namespace SprintManager.Infrastructure.Repositories
 
         public async Task AddAsync(Image image)
         {
-            var images = await _context.Images
-                .Where(i => i.FileName.Contains(image.FileName))
-                .Select(i => i.FileName)
-                .ToListAsync();
-
-            if (images.Count > 0)
-            {
-                throw new SprintManagerConflictException($"An image with the name {image.FileName} already exists.");
-            }
-
             await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
         }

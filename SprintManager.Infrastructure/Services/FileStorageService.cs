@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using SprintManager.Application.Interfaces;
 
@@ -6,51 +8,40 @@ namespace SprintManager.Infrastructure.Services
 {
     public class FileStorageService : IFileStorageService
     {
-        private readonly string _storagePath;
+        private readonly IConfiguration _config;
+        private readonly Cloudinary _cloudinary;
 
-        public FileStorageService(IConfiguration configuration)
-        {
-            _storagePath = configuration.GetValue<string>("ImageSettings:StoragePath")!;
+        public FileStorageService(IConfiguration config) 
+        { 
+            _config = config;
+
+            Account account = new Account(
+                _config["CloudinarySettings:CloudName"],
+                _config["CloudinarySettings:ApiKey"],
+                _config["CloudinarySettings:ApiSecret"]);
+
+            _cloudinary = new Cloudinary(account);
         }
 
-        public string GetFilePath(string subfolder, string fileName)
+        public async Task<string> SaveFileAsync(IFormFile file, string folder, string publicId)
         {
-            return Path.Combine(subfolder, fileName);
+            var uploadParams = new ImageUploadParams()
+            {
+                PublicId = publicId,
+                File = new FileDescription(file.FileName, file.OpenReadStream()),
+                Folder = folder
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            return uploadResult.PublicId;
         }
 
-        public async Task<string> SaveFileAsync(IFormFile file, string subfolder)
+        public async Task DeleteFileAsync(string publicId)
         {
-            var directoryPath = Path.Combine(_storagePath, subfolder);
+            var deletionParams = new DeletionParams(publicId);
 
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            var filePath = GetFilePath(directoryPath, $"{file.FileName}");
-            
-            using (var stream = File.Create(filePath))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            return Path.Combine(subfolder, $"{file.FileName}");
-        }
-
-        public void DeleteFile(string subfolder, string fileNameWithExtension)
-        {
-            if (string.IsNullOrEmpty(fileNameWithExtension))
-            {
-                throw new ArgumentNullException(nameof(fileNameWithExtension));
-            }
-
-            var directoryPath = Path.Combine(_storagePath, subfolder, fileNameWithExtension);
-
-            if (!File.Exists(directoryPath))
-            {
-                throw new FileNotFoundException($"Invalid file path");
-            }
-            File.Delete(directoryPath);
+            await _cloudinary.DestroyAsync(deletionParams);
         }
     }
 }

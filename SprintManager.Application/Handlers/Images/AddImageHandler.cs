@@ -20,13 +20,14 @@ namespace SprintManager.Application.Handlers.Images
         private readonly IFileStorageService _fileStorageService;
         private readonly IMapper _mapper;
         private readonly string[] AllowedExtensions = { ".png", ".jpg", ".jpeg" };
+        private const string ImageFolder = "Images";
 
         public AddImageHandler(
             IHttpContextAccessor httpContextAccessor,
             IImageRepository imageRepository,
             IWorkItemRepository workItemRepository,
             UserManager<User> userManager,
-            IFileStorageService fileStorageService, 
+            IFileStorageService fileStorageService,
             IMapper mapper
         ) 
         { 
@@ -58,7 +59,9 @@ namespace SprintManager.Application.Handlers.Images
             if (!string.IsNullOrWhiteSpace(userId.ToString()) && user == null)
                 throw new SprintManagerNotFoundException($"User with ID {userId} not found.");
 
-            var imagePath = _fileStorageService.GetFilePath("Images", request.Image.FileName);
+            var imagePublicId = Guid.NewGuid();
+
+            var imagePath = Path.Combine(ImageFolder, imagePublicId.ToString()).Replace('\\', '/');
 
             var image = new Image(
                 request.WorkItemId,
@@ -67,7 +70,8 @@ namespace SprintManager.Application.Handlers.Images
                 request.Image.FileName,
                 imagePath);
 
-            await _fileStorageService.SaveFileAsync(request.Image, "Images");
+            await _fileStorageService.SaveFileAsync(request.Image, ImageFolder, imagePublicId.ToString());
+
             await _imageRepository.AddAsync(image);
 
             return _mapper.Map<ImageDto>(image);
