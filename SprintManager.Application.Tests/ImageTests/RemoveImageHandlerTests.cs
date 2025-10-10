@@ -36,18 +36,18 @@ namespace SprintManager.Application.Tests.ImageTests
                 Guid.NewGuid(), 
                 Guid.NewGuid(),
                 "test_image/jpeg", 
-                "test_image.jpg", 
-                Path.Combine("test_path", "test_path_2.jpg")
+                "test_image.jpg",
+                "test_path"
             );
 
             _mockImageRepository.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(image);
-            _mockFileStorageService.Setup(s => s.DeleteFile("Images", image.FileName));
+            _mockFileStorageService.Setup(s => s.DeleteFile(image.FilePath));
             _mockImageRepository.Setup(r => r.DeleteAsync(image));
 
             await _handler.Handle(command, CancellationToken.None);
 
             _mockImageRepository.Verify(r => r.GetByIdAsync(command.Id), Times.Once);
-            _mockFileStorageService.Verify(s => s.DeleteFile("Images", image.FileName), Times.Once);
+            _mockFileStorageService.Verify(s => s.DeleteFile(image.FilePath), Times.Once);
             _mockImageRepository.Verify(r => r.DeleteAsync(image), Times.Once);
         }
 

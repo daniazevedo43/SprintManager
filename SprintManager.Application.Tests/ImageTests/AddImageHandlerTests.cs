@@ -94,7 +94,7 @@ namespace SprintManager.Application.Tests.ImageTests
                 userId, 
                 command.Image.ContentType,
                 command.Image.FileName,
-                Path.Combine("test_path", "test_path_2.jpg")
+                "test_path"
             );
 
             var imageDto = new ImageDto
@@ -115,7 +115,7 @@ namespace SprintManager.Application.Tests.ImageTests
 
             _mockWorkItemRepository.Setup(r => r.GetByIdAsync(command.WorkItemId)).ReturnsAsync(new WorkItem());
             _mockUserManager.Setup(m => m.FindByIdAsync(userId.ToString())).ReturnsAsync(new User());
-            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
+            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_folder", "test_public_id")).ReturnsAsync(image.FilePath);
             _mockImageRepository.Setup(r => r.AddAsync(It.IsAny<Image>())).Callback<Image>(i => image = i);
 
             // Mapper's Mock configuration
@@ -143,7 +143,7 @@ namespace SprintManager.Application.Tests.ImageTests
             _mockUserManager.Verify(m => m.FindByIdAsync(userId.ToString()), Times.Once);
 
             // Ensure SaveFileAsync was called exactly once.
-            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_sub_folder")).ReturnsAsync(image.FilePath);
+            _mockFileStorageService.Setup(s => s.SaveFileAsync(_mockFile.Object, "test_folder", "test_public_id")).ReturnsAsync(image.FilePath);
 
             // Ensure AddAsync was called exactly once.
             _mockImageRepository.Verify(r => r.AddAsync(image), Times.Once);

@@ -23,11 +23,6 @@ namespace SprintManager.Infrastructure.Services
             _cloudinary = new Cloudinary(account);
         }
 
-        public string GetFilePath(string folder, string fileName)
-        {
-            return Path.Combine(folder, fileName).Replace('\\', '/');
-        }
-
         public async Task<string> SaveFileAsync(IFormFile file, string folder, string publicId)
         {
             var uploadParams = new ImageUploadParams()

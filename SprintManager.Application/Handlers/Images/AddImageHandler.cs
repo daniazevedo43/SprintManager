@@ -20,6 +20,7 @@ namespace SprintManager.Application.Handlers.Images
         private readonly IFileStorageService _fileStorageService;
         private readonly IMapper _mapper;
         private readonly string[] AllowedExtensions = { ".png", ".jpg", ".jpeg" };
+        private const string ImageFolder = "Images";
 
         public AddImageHandler(
             IHttpContextAccessor httpContextAccessor,
@@ -60,7 +61,7 @@ namespace SprintManager.Application.Handlers.Images
 
             var imagePublicId = Guid.NewGuid();
 
-            var imagePath = _fileStorageService.GetFilePath("Images", imagePublicId.ToString());
+            var imagePath = Path.Combine(ImageFolder, imagePublicId.ToString()).Replace('\\', '/');
 
             var image = new Image(
                 request.WorkItemId,
@@ -69,7 +70,7 @@ namespace SprintManager.Application.Handlers.Images
                 request.Image.FileName,
                 imagePath);
 
-            await _fileStorageService.SaveFileAsync(request.Image, "Images", imagePublicId.ToString());
+            await _fileStorageService.SaveFileAsync(request.Image, ImageFolder, imagePublicId.ToString());
 
             await _imageRepository.AddAsync(image);
 
