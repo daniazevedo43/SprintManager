@@ -37,11 +37,11 @@ namespace SprintManager.Infrastructure.Services
             return uploadResult.PublicId;
         }
 
-        public void DeleteFile(string publicId)
+        public async Task DeleteFileAsync(string publicId)
         {
             var deletionParams = new DeletionParams(publicId);
 
-            _cloudinary.Destroy(deletionParams);
+            await _cloudinary.DestroyAsync(deletionParams);
         }
     }
 }
