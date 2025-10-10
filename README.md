@@ -98,7 +98,7 @@ The following API functionalities are already live:
 The API is configured to run in the following environments:
 
 * **Local:** Used for daily development. Uses logs to simulate sending emails and displays the details in the console.
-* **Development:** Used for testing integrations with SendGrid. For security reasons, the SendGrid key is not included in the repository.
+* **Development:** Used for testing integrations with SendGrid and to store images in Cloudinary. For security reasons, the SendGrid key and the Cloudinary's API key and API secret are not included in the repository.
 
 ## Database setup
 
