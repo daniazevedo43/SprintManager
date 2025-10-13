@@ -1,6 +1,6 @@
 # Sprint Manager
 
-An API focused on organizing and tracking tasks. It provides a solid foundation for managing projects, sprints, work items and team members. Ideal for software development teams looking for a solution for their agile workflow.
+An application focused on organizing and tracking tasks. It provides a solid foundation for managing projects, sprints, work items and team members. Ideal for software development teams looking for a solution for their agile workflow.
 
 ## Architecture
 
@@ -13,7 +13,7 @@ An API focused on organizing and tracking tasks. It provides a solid foundation 
 
 ## Core Domain Entities
 
-The API revolves around the following key domain entities:
+The application revolves around the following key domain entities:
 
 * **User:** Represents the users who access and manage tasks.
 * **Project:** Represents the different projects where tasks will be organized.
@@ -23,6 +23,10 @@ The API revolves around the following key domain entities:
 * **Comment:** Represents comments left by users in work items.
 * **Image:** Represents images attached by users in work items.
 * **RefreshToken:** Represents the refresh tokens created for the authenticated users.
+
+## Current status
+
+The backend at the moment has the essential endpoints for managing sprints, projects, work items, and authentication, and they're fully functional. Currently, the focus is on building the frontend aiming to create a user interface for the application.
 
 ## Endpoints
 
@@ -95,7 +99,7 @@ The following API functionalities are already live:
 
 ## Environments
 
-The API is configured to run in the following environments:
+The application is configured to run in the following environments:
 
 * **Local:** Used for daily development. Uses logs to simulate sending emails and displays the details in the console.
 * **Development:** Used for testing integrations with SendGrid and to store images in Cloudinary. For security reasons, the SendGrid key and the Cloudinary's API key and API secret are not included in the repository.
