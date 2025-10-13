@@ -16,6 +16,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 // Add services to the container.
 
 // Identity
@@ -131,7 +133,16 @@ builder.Services.AddAuthentication(options =>
             };
         });
 
-if(!builder.Environment.IsDevelopment())
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000");
+                      });
+});
+
+if (!builder.Environment.IsDevelopment())
 {
     builder.Services.AddTransient<IEmailSender, ConsoleEmailSender>();
 }
@@ -145,6 +156,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
