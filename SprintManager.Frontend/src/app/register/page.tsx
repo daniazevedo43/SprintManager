@@ -11,7 +11,10 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const registerData = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+
+        e.preventDefault();
+
         const request: RegisterRequest = {
             name: name,
             username: username,
@@ -38,7 +41,12 @@ export default function Register() {
 
     return (
         <div className='flex min-h-screen justify-center items-center'>
-            <Form style={{border: '1px solid red'}} className='flex flex-col w-125' action="">
+            <Form 
+                style={{border: '1px solid red'}} 
+                className='flex flex-col w-125' 
+                action=""
+                onSubmit={handleSubmit}
+            >
                 <label>Name:</label>
                 <input 
                     className='border black' 
@@ -68,7 +76,7 @@ export default function Register() {
                     onChange={(event) => setPassword(event.target.value)}
                 />
                 
-                <button onClick={registerData} type="submit">Submit</button>
+                <button type="submit">Submit</button>
             </Form>
         </div>
     )
