@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Form from 'next/form'
-import { RegisterRequest } from '../types/auth';
+import { RegisterRequest } from '../../types/auth';
 
 export default function Register() {
 
@@ -30,8 +30,8 @@ export default function Register() {
             body: JSON.stringify(request),
         });
 
-            const result = await response.json();
-            console.log(result);
+        const result = await response.json();
+        console.log(result);
     };
 
     console.log(name);
@@ -42,7 +42,7 @@ export default function Register() {
     return (
         <div className='flex min-h-screen justify-center items-center'>
             <Form 
-                style={{border: '1px solid red'}} 
+                // style={{border: '1px solid red'}} 
                 className='flex flex-col w-125' 
                 action=""
                 onSubmit={handleSubmit}
