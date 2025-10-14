@@ -40,7 +40,7 @@ export default function Register() {
     console.log(password);
 
     return (
-        <div className='flex min-h-screen justify-center items-center'>
+        <div className='flex justify-center items-center min-h-screen'>
             <Form 
                 // style={{border: '1px solid red'}} 
                 className='flex flex-col w-125' 
