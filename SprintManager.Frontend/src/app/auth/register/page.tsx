@@ -22,27 +22,18 @@ export default function Register() {
             password: password
         }
 
-        const response = await fetch('https://localhost:7060/api/Auth/register', {
+        await fetch('https://localhost:7060/api/Auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(request),
         });
-
-        const result = await response.json();
-        console.log(result);
     };
-
-    console.log(name);
-    console.log(username);
-    console.log(email);
-    console.log(password);
 
     return (
         <div className='flex justify-center items-center min-h-screen'>
             <Form 
-                // style={{border: '1px solid red'}} 
                 className='flex flex-col w-125' 
                 action=""
                 onSubmit={handleSubmit}
